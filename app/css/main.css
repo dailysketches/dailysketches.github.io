@@ -52,6 +52,10 @@ code {
     content: " ";
 }
 
+.snippet {
+    display: none;
+}
+
 /*
  * Remove text-shadow in selection highlight: h5bp.com/i
  * These selection rule sets have to be separate.

@@ -33,6 +33,25 @@ code {
     margin: 0 auto;
 }
 
+.code ul {
+    list-style-type: none;
+}
+
+.code ul li {
+    display: inline;
+}
+
+.code ul li::after {
+    content: "|";
+    display: inline-block;
+    font-size: 100%;
+    margin: 0 0 0 .5em;
+}
+
+.code ul li:last-child:after {
+    content: " ";
+}
+
 /*
  * Remove text-shadow in selection highlight: h5bp.com/i
  * These selection rule sets have to be separate.

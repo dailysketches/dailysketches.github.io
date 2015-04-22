@@ -19,7 +19,7 @@ include: ['.htaccess']
 future: true
 show_drafts: true
 
-permalink: pretty
+permalink: /:title-:day-:month-:year/
 paginate: 14
 paginate_path: 'page:num'
 

@@ -1,1 +1,1 @@
-
+hljs.initHighlightingOnLoad();

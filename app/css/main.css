@@ -45,7 +45,7 @@ body {
 }
 
 .code ul li::after {
-    content: " | ";
+    content: "|";
     display: inline-block;
     font-size: 100%;
     margin: 0 0 0 .5em;

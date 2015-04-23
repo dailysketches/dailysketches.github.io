@@ -6,6 +6,7 @@
 //   sass: _scss
 //   javascript: js
 //   images: img
+//   sketches: sketches
 //   fonts: fonts
 
 module.exports = function (grunt) {
@@ -45,7 +46,8 @@ module.exports = function (grunt) {
             '.tmp/css/**/*.css',
             '{.tmp,<%= yeoman.app %>}/js/**/*.js',
             '{<%= yeoman.app %>}/_bower_components/**/*.js',
-            '<%= yeoman.app %>/img/**/*.{gif,jpg,jpeg,png,svg,webp}'
+            '<%= yeoman.app %>/img/**/*.{gif,jpg,jpeg,png,svg,webp}',
+            '<%= yeoman.app %>/sketches/**/*.{gif,jpg,jpeg,png,svg,webp}'
           ]
         },
         options: {
@@ -73,7 +75,8 @@ module.exports = function (grunt) {
             '.tmp/css/**/*.css',
             '{.tmp,<%= yeoman.app %>}/js/**/*.js',
             '{<%= yeoman.app %>}/_bower_components/**/*.js',
-            '<%= yeoman.app %>/img/**/*.{gif,jpg,jpeg,png,svg,webp}'
+            '<%= yeoman.app %>/img/**/*.{gif,jpg,jpeg,png,svg,webp}',
+            '<%= yeoman.app %>/sketches/**/*.{gif,jpg,jpeg,png,svg,webp}'
           ]
         },
         options: {
@@ -176,7 +179,7 @@ module.exports = function (grunt) {
     },
     usemin: {
       options: {
-        assetsDirs: ['<%= yeoman.dist %>', '<%= yeoman.dist %>/img']
+        assetsDirs: ['<%= yeoman.dist %>', '<%= yeoman.dist %>/img', '<%= yeoman.dist %>/sketches']
       },
       html: ['<%= yeoman.dist %>/**/*.html'],
       css: ['<%= yeoman.dist %>/css/**/*.css']
@@ -244,6 +247,7 @@ module.exports = function (grunt) {
             // Copy moves asset files and directories.
             'img/**/*',
             'fonts/**/*',
+            'sketches/**/*',
             // Like Jekyll, exclude files & folders prefixed with an underscore.
             '!**/_*{,/**}',
             // Explicitly add any files your site needs for distribution here.
@@ -275,6 +279,7 @@ module.exports = function (grunt) {
             '<%= yeoman.dist %>/js/**/*.js',
             '<%= yeoman.dist %>/css/**/*.css',
             '<%= yeoman.dist %>/img/**/*.{gif,jpg,jpeg,png,svg,webp}',
+            '<%= yeoman.dist %>/sketches/**/*.{gif,jpg,jpeg,png,svg,webp}',
             '<%= yeoman.dist %>/fonts/**/*.{eot*,otf,svg,ttf,woff}'
           ]
         }]

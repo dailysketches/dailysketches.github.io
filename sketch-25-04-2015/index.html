@@ -3,7 +3,7 @@
   <head>
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge">
-    <title>Sketch 2015-04-24</title>
+    <title>Sketch 2015-04-25</title>
     <meta name=description content="">
     <meta name=viewport content="width=device-width,initial-scale=1">
 
@@ -24,44 +24,32 @@
     <![endif]-->
 
     <article class=post>
-<p><img src=/sketches/openFrameworks/2015-04-24.gif alt="Daily sketch"></p>
+<p><img src=/sketches/openFrameworks/2015-04-25.gif alt="Daily sketch"></p>
 <div class=code>
 	<ul>
-		<li><a href="/sketch-24-04-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-24>code</a></li>
+		<li><a href="/sketch-25-04-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-25>code</a></li>
 		<li><a href=# class=snippet-button>snippet</a></li>
 	</ul>
-	<p>Concentric circles, moving against each other. As rendered by the pixel grid of your monitor.</p>
+	<p>Accessing chunks of memory that you're not supposed to access</p>
 	<pre class=snippet>
 		<code class=cpp>void ofApp::setupAnim() {
-    ofSetCircleResolution(100);
-    ofNoFill();
-    ofEnableSmoothing();
-    multiplier = 5;
-    switchDirection = false;
-}
-
-void ofApp::updateAnim(){
-    if(switchDirection) {
-        multiplier += 0.2;
-    } else {
-        multiplier -= 0.2;
+    current = 0;
+    max = 80;
+    for(int i = 0; i &lt; max; i++) {
+        glitches.push_back(templateGlitch);
+        glitches.at(glitches.size()-1).allocate(width, height);
     }
-    
-    if(multiplier &lt;= 0.2 || multiplier &gt;= 10) {
-        switchDirection = !switchDirection;
-        if(!switchDirection) saveNow = true;
-    }
+    ofSetColor(ofColor::white);
 }
 
 void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    for(int i = 1; i &lt;= 100; i++) {
-        ofCircle(width * 0.5, height * 0.5, i * multiplier);
-        ofCircle(width * 0.5, height * 0.5, i * (15 - multiplier));
-    }
-    if(!renderMode) {
-        ofDrawBitmapString(ofToString(multiplier), 20, 20);
+    if(ofGetFrameNum() % 5 == 0) {
+        ofClear(255,255,255);
+    } else {
+        ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
+        glitches.at(ofGetFrameNum()%max).draw(0, 0);
+        ofDisableBlendMode();
     }
 }</code>
 	</pre>

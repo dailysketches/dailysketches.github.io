@@ -28,6 +28,43 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-04-25</h1>
+		</header>
+		<p><img src=/sketches/openFrameworks/2015-04-25.gif alt="Daily sketch"></p>
+<div class=code>
+	<ul>
+		<li><a href="/sketch-25-04-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-25>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+	<p>Accessing chunks of memory that you're not supposed to access</p>
+	<pre class=snippet>
+		<code class=cpp>void ofApp::setupAnim() {
+    current = 0;
+    max = 80;
+    for(int i = 0; i &lt; max; i++) {
+        glitches.push_back(templateGlitch);
+        glitches.at(glitches.size()-1).allocate(width, height);
+    }
+    ofSetColor(ofColor::white);
+}
+
+void ofApp::drawAnim() {
+    if(ofGetFrameNum() % 5 == 0) {
+        ofClear(255,255,255);
+    } else {
+        ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
+        glitches.at(ofGetFrameNum()%max).draw(0, 0);
+        ofDisableBlendMode();
+    }
+}</code>
+	</pre>
+</div>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-04-24</h1>
 		</header>
 		<p><img src=/sketches/openFrameworks/2015-04-24.gif alt="Daily sketch"></p>
@@ -39,8 +76,7 @@
 	</ul>
 	<p>Concentric circles, moving against each other. As rendered by the pixel grid of your monitor.</p>
 	<pre class=snippet>
-		<code class=cpp>void ofApp::draw() {
-void ofApp::setupAnim() {
+		<code class=cpp>void ofApp::setupAnim() {
     ofSetCircleResolution(100);
     ofNoFill();
     ofEnableSmoothing();
@@ -70,7 +106,6 @@ void ofApp::drawAnim() {
     if(!renderMode) {
         ofDrawBitmapString(ofToString(multiplier), 20, 20);
     }
-}
 }</code>
 	</pre>
 </div>

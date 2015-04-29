@@ -28,6 +28,80 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-04-29</h1>
+		</header>
+		<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-29.gif?raw=true" alt="Daily sketch"></p>
+<div class=code>
+	<ul>
+		<li><a href="/sketch-29-04-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-29>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+	<p>A polyline on a drunken walk</p>
+	<pre class=snippet>
+		<code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    boundary = 25;
+    increment = 8;
+    for(int i = 0; i &lt;= 20; i++) {
+        line.addVertex(i * width * 0.05, ofRandom(-boundary, boundary));
+    }
+    lines.push_back(line);
+}
+
+void ofApp::updateAnim(){
+    if(ofGetFrameNum() &lt; 39) {
+        for(int i = 0; i &lt;= 20; i++) {
+            line[i].y = drunkWalk(line[i].y);
+        }
+        lines.push_back(line);
+    }
+    
+    if(ofGetFrameNum() &gt;= 40) {
+        if(lines.size() == 1) {
+            renderGif();
+        } else {
+            lines.pop_back();
+        }
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 255, 255);
+    alpha = 255;
+    
+    ofTranslate(0, boundary* 2);
+    
+    ofPushMatrix();
+    for(int i = 0; i &lt; lines.size() &amp;&amp; alpha &gt;= 0; i++) {
+        ofSetColor(1, 131, 185, alpha);
+        ofSetLineWidth(i * 0.8);
+        
+        ofTranslate(0, i);
+        lines.at(lines.size() - 1 - i).draw();
+        alpha -= 16;
+    }
+    ofPopMatrix();
+    
+    ofSetLineWidth(2);
+    ofSetColor(255, 255, 255, 200);
+    lines.at(lines.size() - 1).draw();
+}
+
+float ofApp::drunkWalk(float from) {
+    if(from &gt; boundary - increment) return from - increment;
+    if(from &lt; -boundary + increment) return from + increment;
+    return ofRandom(1) &gt; 0.5 ?
+            from + increment :
+            from - increment;
+}</code>
+	</pre>
+</div>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-04-28</h1>
 		</header>
 		<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-28.gif?raw=true" alt="Daily sketch"></p>

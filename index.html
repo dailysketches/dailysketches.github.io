@@ -28,6 +28,83 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-05-03</h1>
+		</header>
+		<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-03.gif?raw=true" alt="Daily sketch"></p>
+<div class=code>
+	<ul>
+		<li><a href="/sketch-03-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-03>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+	<p>Like yesterday, but now going way past 2&pi; radians for the edges</p>
+	<pre class=snippet>
+		<code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    ofEnableAntiAliasing();
+    
+    shapeSystem.setup();
+    camera.setDistance(120);
+    
+    for(int i = 0; i &lt; 24; i++) {
+        GradientShape ring;
+        rings.push_back(ring);
+    }
+    
+    for(int i = 0; i &lt; rings.size(); i++) {
+        if(i % 3 == 0) color.set(255, 0, 0, 80);
+        if(i % 3 == 1) color.set(0, 255, 0, 80);
+        if(i % 3 == 2) color.set(0, 0, 255, 80);
+        
+        rings.at(i).setupHollowRing(60, 3, i * 3); //Resolution, thickness, diameter
+        rings.at(i).setColor(color);
+        rings.at(i).setBlur(3);
+        shapeSystem.add(rings.at(i));
+    }
+}
+
+void ofApp::updateAnim(){
+    float current = sin(ofGetFrameNum() * 0.16);
+    endpoint = ofMap(current, -1, 1, 1257, 1263);
+    rotation = ofMap(current, -1, 1, 0, 360);
+    
+    for(int i = 0; i &lt; rings.size(); i++) {
+        if(i % 6 == 0) rings.at(i).rotateX(rotation);
+        if(i % 6 == 1) rings.at(i).rotateY(rotation);
+        if(i % 6 == 2) rings.at(i).rotateZ(rotation);
+        if(i % 6 == 3) rings.at(i).rotateX(-rotation);
+        if(i % 6 == 4) rings.at(i).rotateY(-rotation);
+        if(i % 6 == 5) rings.at(i).rotateZ(-rotation);
+        
+        rings.at(i).setArcEndpoints(0, endpoint);
+    }
+    shapeSystem.update();
+    
+    if(ofGetFrameNum() == 0) {
+        firstEndpoint = endpoint;
+        lastEndpoint = endpoint;
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    camera.begin();
+    shapeSystem.draw();
+    camera.end();
+    
+    if(endpoint &gt; firstEndpoint &amp;&amp; lastEndpoint &lt; firstEndpoint) {
+        renderGif();
+    }
+    
+    lastEndpoint = endpoint;
+}</code>
+	</pre>
+</div>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-05-02</h1>
 		</header>
 		<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-02.gif?raw=true" alt="Daily sketch"></p>

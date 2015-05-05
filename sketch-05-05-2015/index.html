@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html class=no-js>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>Sketch 2015-05-05</title>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+
+    <link rel=stylesheet href=/css/main.e7a8.css>
+
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+    <script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+
+    <script src=/js/head-scripts.32fa.js></script>
+
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <article class=post>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-05.gif?raw=true" alt="Daily sketch"></p>
+<div class=code>
+	<ul>
+		<li><a href="/sketch-05-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-05>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+	<p>Wheels within wheels, and nested loops.</p>
+	<pre class=snippet>
+		<code class=cpp>void ofApp::setupAnim() {
+    for(int i = 5; i &gt; 0; i--) {
+        vector<ofxshape> shapeLayer;
+        
+        for(int j = 0; j &lt; i; j++) {
+            ofxAnimatableFloat positionZ;
+            positionZ.reset(-i);
+            positionZ.animateToAfterDelay(i * 30, j);
+            positionZ.setDuration(1.2);
+            positionZ.setCurve(EASE_IN_OUT_BOUNCE);
+            positionZ.setRepeatType(LOOP_BACK_AND_FORTH_ONCE);
+            positionsZ.push_back(positionZ);
+            
+            for(int k = 0; k &lt; i; k++) {
+                size = (width / i) * 0.38;
+                
+                ofxShape shape;
+                shape.setupFilledRing(60, size);
+                shape.setBlur(15);
+                shape.positionX(((width / i) * j) + (width / i / 2));
+                shape.positionY(((height / i) * k) + (height / i / 2));
+                shape.setColor(ofColor::fromHsb(255 / i, 128, 128));
+                shapeLayer.push_back(shape);
+            }
+        }
+        
+        shapes.push_back(shapeLayer);
+    }
+
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        for(int j = 0; j &lt; shapes.at(i).size(); j++) {
+            shapeSystem.add(shapes.at(i).at(j));
+        }
+    }
+}
+
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; positionsZ.size(); i++) {
+        positionsZ.at(i).update(1.0f/framerate);
+    }
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        for(int j = 0; j &lt; shapes.at(i).size(); j++) {
+            shapes.at(i).at(j).positionZ(positionsZ.at(i).val());
+        }
+    }
+    
+    shapeSystem.update();
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    ofEnableBlendMode(OF_BLENDMODE_ADD);
+    shapeSystem.draw();
+    ofDisableBlendMode();
+    
+    if(ofGetFrameNum() == 64) {
+        renderGif();
+    }
+}
+	
+
+</ofxshape></code></pre></div>
+
+</article>
+
+
+    <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
+
+<script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
+<script src=/js/script.9f4d.js></script>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+
+  </body>
+</html>

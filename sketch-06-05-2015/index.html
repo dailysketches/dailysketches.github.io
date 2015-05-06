@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class=no-js>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>Sketch 2015-05-06</title>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+
+    <link rel=stylesheet href=/css/main.e7a8.css>
+
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+    <script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+
+    <script src=/js/head-scripts.32fa.js></script>
+
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <article class=post>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-06.gif?raw=true" alt="Daily sketch"></p>
+<div class=code>
+	<ul>
+		<li><a href="/sketch-06-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-06>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+	<p>A modification of yesterday's sketch. Multiple shape systems rotated separately from each other.</p>
+	<pre class=snippet>
+		<code class=cpp>void ofApp::setupAnim() {
+    paused = true;
+    
+    for(int i = 5; i &gt; 0; i--) {
+        vector&lt;ofxShape&gt; shapeLayer;
+        ofxAnimatableFloat positionZ;
+        animDuration = 4;
+        positionZ.reset(i * 8);
+        positionZ.animateToAfterDelay(-(i * 300), ofMap(i, 5, 1, 0, animDuration));
+        positionZ.setDuration(animDuration);
+        positionZ.setCurve(EASE_IN_EASE_OUT);
+        positionZ.setRepeatType(LOOP_BACK_AND_FORTH);
+        positionsZ.push_back(positionZ);
+        
+        ofxAnimatableFloat rotationZ;
+        animDuration = 2;
+        rotationZ.reset(0);
+        rotationZ.animateToAfterDelay(360, ofMap(i, 5, 1, 0, animDuration));
+        rotationZ.setDuration(animDuration);
+        rotationZ.setCurve(EASE_IN_EASE_OUT);
+        rotationZ.setRepeatType(LOOP);
+        rotationsZ.push_back(rotationZ);
+        
+        for(int j = 0; j &lt; i; j++) {
+            for(int k = 0; k &lt; i; k++) {
+                size = (width / i) * 0.38;
+                
+                ofxShape shape;
+                shape.setupFilledRing(60, size * 1.8);
+                shape.setBlur(20);
+                shape.positionX(((width / i) * j) + (width / i / 2));
+                shape.positionY(((height / i) * k) + (height / i / 2));
+                shape.setColor(ofColor::fromHsb(ofMap(i, 5, 1, 130, 170), 150, 60));
+                shapeLayer.push_back(shape);
+            }
+        }
+        
+        shapes.push_back(shapeLayer);
+    }
+
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        ofxShapeSystem shapeSystem;
+        
+        for(int j = 0; j &lt; shapes.at(i).size(); j++) {
+            shapeSystem.add(shapes.at(i).at(j));
+        }
+        
+        shapeSystems.push_back(shapeSystem);
+    }
+}
+
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; positionsZ.size(); i++) {
+        positionsZ.at(i).update(1.0f/framerate);
+    }
+    
+    for(int i = 0; i &lt; rotationsZ.size(); i++) {
+        rotationsZ.at(i).update(1.0f/framerate);
+    }
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        for(int j = 0; j &lt; shapes.at(i).size(); j++) {
+            shapes.at(i).at(j).positionZ(positionsZ.at(i).val());
+        }
+    }
+    
+    for(int i = 0; i &lt; shapeSystems.size(); i++) {
+        shapeSystems.at(i).update();
+    }
+}
+
+void ofApp::drawAnim() {
+    if(ofGetFrameNum() == 82) paused = false;
+    
+    ofBackground(0, 0, 0);
+    ofEnableBlendMode(OF_BLENDMODE_ADD);
+    for(int i = 0; i &lt; shapeSystems.size(); i++) {
+        ofPushMatrix();
+        ofTranslate(width * 0.5, height * 0.5);
+        ofRotateZ(rotationsZ.at(i).val());
+        ofTranslate(-(width * 0.5), -(height * 0.5));
+        shapeSystems.at(i).draw();
+        ofPopMatrix();
+    }
+    ofDisableBlendMode();
+    
+    if(ofGetFrameNum() == 164) {
+        renderGif();
+    }
+}</code>
+	</pre>
+</div>
+
+</article>
+
+
+    <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
+
+<script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
+<script src=/js/script.9f4d.js></script>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+
+  </body>
+</html>

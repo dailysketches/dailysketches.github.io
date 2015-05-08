@@ -37,11 +37,12 @@
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-07>code</a></li>
 		<li><a href=# class=snippet-button>snippet</a></li>
 	</ul>
-	<p>It's been a very, very long day... this is all about shapes and shader-alpha masking</p>
+	<p>It's been a very, very long day...</p>
 	<pre class=snippet>
-		<code class=cpp>ofFbo bottomLayer, maskLayer, topLayer;
+		<code class=cpp>//This is all about shapes and shader-alpha masking
+ofFbo bottomLayer, maskLayer, topLayer;
 
-        void ofApp::setupBottomLayer(){
+void ofApp::setupBottomLayer(){
     for(int i = -width; i &lt; width*2; i += width * 0.01) {
         ofxShape shape;
         shape.setupFilledSquare(width - (width * 0.01));

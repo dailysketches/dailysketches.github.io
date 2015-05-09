@@ -169,6 +169,14 @@ img {
     content: " ";
 }
 
+@media (max-width: 500px) {
+
+    img, article, p, header, div, .description {
+        width: 96%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
 
 /* ==========================================================================
    Helper classes

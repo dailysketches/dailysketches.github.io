@@ -20,7 +20,7 @@ future: true
 show_drafts: true
 
 permalink: /:title-:day-:month-:year/
-paginate: 14
+paginate: 7
 paginate_path: 'page:num'
 
 # Markdown library

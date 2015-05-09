@@ -169,12 +169,46 @@ img {
     content: " ";
 }
 
+#paging {
+    list-style-type: none;
+    margin-bottom: 3.5em;
+}
+
+#paging li {
+    display: inline;
+    margin-right: 2em;
+}
+
+#paging li a {
+    font-size: 2em;
+    text-decoration: none;
+    text-transform: uppercase;
+    background-color: #eee;
+    padding: 0.28em 0.48em;
+}
+
+#paging li a:link, #paging li a:visited {
+    color: #919191;
+}
+
+#paging li a:hover, #paging li a:active {
+    color: #413939;
+}
+
 @media (max-width: 500px) {
 
     img, article, p, header, div, .description {
         width: 96%;
         margin-left: auto;
         margin-right: auto;
+    }
+}
+
+@media (max-width: 660px) {
+
+    #paging li {
+        display: block;
+        margin-top: 2em;
     }
 }
 

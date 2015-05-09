@@ -27,38 +27,6 @@ body {
     text-align: center;
 }
 
-.code pre code {
-    max-width: 700px;
-    text-align: left;
-    margin: 0 auto;
-    padding: 1em;
-}
-
-.code ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 1.6em 0 0 0;
-}
-
-.code ul li {
-    display: inline;
-}
-
-.code ul li::after {
-    content: "|";
-    display: inline-block;
-    font-size: 100%;
-    margin: 0 0 0 .5em;
-}
-
-.code ul li:last-child:after {
-    content: " ";
-}
-
-.snippet {
-    display: none;
-}
-
 /*
  * Remove text-shadow in selection highlight: h5bp.com/i
  * These selection rule sets have to be separate.
@@ -134,20 +102,71 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+p, ul, ol, li, h1, h2, h3, h4, h5, h6, div, span {
+    font-family: 'Open Sans', sans-serif;
+}
 
+h1 {
+    font-size: 4.1em;
+}
 
+article {
+    margin-bottom: 3em;
+}
 
+article h1 {
+    font-size: 2em;
+    margin: 0;
+}
 
+article p {
+    font-size: 1.1em;
+}
 
+img {
+    border: 4px solid #ddd;
+}
 
+.snippet {
+    display: none;
+}
 
+.description {
+    max-width: 500px;
+    margin: 1.8em auto 1.7em auto
+}
 
+.code {
+    margin-bottom: 1em;
+}
 
+.code pre code {
+    max-width: 700px;
+    text-align: left;
+    margin: 0 auto;
+    padding: 1em;
+}
 
+.code ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0.5em 0 0 0;
+}
 
+.code ul li {
+    display: inline;
+}
 
+.code ul li::after {
+    content: "|";
+    display: inline-block;
+    font-size: 100%;
+    margin: 0 0 0 .5em;
+}
 
-
+.code ul li:last-child:after {
+    content: " ";
+}
 
 
 /* ==========================================================================

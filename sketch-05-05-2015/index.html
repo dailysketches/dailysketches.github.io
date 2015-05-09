@@ -9,7 +9,9 @@
 
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
-    <link rel=stylesheet href=/css/main.e7a8.css>
+    <link rel=stylesheet href=/css/main.6ee5.css>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
 
     <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
     <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
@@ -23,19 +25,21 @@
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <article class=post>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-05.gif?raw=true" alt="Daily sketch"></p>
-<div class=code>
-	<ul>
-		<li><a href="/sketch-05-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-05>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-	<p>Wheels within wheels, and nested loops.</p>
-	<pre class=snippet>
-		<code class=cpp>void ofApp::setupAnim() {
+    <h1>Daily Sketches</h1>
+<article class=post>
+	<header>
+		<h1>Sketch 2015-05-05</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-05-05-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-05>code</a></li>
+        <li><a href=# class=snippet-button>snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
     for(int i = 5; i &gt; 0; i--) {
-        vector<ofxshape> shapeLayer;
+        vector&lt;ofxShape&gt; shapeLayer;
         
         for(int j = 0; j &lt; i; j++) {
             ofxAnimatableFloat positionZ;
@@ -92,13 +96,16 @@ void ofApp::drawAnim() {
     if(ofGetFrameNum() == 64) {
         renderGif();
     }
-}
-	
-
-</ofxshape></code></pre></div>
+}</code>
+    </pre>
+</div>
+<p class=description>Wheels within wheels, and nested loops.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-05.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
-
+<ul id=paging>
+	<li><a href="/">&lt; See all posts</a></li>
+</ul>
 
     <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
 

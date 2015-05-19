@@ -30,6 +30,97 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-05-12</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-12-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-12>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    maskOpacity = 255;
+
+    for(int i = 0; i &lt; 50; i++) {
+        position.x = ofRandom(-width, width*2);
+        position.y = ofRandom(-height, height*2);
+        position.z = ofRandom(-400, 0);
+        size = ofRandom(20, 380);
+        thickness = size * 0.18;
+        
+        ofxShape square;
+        square.setupHollowSquare(thickness, size);
+        square.setPosition(position);
+        square.setBlur(2);
+        shapes.push_back(square);
+
+        ofxShape ring;
+        ring.setupHollowRing(60, thickness, size);
+        ring.setPosition(position);
+        ring.rotateY(90);
+        ring.setBlur(2);
+        shapes.push_back(ring);
+    }
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        system.add(shapes.at(i));
+    }
+}
+
+void ofApp::updateAnim(){
+    float brightness = ofMap(sin(ofGetFrameNum() * 0.03), -1, 1, 0, 255);
+    ofColor color = ofColor(brightness, brightness, brightness, 100);
+
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).incrementRotateX(12);
+        shapes.at(i).incrementRotateY(0.8);
+        shapes.at(i).incrementRotateZ(-0.77);
+        shapes.at(i).incrementPositionX(4);
+        shapes.at(i).incrementPositionY(-6);
+        shapes.at(i).incrementPositionZ(12);
+        shapes.at(i).setColor(color);
+    }
+}
+
+void ofApp::drawAnim() {
+    ofEnableAlphaBlending();
+
+    //Swallow the trails
+    ofSetColor(0, 0, 0, 30);
+    ofRect(0, 0, width, height);
+
+    system.draw();
+
+    //Fade in
+    if(maskOpacity &gt; 0 &amp;&amp; ofGetFrameNum() &lt; 20) {
+        ofSetColor(0, 0, 0, maskOpacity);
+        ofRect(0, 0, width, height);
+        maskOpacity -= 25;
+    }
+
+    //Fade out
+    if(ofGetFrameNum() &gt; 20) {
+        ofSetColor(0, 0, 0, maskOpacity);
+        ofRect(0, 0, width, height);
+        maskOpacity += 25;
+    }
+
+    ofDisableAlphaBlending();
+
+    if(maskOpacity &gt; 255) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Going off the rails</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-12.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-05-11</h1>
 		</header>
 		<div class=code>
@@ -557,84 +648,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>A modification of yesterday's sketch. Multiple shape systems rotated separately from each other.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-06.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-05-05</h1>
-		</header>
-		<div class=code>
-    <ul>
-        <li><a href="/sketch-05-05-2015/">permalink</a></li>
-        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-05>code</a></li>
-        <li><a href=# class=snippet-button>snippet</a></li>
-    </ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    for(int i = 5; i &gt; 0; i--) {
-        vector&lt;ofxShape&gt; shapeLayer;
-        
-        for(int j = 0; j &lt; i; j++) {
-            ofxAnimatableFloat positionZ;
-            positionZ.reset(-i);
-            positionZ.animateToAfterDelay(i * 30, j);
-            positionZ.setDuration(1.2);
-            positionZ.setCurve(EASE_IN_OUT_BOUNCE);
-            positionZ.setRepeatType(LOOP_BACK_AND_FORTH_ONCE);
-            positionsZ.push_back(positionZ);
-            
-            for(int k = 0; k &lt; i; k++) {
-                size = (width / i) * 0.38;
-                
-                ofxShape shape;
-                shape.setupFilledRing(60, size);
-                shape.setBlur(15);
-                shape.positionX(((width / i) * j) + (width / i / 2));
-                shape.positionY(((height / i) * k) + (height / i / 2));
-                shape.setColor(ofColor::fromHsb(255 / i, 128, 128));
-                shapeLayer.push_back(shape);
-            }
-        }
-        
-        shapes.push_back(shapeLayer);
-    }
-
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        for(int j = 0; j &lt; shapes.at(i).size(); j++) {
-            shapeSystem.add(shapes.at(i).at(j));
-        }
-    }
-}
-
-void ofApp::updateAnim(){
-    for(int i = 0; i &lt; positionsZ.size(); i++) {
-        positionsZ.at(i).update(1.0f/framerate);
-    }
-    
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        for(int j = 0; j &lt; shapes.at(i).size(); j++) {
-            shapes.at(i).at(j).positionZ(positionsZ.at(i).val());
-        }
-    }
-    
-    shapeSystem.update();
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    ofEnableBlendMode(OF_BLENDMODE_ADD);
-    shapeSystem.draw();
-    ofDisableBlendMode();
-    
-    if(ofGetFrameNum() == 64) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Wheels within wheels, and nested loops.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-05.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

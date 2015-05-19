@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html class=no-js>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>Sketch 2015-05-18</title>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+
+    <link rel=stylesheet href=/css/main.edca.css>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
+
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+    <script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+
+    <script src=/js/head-scripts.32fa.js></script>
+
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <h1>Daily Sketches</h1>
+<article class=post>
+	<header>
+		<h1>Sketch 2015-05-18</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-18-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-18>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>ofxLayerMask masker;
+    vector&lt;ofxAnimatableFloat&gt; positions, targets, heights, opacities;
+
+    void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    ofSetLineWidth(4);
+    masker.setup(width, height);
+    
+    for(int i = 0; i &lt; 70; i++) {
+        ofxAnimatableFloat animHeight;
+        animHeight.reset(ofRandom(40));
+        heights.push_back(animHeight);
+        
+        ofxAnimatableFloat opacity;
+        opacity.reset(ofMap(i, 0, 300, 100, 255));
+        opacities.push_back(opacity);
+        
+        ofxAnimatableFloat target;
+        target.reset(ceil(ofRandom(-height, height * 2)));
+        targets.push_back(target);
+        
+        ofxAnimatableFloat position;
+        position.reset(createDistinct(target.val()));
+        position.setCurve(SWIFT_GOOGLE);
+        position.setRepeatType(LOOP_BACK_AND_FORTH);
+        position.setDuration(ceil(ofRandom(2)) * 2);
+        position.animateTo(targets.at(i).val());
+        positions.push_back(position);
+    }
+}
+
+float ofApp::createDistinct(float from) {
+    float candidate;
+    do candidate = ceil(ofRandom(-height, height * 2));
+    while(abs(candidate - from) &lt; 150);
+    return candidate;
+}
+
+void ofApp::updateAnim(){
+    ofEnableAlphaBlending();
+    
+    masker.beginBackground();
+    ofBackground(ofColor::black);
+    ofSetColor(ofColor::white, 200);
+    for(int i = -width; i &lt; width*2; i+=30) {
+        ofLine(i, height, i + width*0.5, 0);
+    };
+    masker.endBackground();
+    
+    masker.beginMask();
+    ofBackground(ofColor::black);
+    for(int i = 0; i &lt; positions.size(); i++) {
+        positions.at(i).update(0.05);
+        ofSetColor(ofColor::white, opacities.at(i).val());
+        ofRect(0, positions.at(i).val(), width, heights.at(i).val());
+    }
+    masker.endMask();
+    
+    masker.beginForeground();
+    ofBackground(ofColor::black);
+    ofSetColor(ofColor::white, 100);
+    for(int i = -width; i &lt; width*2; i+=15) {
+        ofLine(i + width*0.5, height, i, 0);
+    };
+    masker.endForeground();
+    
+    ofDisableAlphaBlending();
+}
+
+void ofApp::drawAnim() {
+    masker.draw();
+    bool allFinished = true;
+    for(int i = 0; i &lt; positions.size(); i++) {
+        if(positions.at(i).getPlayCount() &lt; 2) {
+            allFinished = false;
+        }
+    }
+    if(allFinished) renderGif();
+}</code>
+    </pre>
+</div>
+<p class=description>Transmission static.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-18.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+<ul id=paging>
+	<li><a href="/">&lt; See all posts</a></li>
+</ul>
+
+    <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
+
+<script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
+<script src=/js/script.9f4d.js></script>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+
+  </body>
+</html>

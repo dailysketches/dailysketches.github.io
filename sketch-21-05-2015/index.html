@@ -3,7 +3,7 @@
   <head>
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge">
-    <title>Sketch 2015-05-20</title>
+    <title>Sketch 2015-05-21</title>
     <meta name=description content="">
     <meta name=viewport content="width=device-width,initial-scale=1">
 
@@ -28,12 +28,12 @@
     <h1>Daily Sketches</h1>
 <article class=post>
 	<header>
-		<h1>Sketch 2015-05-20</h1>
+		<h1>Sketch 2015-05-21</h1>
 	</header>
 	<div class=code>
     <ul>
-		<li><a href="/sketch-20-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-20>code</a></li>
+		<li><a href="/sketch-21-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-21>code</a></li>
 		<li><a href=# class=snippet-button>snippet</a></li>
 	</ul>
     <pre class=snippet>
@@ -42,10 +42,10 @@
     ofSetLineWidth(4);
     masker.setup(width, height);
     
-    img1.loadImage("whole-foods.png");
-    img2.loadImage("excess.png");
+    img1.loadImage("boat-ride.png");
+    img2.loadImage("maersk.png");
     
-    for(int i = 0; i &lt; 40; i++) {
+    for(int i = 0; i &lt; 10; i++) {
         ofxAnimatableFloat animHeight;
         animHeight.reset(ofRandom(90));
         heights.push_back(animHeight);
@@ -75,6 +75,12 @@ float ofApp::createDistinct(float from) {
     return candidate;
 }
 
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight, 0);
+    ofRotate(degrees);
+    ofTranslate(-halfWidth, -halfHeight, 0);
+}
+
 void ofApp::updateAnim(){
     ofEnableAlphaBlending();
     
@@ -86,10 +92,13 @@ void ofApp::updateAnim(){
     
     masker.beginMask();
     ofBackground(ofColor::black);
-    for(int i = 0; i &lt; positions.size(); i++) {
-        positions.at(i).update(0.05);
-        ofSetColor(ofColor::white, opacities.at(i).val());
-        ofRect(0, positions.at(i).val(), width, heights.at(i).val());
+    for(int i = 0; i &lt; 4; i++) {
+        rotateScreen(90);
+        for(int i = 0; i &lt; positions.size(); i++) {
+            positions.at(i).update(0.05);
+            ofSetColor(ofColor::white, opacities.at(i).val());
+            ofRect(0, positions.at(i).val(), width, heights.at(i).val());
+        }
     }
     masker.endMask();
     
@@ -114,8 +123,8 @@ void ofApp::drawAnim() {
 }</code>
     </pre>
 </div>
-<p class=description>Vacation Day 1</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-20.gif?raw=true" alt="Daily sketch"></p>
+<p class=description>Vacation Day 2</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-21.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 <ul id=paging>

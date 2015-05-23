@@ -30,6 +30,121 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-05-15</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-15-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-15>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    masker.setup(width, height);
+    offset = ofRandom(3);
+    offset2 = ofRandom(3);
+    shift = false;
+    numShifts = 0;
+    numFramesSinceShift = 0;
+
+    ofDisableArbTex();
+    setupImage("road.png", &amp;img1, &amp;tex1);
+    setupImage("face.png", &amp;img2, &amp;tex2);
+
+    plane.set(width, height);
+    plane.setPosition(width * 0.5, height * 0.5, 0);
+    plane.setResolution(2, 2);
+}
+
+void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
+    img-&gt;loadImage(file);
+    *tex = img-&gt;getTextureReference();
+    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+}
+
+void ofApp::updateAnim(){
+    if(!shift &amp;&amp; numFramesSinceShift &gt; 5 &amp;&amp; ofRandom(1) &lt; 0.35) {
+        numShifts++;
+        numFramesSinceShift = 0;
+        shift = true;
+    }
+    
+    masker.beginBackground();
+    ofBackground(0, 0, 0, 255);
+    shift ? ofSetColor(128, 128, 128, 64) : ofSetColor(ofColor::red);
+    applyOffset = shift ? offset2 : offset;
+    tx0 = 1;
+    ty0 = ofGetFrameNum() * 0.0012 + applyOffset;
+    tx1 = tx0 - 1;
+    ty1 = ty0 - 0.2;
+    shift ? drawLayer(&amp;tex1) : drawLayer(&amp;tex2);
+    masker.endBackground();
+    
+    masker.beginMask();
+    ofBackground(0, 0, 0, 255);
+    ofSetColor(ofColor::white);
+    applyOffset = shift ? offset : offset2;
+    tx0 = 1;
+    ty0 = ofGetFrameNum() * 0.0012 + applyOffset;
+    tx1 = tx0 - 1;
+    ty1 = ty0 - 0.2;
+    shift ? drawLayer(&amp;tex2) : drawLayer(&amp;tex1);
+    masker.endMask();
+    
+    masker.beginForeground();
+    ofBackground(0, 0, 0, 255);
+    ofSetColor(ofColor::white);
+    applyOffset = shift ? offset2 : offset;
+    tx0 = 1;
+    ty0 = ofGetFrameNum() * 0.0012 + applyOffset;
+    tx1 = tx0 - 1;
+    ty1 = ty0 - 0.2;
+    shift ? drawLayer(&amp;tex1) : drawLayer(&amp;tex2);
+    masker.endForeground();
+    
+    if(shift &amp;&amp; numFramesSinceShift &gt; 0 &amp;&amp; ofRandom(1) &lt; 0.5) {
+        shift = false;
+        numFramesSinceShift = 0;
+        offset = getNewOffset();
+        if(ofGetFrameNum() &gt; 80) renderGif();
+    }
+    
+    numFramesSinceShift++;
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    ofSetColor(ofColor::white);
+    ofEnableAlphaBlending();
+    masker.draw();
+    ofDisableAlphaBlending();
+}
+
+float ofApp::getNewOffset() {
+    do {
+        candidateOffset = ofRandom(3);
+    } while(abs(candidateOffset - offset) &lt; 0.4);
+    
+    return candidateOffset;
+}
+
+void ofApp::drawLayer(ofTexture *tex) {
+    plane.mapTexCoords(tx0, ty0, tx1, ty1);
+    plane.mapTexCoords(tx1, ty1, tx0, ty0);
+    tex-&gt;bind();
+    plane.draw();
+    tex-&gt;unbind();
+}</code>
+    </pre>
+</div>
+<p class=description>Tearing things apart.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-15.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-05-14</h1>
 		</header>
 		<div class=code>
@@ -537,45 +652,6 @@ void ofApp::updateAnim(){
 </div>
 <p class=description>Three systems overlaid: background gray boxes, rings in the mask layer, horizontal lines in the foreground</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-09.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-05-08</h1>
-		</header>
-		<div class=code>
-  <ul>
-    <li><a href="/sketch-08-05-2015/">permalink</a></li>
-    <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-08>code</a></li>
-    <li><a href=# class=snippet-button>snippet</a></li>
-  </ul>
-  <pre class=snippet>
-    <code class=cpp>void ofApp::updateAnim(){
-    max = ofMap(sin(ofGetFrameNum() * 0.04), -1, 1, 16, 50);
-    num = ofMap(cos(ofGetFrameNum() * 0.04), -1, 1, 3000, 40);
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    
-    for(int i = 0; i &lt; num; i++) {
-        ofSetColor(255, 255, 255, 100);
-        if(i % 2 == 0) ofSetColor(255, 0, 0, 100);
-        ofRect(ofRandom(-max, width),
-               ofRandom(-max, height),
-               ofRandom(max),
-               ofRandom(max));
-    }
-    
-    if(ofGetFrameNum() == 150) {
-        renderGif();
-    }
-}</code>
-  </pre>
-</div>
-<p class=description>A false sense of directional movement.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-08.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

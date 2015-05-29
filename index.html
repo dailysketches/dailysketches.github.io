@@ -30,6 +30,67 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-05-28</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-28-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-28>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    maskOpacity = 0;
+}
+
+void ofApp::updateAnim() {
+    
+}
+
+void ofApp::drawAnim() {
+    ofEnableAlphaBlending();
+    
+    ofSetColor(0, 0, 0, 30);
+    ofRect(0, 0, width, height);
+    
+    ofSetColor(ofColor::red);
+    for(int i = 0; i &lt; 8; i++) {
+        for(int j = 0; j &lt; 10; j++) {
+            x = ofRandom(0, width);
+            y = ofRandom(-40, -20);
+            ofLine(x, y, x, y + halfWidth + 50);
+        }
+        rotateScreen(45);
+    }
+    
+    if(ofGetFrameNum() &gt; 12) {
+        ofSetColor(ofColor(ofColor::white, maskOpacity));
+        ofRect(0, 0, width, height);
+        maskOpacity += 20;
+    }
+    
+    ofDisableAlphaBlending();
+    
+    if(maskOpacity &gt; 255) {
+        renderGif();
+    }
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight, 0);
+    ofRotate(degrees);
+    ofTranslate(-halfWidth, -halfHeight, 0);
+}</code>
+    </pre>
+</div>
+<p class=description>Constraints.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-28.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-05-27</h1>
 		</header>
 		<div class=code>
@@ -477,108 +538,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>Vacation Day 3 - Dale Chihuly at Fairchild Botanical Garden</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-22.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-05-21</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-21-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-21>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    ofSetLineWidth(4);
-    masker.setup(width, height);
-    
-    img1.loadImage("boat-ride.png");
-    img2.loadImage("maersk.png");
-    
-    for(int i = 0; i &lt; 10; i++) {
-        ofxAnimatableFloat animHeight;
-        animHeight.reset(ofRandom(90));
-        heights.push_back(animHeight);
-        
-        ofxAnimatableFloat opacity;
-        opacity.reset(ofMap(i, 0, 300, 120, 255));
-        opacities.push_back(opacity);
-        
-        ofxAnimatableFloat target;
-        target.reset(ceil(ofRandom(-height, height * 2)));
-        targets.push_back(target);
-        
-        ofxAnimatableFloat position;
-        position.reset(createDistinct(target.val()));
-        position.setCurve(SWIFT_GOOGLE);
-        position.setRepeatType(LOOP_BACK_AND_FORTH);
-        position.setDuration(ceil(ofRandom(4)) * 0.5);
-        position.animateTo(targets.at(i).val());
-        positions.push_back(position);
-    }
-}
-
-float ofApp::createDistinct(float from) {
-    float candidate;
-    do candidate = ceil(ofRandom(-height, height * 2));
-    while(abs(candidate - from) &lt; 150);
-    return candidate;
-}
-
-void ofApp::rotateScreen(float degrees) {
-    ofTranslate(halfWidth, halfHeight, 0);
-    ofRotate(degrees);
-    ofTranslate(-halfWidth, -halfHeight, 0);
-}
-
-void ofApp::updateAnim(){
-    ofEnableAlphaBlending();
-    
-    masker.beginBackground();
-    img1.draw(0, 0);
-    ofSetColor(ofColor(ofColor::black, 40));
-    ofRect(0, 0, width, height);
-    masker.endBackground();
-    
-    masker.beginMask();
-    ofBackground(ofColor::black);
-    for(int i = 0; i &lt; 4; i++) {
-        rotateScreen(90);
-        for(int i = 0; i &lt; positions.size(); i++) {
-            positions.at(i).update(0.05);
-            ofSetColor(ofColor::white, opacities.at(i).val());
-            ofRect(0, positions.at(i).val(), width, heights.at(i).val());
-        }
-    }
-    masker.endMask();
-    
-    masker.beginForeground();
-    img2.draw(0, 0);
-    ofSetColor(ofColor(ofColor::black, 40));
-    ofRect(0, 0, width, height);
-    masker.endForeground();
-    
-    ofDisableAlphaBlending();
-}
-
-void ofApp::drawAnim() {
-    masker.draw();
-    bool allFinished = true;
-    for(int i = 0; i &lt; positions.size(); i++) {
-        if(positions.at(i).getPlayCount() &lt; 1) {
-            allFinished = false;
-        }
-    }
-    if(allFinished) renderGif();
-}</code>
-    </pre>
-</div>
-<p class=description>Vacation Day 2</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-21.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

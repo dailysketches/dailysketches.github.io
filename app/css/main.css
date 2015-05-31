@@ -132,6 +132,10 @@ img.no-frame {
     border: 0;
 }
 
+iframe {
+    width: 500px;
+}
+
 .snippet {
     display: none;
 }
@@ -200,7 +204,6 @@ img.no-frame {
 }
 
 @media (max-width: 500px) {
-
     img, article, p, header, div, .description {
         width: 96%;
         margin-left: auto;
@@ -209,10 +212,15 @@ img.no-frame {
 }
 
 @media (max-width: 660px) {
-
     #paging li {
         display: block;
         margin-top: 2em;
+    }
+}
+
+@media (max-width: 600px) {
+    iframe {
+        width: 90%;
     }
 }
 

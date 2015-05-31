@@ -30,6 +30,73 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-05-30</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-30-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-30>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>ofxAudioUnitManager manager;
+    TALNoiseMakerChain talChain;
+    ofxBpm bpm;
+
+    void ofApp::setup(){
+    manager.setup();
+    manager.toggleDebugUI();
+    manager.add(&amp;talChain, "tal-one", ofColor::blue);
+
+    playing = false;
+    note = 60;
+    
+    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
+    bpm.start();
+    talChain.getFilter()-&gt;getUnit()-&gt;printParameterList();
+}
+
+void ofApp::play(void){
+    if(playing) {
+        talChain.midi()-&gt;sendNoteOn(1, note);
+    }
+}
+
+void ofApp::togglePlaying() {
+    playing = !playing;
+    if(!playing) {
+        talChain.midi()-&gt;sendNoteOff(1, note);
+    }
+}
+
+void ofApp::update(){
+    manager.update();
+
+    val = ofMap(sin(ofGetFrameNum() * 0.03), -1, 1, 0.4, 0.6);
+    talChain.getSynth()-&gt;set(TALNoiseMaker_lfo2rate, val);
+
+    val = ofMap(sin(ofGetFrameNum() * 0.06), -1, 1, 0.3, 0.8);
+    talChain.getSynth()-&gt;set(TALNoiseMaker_envelopeeditoramount, val);
+
+    val = ofMap(sin(ofGetFrameNum() * 0.45), -1, 1, 6900, 4000);
+    talChain.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
+
+    val = ofMap(sin(ofGetFrameNum() * 0.2), -1, 1, 10, 26);
+    talChain.getFilter()-&gt;set(kLowPassParam_Resonance, val);
+}
+
+void ofApp::draw(){
+    manager.draw();
+}</code>
+    </pre>
+</div>
+<p class=description>First sound sketch. The result of a long journey <a href=https://github.com/microcosm/ofxAudioUnitManager>finishing my own tools</a>.</p>
+<iframe width=100% height=450 scrolling=no frameborder=no src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/208079554&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-05-29</h1>
 		</header>
 		<div class=code>
@@ -429,76 +496,6 @@ void ofApp::rotateScreen(float degrees) {
 </div>
 <p class=description>System.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-24.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-05-23</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-23-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-23>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    masker.setup(width, height);
-    shapeSystem.setup();
-    
-    shape.setupGradientRing(8, 20, 160);
-    shape.setPosition(ofVec3f(halfWidth, halfHeight, 0));
-    for(int i = -10000; i &lt; 1000; i+=12) {
-        shape.positionZ(i);
-        shapes.push_back(shape);
-    }
-    
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapeSystem.add(shapes.at(i));
-    }
-    
-    img1.loadImage("welcome.png");
-    img2.loadImage("unwelcome.png");
-    flip = false;
-}
-
-void ofApp::updateAnim(){
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        increment = (i % 2 == 0) ? 4 : -8;
-        shapes.at(i).incrementRotateX(increment);
-        shapes.at(i).incrementRotateY(increment);
-        shapes.at(i).incrementRotateZ(increment / 4);
-    }
-    
-    masker.beginMask();
-    ofBackground(ofColor::black);
-    shapeSystem.draw();
-    if(ofRandom(1) &lt;= 0.1) {
-        ofSetColor(ofColor::white, 255);
-        ofRect(0, 0, width, height);
-        flip = !flip;
-    }
-    masker.endMask();
-    
-    masker.beginBackground();
-    flip ? img2.draw(0, 0) : img1.draw(0, 0);
-    masker.endBackground();
-    
-    masker.beginForeground();
-    flip ? img1.draw(0, 0) : img2.draw(0, 0);
-    masker.endForeground();
-}
-
-void ofApp::drawAnim() {
-    masker.draw();
-    if(ofGetFrameNum() == 90) renderGif();
-}</code>
-    </pre>
-</div>
-<p class=description>Sterility and warmth on the last day in Miami</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-23.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

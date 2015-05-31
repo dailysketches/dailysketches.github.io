@@ -40,10 +40,10 @@
 	</ul>
     <pre class=snippet>
         <code class=cpp>ofxAudioUnitManager manager;
-    TALNoiseMakerChain talChain;
-    ofxBpm bpm;
+TALNoiseMakerChain talChain;
+ofxBpm bpm;
 
-    void ofApp::setup(){
+void ofApp::setup(){
     manager.setup();
     manager.toggleDebugUI();
     manager.add(&amp;talChain, "tal-one", ofColor::blue);

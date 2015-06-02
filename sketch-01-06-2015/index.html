@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html class=no-js>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>Sketch 2015-06-01</title>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+
+    <link rel=stylesheet href=/css/main.e693.css>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
+
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+    <script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+
+    <script src=/js/head-scripts.32fa.js></script>
+
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <h1>Daily Sketches</h1>
+<article class=post>
+	<header>
+		<h1>Sketch 2015-06-01</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-01-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-01>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    manager.setup();
+    manager.toggleDebugUI();
+
+    playing = true;
+    note = 60;
+    
+    for(int i = 0; i &lt; 4; i++){
+        chains.push_back(chain);
+    }
+    
+    for(int i = 0; i &lt; chains.size(); i++){
+        manager.add(&amp;chains.at(i), "tal-" + ofToString(i), ofColor::fromHsb((i * 255 / chains.size()), 255, 255));
+        chains.at(i).midi()-&gt;sendNoteOn(1, note);
+    }
+    
+    bpm.setBpm(160);
+    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
+    bpm.start();
+}
+
+void ofApp::play(void){
+    if(playing) {
+        for(int i = 0; i &lt; chains.size(); i++){
+            val = currentChain == i ? 1 : 0;
+            chains.at(i).getSynth()-&gt;set(TALNoiseMaker_volume, val);
+        }
+
+        currentChain = currentChain == chains.size() - 1 ? 0 : currentChain + 1;
+    }
+}
+
+void ofApp::togglePlaying() {
+    playing = !playing;
+    if(!playing) {
+        for(int i = 0; i &lt; chains.size(); i++){
+            chains.at(i).midi()-&gt;sendNoteOff(1, note);
+        }
+    }
+}
+
+void ofApp::update(){
+    manager.update();
+    
+    val = ofMap(cos(ofGetFrameNum() * 0.04), -1, 1, 0, 1);
+    chains.at(0).getSynth()-&gt;set(TALNoiseMaker_osc1tune, val);
+}</code>
+    </pre>
+</div>
+<p class=description>Time-indexed volume distribution between 4 chains</p>
+<iframe scrolling=no frameborder=no src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/208404371&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
+
+</article>
+<ul id=paging>
+	<li><a href="/">&lt; See all posts</a></li>
+</ul>
+
+    <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
+
+<script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
+<script src=/js/script.9f4d.js></script>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+
+  </body>
+</html>

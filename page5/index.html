@@ -30,6 +30,190 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-05-04</h1>
+		</header>
+		<div class=code>
+    <ul>
+        <li><a href="/sketch-04-05-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-04>code</a></li>
+        <li><a href=# class=snippet-button>snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    
+    done = false;
+    numArcs = 8;
+    
+    for(int i = 0; i &lt; numArcs; i++) {
+        ofxShape arc;
+        arcs.push_back(arc);
+        ofxAnimatableFloat arcPosition;
+        arcPositions.push_back(arcPosition);
+        ofxAnimatableFloat arcRotation;
+        arcRotations.push_back(arcRotation);
+    }
+    
+    for(int i = 0; i &lt; numArcs; i++) {
+        arcPositions.at(i).setRepeatType(PLAY_ONCE);
+        arcPositions.at(i).setCurve(SWIFT_GOOGLE);
+        arcPositions.at(i).reset((width * 2) + (width * 0.2));
+        arcPositions.at(i).animateTo(width * 0.5);
+        arcPositions.at(i).setDuration(1.25);
+        
+        arcRotations.at(i).setRepeatType(PLAY_ONCE);
+        arcRotations.at(i).setCurve(SWIFT_GOOGLE);
+        arcRotations.at(i).animateFromTo(180, 0);
+        arcRotations.at(i).setDuration(1.25);
+        
+        arcs.at(i).setupHollowArc(60, (i + 1) * 10, (i + 1) * 35, 180);
+        arcs.at(i).setBlur(2);
+        arcs.at(i).positionX(arcPositions.at(i).val());
+        arcs.at(i).positionY(height * 0.5);
+        
+        //Set colors
+        if(i % 3 == 0) arcs.at(i).setColor(ofColor(4,   110, 171));
+        if(i % 3 == 1) arcs.at(i).setColor(ofColor(195, 62,  31));
+        if(i % 3 == 2) arcs.at(i).setColor(ofColor(52,  189, 129));
+        
+        shapeSystem.add(arcs.at(i));
+    }
+}
+
+void ofApp::updateAnim(){
+    bool allFinished = true;
+    
+    if(!done) {
+        for(int i = 0; i &lt; numArcs; i++) {
+            if(ofGetFrameNum() &gt; (i * 7)) {
+                arcPositions.at(i).update(1.0f/framerate);
+                arcs.at(i).positionX(arcPositions.at(i).val());
+        
+                arcRotations.at(i).update(1.0f/framerate);
+            
+                if(i % 2 == 0) {
+                    arcs.at(i).rotateZ(arcPositions.at(i).val());
+                }
+            
+                if(i % 2 == 1) {
+                    arcs.at(i).rotateZ(arcPositions.at(i).val() + 180);
+                }
+            }
+        
+            if(!arcPositions.at(i).hasFinishedAnimating()) {
+                allFinished = false;
+            }
+        }
+    }
+    
+    if(allFinished) {
+        for(int i = 0; i &lt; numArcs; i++) {
+            arcPositions.at(i).setRepeatType(PLAY_ONCE);
+            arcPositions.at(i).setCurve(SWIFT_GOOGLE);
+            arcPositions.at(i).animateTo(width * 3);
+        }
+    }
+    
+    shapeSystem.update();
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    ofEnableAlphaBlending();
+    ofEnableBlendMode(OF_BLENDMODE_ADD);
+    shapeSystem.draw();
+    ofDisableBlendMode();
+    ofDisableAlphaBlending();
+    
+    if(ofGetFrameNum() == 68) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Things roll in. Things roll out.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-04.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-05-03</h1>
+		</header>
+		<div class=code>
+    <ul>
+        <li><a href="/sketch-03-05-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-03>code</a></li>
+        <li><a href=# class=snippet-button>snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    ofEnableAntiAliasing();
+    
+    shapeSystem.setup();
+    camera.setDistance(120);
+    
+    for(int i = 0; i &lt; 24; i++) {
+        GradientShape ring;
+        rings.push_back(ring);
+    }
+    
+    for(int i = 0; i &lt; rings.size(); i++) {
+        if(i % 3 == 0) color.set(255, 0, 0, 80);
+        if(i % 3 == 1) color.set(0, 255, 0, 80);
+        if(i % 3 == 2) color.set(0, 0, 255, 80);
+        
+        rings.at(i).setupHollowRing(60, 3, i * 3); //Resolution, thickness, diameter
+        rings.at(i).setColor(color);
+        rings.at(i).setBlur(3);
+        shapeSystem.add(rings.at(i));
+    }
+}
+
+void ofApp::updateAnim(){
+    float current = sin(ofGetFrameNum() * 0.16);
+    endpoint = ofMap(current, -1, 1, 1257, 1263);
+    rotation = ofMap(current, -1, 1, 0, 360);
+    
+    for(int i = 0; i &lt; rings.size(); i++) {
+        if(i % 6 == 0) rings.at(i).rotateX(rotation);
+        if(i % 6 == 1) rings.at(i).rotateY(rotation);
+        if(i % 6 == 2) rings.at(i).rotateZ(rotation);
+        if(i % 6 == 3) rings.at(i).rotateX(-rotation);
+        if(i % 6 == 4) rings.at(i).rotateY(-rotation);
+        if(i % 6 == 5) rings.at(i).rotateZ(-rotation);
+        
+        rings.at(i).setArcEndpoints(0, endpoint);
+    }
+    shapeSystem.update();
+    
+    if(ofGetFrameNum() == 0) {
+        firstEndpoint = endpoint;
+        lastEndpoint = endpoint;
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    camera.begin();
+    shapeSystem.draw();
+    camera.end();
+    
+    if(endpoint &gt; firstEndpoint &amp;&amp; lastEndpoint &lt; firstEndpoint) {
+        renderGif();
+    }
+    
+    lastEndpoint = endpoint;
+}</code>
+    </pre>
+</div>
+<p class=description>Like yesterday, but now going way past 2&pi; radians (closing the ring shapes hundreds of times, which increases the alpha and generates 'star' artifacts based on segment repetition patterns over time)</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-03.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-05-02</h1>
 		</header>
 		<div class=code>
@@ -421,129 +605,6 @@ void ofApp::createMover() {
 </div>
 <p class=description>Toying with simple forces</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-28.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-04-27</h1>
-		</header>
-		<div class=code>
-    <ul>
-        <li><a href="/sketch-27-04-2015/">permalink</a></li>
-        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-27>code</a></li>
-        <li><a href=# class=snippet-button>snippet</a></li>
-    </ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofDisableArbTex();
-    
-    img.loadImage("tissue.png");
-    texture = img.getTextureReference();
-    texture.setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
-    
-    offset = ofRandom(1);
-    shift = false;
-    numShifts = 0;
-    
-    //Position the planes to take up the full screen
-    for(int i = 0; i &lt; 2; i++) {
-        planes.push_back(plane);
-        planes.at(i).set(ofGetHeight(), ofGetWidth());
-        planes.at(i).setPosition(ofGetWidth() * 0.5, ofGetHeight() * 0.5, 0);
-        planes.at(i).setResolution(2, 2);
-    }
-}
-
-void ofApp::updateAnim(){
-    if(!shift &amp;&amp; ofRandom(1) &lt; 0.15) {
-        numShifts++;
-        shift = true;
-        offset = getNewOffset();
-    }
-    
-    tx0 = 0 * offset * 0.1;
-    ty0 = offset + ofGetFrameNum() * 0.001;
-    tx1 = tx0 + 1;
-    ty1 = ty0 + 2;
-    
-    //Position the texture on the plane
-    planes.at(0).mapTexCoords(tx0, ty0, tx1, ty1);
-    planes.at(1).mapTexCoords(tx1, ty1, tx0, ty0);
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    
-    if(shift) {
-        if(ofRandom(1) &gt; 0.2) shift = false;
-    } else {
-        texture.bind();
-        for(int i = 0; i &lt; planes.size(); i++) {
-            planes.at(i).draw();
-        }
-        texture.unbind();
-    }
-}
-
-float ofApp::getNewOffset() {
-    do {
-        candidateOffset = ofRandom(1);
-    } while(abs(candidateOffset - offset) &lt; 0.2);
-    
-    return candidateOffset;
-}</code>
-    </pre>
-</div>
-<p class=description>Overlaid media with alpha transparency, glimmering when squished into 400 pixels and slowly translated.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-27.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-04-26</h1>
-		</header>
-		<div class=code>
-    <ul>
-        <li><a href="/sketch-26-04-2015/">permalink</a></li>
-        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-26>code</a></li>
-        <li><a href=# class=snippet-button>snippet</a></li>
-    </ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::drawGrid() {
-    for(int i = 0; i &lt; width * 0.1 + 10; i++) {
-        for(int j = 0; j &lt; height * 0.1 + 10; j++) {
-            
-            noise.x = noiseOffset.x + i * scaleX;
-            noise.y = noiseOffset.y + j * scaleY;
-            noise.z = noiseOffset.z + sineOfTheTime;
-            noiseValue = ofNoise(noise.x, noise.y, noise.z);
-            
-            //http://natureofcode.com/book/chapter-3-oscillation#35-polar-vs-cartesian-coordinates
-            theta = noiseValue * 2 * PI;
-            x = r * cos(theta);
-            y = r * sin(theta);
-            
-            ofPushMatrix();
-            ofTranslate(i * 10, j * 10);
-            ofEnableBlendMode(OF_BLENDMODE_ADD);
-            if(j % 2 == 0){
-                ofSetColor(180, 231, 248, 150);
-                ofRect(0, 0, x, y);
-            } else {
-                ofSetColor(255, 180, 180, 128);
-                ofLine(0, 0, x, y);
-            }
-            ofDisableBlendMode();
-            ofPopMatrix();
-        }
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Perlin noise coupled with a little <a href=http://natureofcode.com/book/chapter-3-oscillation#35-polar-vs-cartesian-coordinates>polar to cartesian conversion</a>.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-26.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

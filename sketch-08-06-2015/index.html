@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html class=no-js>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>Sketch 2015-06-08</title>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+
+    <link rel=stylesheet href=/css/main.e693.css>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
+
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+    <script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+
+    <script src=/js/head-scripts.32fa.js></script>
+
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <h1>Daily Sketches</h1>
+<article class=post>
+	<header>
+		<h1>Sketch 2015-06-08</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-08-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-08>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    shapeSystem.setup();
+    shape1.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
+    shape2.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
+    shape3.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
+    shape4.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
+
+    shape1.setPosition(halfWidth*0.5, halfHeight*0.5);
+    shapeSystem.add(shape1);
+    
+    shape2.setPosition(halfWidth*0.5+halfWidth, halfHeight*0.5);
+    shapeSystem.add(shape2);
+    
+    shape3.setPosition(halfWidth*0.5, halfHeight*0.5+halfHeight);
+    shapeSystem.add(shape3);
+    
+    shape4.setPosition(halfWidth*0.5+halfHeight, halfHeight*0.5+halfHeight);
+    shapeSystem.add(shape4);
+    
+    masker.setup(width, height);
+    layerId = masker.newLayer();
+    
+    ofDisableArbTex();
+    offset = ofRandom(3);
+    setupImage("foil.png", &amp;img, &amp;tex);
+
+    plane.set(width, height);
+    plane.setPosition(halfWidth, halfHeight, 0);
+    plane.setResolution(2, 2);
+}
+
+void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
+    img-&gt;loadImage(file);
+    *tex = img-&gt;getTextureReference();
+    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+}
+
+void ofApp::drawLayer(ofTexture *tex) {
+    plane.mapTexCoords(tx0, ty0, tx1, ty1);
+    plane.mapTexCoords(tx1, ty1, tx0, ty0);
+    tex-&gt;bind();
+    plane.draw();
+    tex-&gt;unbind();
+}
+
+void ofApp::updateAnim(){
+    masker.beginLayer(layerId);
+    if(ofRandom(1) &gt; 0.4) ofBackground(ofColor::black);
+    ofSetColor(ofColor::red);
+    tx0 = -ofGetFrameNum() * 0.00006 + offset + ofRandom(-0.09, 0.09);
+    ty0 = ofGetFrameNum() * 0.005;
+    tx1 = tx0 - 1;
+    ty1 = ty0 - 0.25;
+    drawLayer(&amp;tex);
+    masker.endLayer(layerId);
+    
+    masker.beginMask(layerId);
+    ofBackground(ofColor::black);
+    if(ofGetFrameNum() == 0 || ofRandom(1) &gt; 0.2) {
+        ofSetColor(ofColor::white, 32);
+        for(int i = 0; i &lt; 30; i++) {
+            ofTriangle(ofRandom(-width, width*2), ofRandom(-height, height*2),
+                       ofRandom(-width, width*2), ofRandom(-height, height*2),
+                       ofRandom(-width, width*2), ofRandom(-height, height*2));
+        }
+    } else if(ofRandom(1) &gt; 0.15) {
+        offset = ofRandom(3);
+    }
+    masker.endMask(layerId);
+}
+
+void ofApp::drawAnim() {
+    if(ofRandom(1) &gt; 0.4) ofBackground(ofColor::black);
+    ofSetColor(ofColor::white);
+
+    tx0 = ofGetFrameNum() * 0.00006 + offset;
+    tx1 = tx0 - 1;
+    
+    ofTranslate(-halfWidth, -halfHeight, 0);
+    drawLayer(&amp;tex);
+    masker.draw();
+    
+    ofTranslate(width, 0, 0);
+    drawLayer(&amp;tex);
+    masker.draw();
+    
+    ofTranslate(0, height, 0);
+    drawLayer(&amp;tex);
+    masker.draw();
+    
+    ofTranslate(-width, 0, 0);
+    drawLayer(&amp;tex);
+    masker.draw();
+    
+    ofTranslate(halfWidth, -halfHeight, 0);
+    shapeSystem.draw();
+    
+    if(ofGetFrameNum() == 72) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>A continued exploration of texture</p>
+<p><img class=no-frame src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-08.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+<ul id=paging>
+	<li><a href="/">&lt; See all posts</a></li>
+</ul>
+
+    <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
+
+<script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
+<script src=/js/script.9f4d.js></script>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+
+  </body>
+</html>

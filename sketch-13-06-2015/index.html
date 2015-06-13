@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class=no-js>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>Sketch 2015-06-13</title>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+
+    <link rel=stylesheet href=/css/main.e693.css>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
+
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+    <script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+
+    <script src=/js/head-scripts.32fa.js></script>
+
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <h1>Daily Sketches</h1>
+<article class=post>
+	<header>
+		<h1>Sketch 2015-06-13</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-13-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-13>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    masker.setup(width, height);
+    layer1 = masker.newLayer();
+    layer2 = masker.newLayer();
+    
+    ofDisableArbTex();
+    offset = ofRandom(3);
+    setupImage("foil.png", &amp;img1, &amp;tex1);
+    setupImage("glass.png", &amp;img2, &amp;tex2);
+
+    plane.set(width, height);
+    plane.setPosition(halfWidth, halfHeight, 0);
+    plane.setResolution(2, 2);
+    
+    glitch = false;
+    alpha = 255;
+    fadeIn = true;
+    fadeOut = false;
+}
+
+void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
+    img-&gt;loadImage(file);
+    *tex = img-&gt;getTextureReference();
+    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+}
+
+void ofApp::drawLayer(ofTexture *tex) {
+    plane.mapTexCoords(tx0, ty0, tx1, ty1);
+    plane.mapTexCoords(tx1, ty1, tx0, ty0);
+    tex-&gt;bind();
+    plane.draw();
+    tex-&gt;unbind();
+}
+
+void ofApp::updateAnim(){
+    masker.beginLayer(layer1);
+    {
+        ofBackground(ofColor::white);
+        ofSetColor(ofColor::white);
+        tx0 = ofGetFrameNum() * 0.005;
+        ty0 = 0;
+        tx1 = tx0 - 0.015625;
+        ty1 = ty0 - 0.125;
+        drawLayer(&amp;tex1);
+    }
+    masker.endLayer(layer1);
+    
+    masker.beginMask(layer1);
+    {
+        ofBackground(ofColor::white);
+        ofSetColor(ofColor::black);
+        for(int x = 10; x &lt; width; x+=80) {
+            for(int y = 10; y &lt; height; y+=80) {
+                ofRect(x, y, 60, 60);
+            }
+        }
+    }
+    masker.endMask(layer1);
+
+    masker.beginLayer(layer2);
+    {
+        ofSetColor(ofColor::white);
+        tx0 = 0;
+        ty0 = ofGetFrameNum() * 0.01;
+        tx1 = tx0 - 2;
+        ty1 = ty0 - 0.5;
+        drawLayer(&amp;tex2);
+    }
+    masker.endLayer(layer2);
+    
+    masker.beginMask(layer2);
+    {
+        masker.drawLayer(layer1);
+        ofSetColor(ofColor::white);
+        for(int x = 10; x &lt; width; x+=80) {
+            for(int y = 10; y &lt; height; y+=80) {
+                ofRect(x, y, 60, 60);
+            }
+        }
+    }
+    masker.endMask(layer2);
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::black);
+    
+    if(glitch) {
+        masker.draw();
+        if(ofRandom(1) &gt; 0.4) {
+            glitch = !glitch;
+        }
+    } else {
+        masker.drawLayer(layer2);
+        if(ofRandom(1) &gt; 0.9) {
+            glitch = !glitch;
+        }
+    }
+    
+    if(fadeIn) {
+        alpha -= 40;
+        if(alpha &lt;= 0) fadeIn = false;
+    }
+    
+    if(fadeOut) {
+        alpha += 40;
+        if(alpha &gt;= 355) {
+            renderGif();
+        }
+    }
+    
+    ofSetColor(ofColor::black, alpha);
+    ofRect(0, 0, width, height);
+    
+    if(ofGetFrameNum() == 70) {
+        fadeOut = true;
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>What on earth is going on with these masks?</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-13.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+<ul id=paging>
+	<li><a href="/">&lt; See all posts</a></li>
+</ul>
+
+    <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
+
+<script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
+<script src=/js/script.9f4d.js></script>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+
+  </body>
+</html>

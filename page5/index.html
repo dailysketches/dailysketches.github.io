@@ -30,6 +30,76 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-05-23</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-23-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-23>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    masker.setup(width, height);
+    shapeSystem.setup();
+    
+    shape.setupGradientRing(8, 20, 160);
+    shape.setPosition(ofVec3f(halfWidth, halfHeight, 0));
+    for(int i = -10000; i &lt; 1000; i+=12) {
+        shape.positionZ(i);
+        shapes.push_back(shape);
+    }
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapeSystem.add(shapes.at(i));
+    }
+    
+    img1.loadImage("welcome.png");
+    img2.loadImage("unwelcome.png");
+    flip = false;
+}
+
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        increment = (i % 2 == 0) ? 4 : -8;
+        shapes.at(i).incrementRotateX(increment);
+        shapes.at(i).incrementRotateY(increment);
+        shapes.at(i).incrementRotateZ(increment / 4);
+    }
+    
+    masker.beginMask();
+    ofBackground(ofColor::black);
+    shapeSystem.draw();
+    if(ofRandom(1) &lt;= 0.1) {
+        ofSetColor(ofColor::white, 255);
+        ofRect(0, 0, width, height);
+        flip = !flip;
+    }
+    masker.endMask();
+    
+    masker.beginBackground();
+    flip ? img2.draw(0, 0) : img1.draw(0, 0);
+    masker.endBackground();
+    
+    masker.beginForeground();
+    flip ? img1.draw(0, 0) : img2.draw(0, 0);
+    masker.endForeground();
+}
+
+void ofApp::drawAnim() {
+    masker.draw();
+    if(ofGetFrameNum() == 90) renderGif();
+}</code>
+    </pre>
+</div>
+<p class=description>Sterility and warmth on the last day in Miami</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-23.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-05-22</h1>
 		</header>
 		<div class=code>
@@ -615,81 +685,6 @@ void ofApp::rotateScreen(float degrees) {
 </div>
 <p class=description>Sometimes, you just end up with... something.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-17.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-05-16</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-16-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-16>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofDisableArbTex();
-    setupImage("building.png", &amp;img, &amp;tex);
-
-    plane.set(width, height);
-    plane.setPosition(width * 0.5, height * 0.5, 0);
-    plane.setResolution(2, 2);
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    ofSetColor(255, 255, 255);
-    
-    ofEnableBlendMode(OF_BLENDMODE_ADD);
-    drawLayers();
-    rotateScreen(90);
-    drawLayers();
-    rotateScreen(90);
-    drawLayers();
-    rotateScreen(90);
-    drawLayers();
-    ofDisableBlendMode();
-    
-    if(ofGetFrameNum() == 200) renderGif();
-}
-
-void ofApp::drawLayers() {
-    tx0 = -0.4;
-    ty0 = ofGetFrameNum() * 0.01;
-    tx1 = tx0 + 1;
-    ty1 = ty0 + 0.25;
-    drawLayer();
-    
-    ty0 = -ofGetFrameNum() * 0.01;
-    ty1 = ty0 + 0.25;
-    drawLayer();
-}
-
-void ofApp::drawLayer() {
-    plane.mapTexCoords(tx0, ty0, tx1, ty1);
-    plane.mapTexCoords(tx1, ty1, tx0, ty0);
-    tex.bind();
-    plane.draw();
-    tex.unbind();
-}
-
-void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
-    img-&gt;loadImage(file);
-    *tex = img-&gt;getTextureReference();
-    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
-}
-
-void ofApp::rotateScreen(float degrees) {
-    ofTranslate(halfWidth, halfHeight, 0);
-    ofRotate(90);
-    ofTranslate(-halfWidth, -halfHeight, 0);
-}</code>
-    </pre>
-</div>
-<p class=description>Framing nothing.</p>
-<p><img class=no-frame src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-16.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

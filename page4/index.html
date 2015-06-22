@@ -30,6 +30,92 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-05-31</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-31-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-31>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    manager.setup();
+    manager.toggleDebugUI();
+    manager.add(&amp;chain1, "tal-one", ofColor::blue);
+    manager.add(&amp;chain2, "tal-two", ofColor::blue);
+
+    playing = false;
+    note = 60;
+    
+    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
+    bpm.start();
+    chain1.midi()-&gt;sendNoteOn(1, note);
+    chain2.midi()-&gt;sendNoteOn(1, note);
+}
+
+void ofApp::play(void){
+    if(playing) {
+        if(currentChain == 1) {
+            chain1.getSynth()-&gt;set(TALNoiseMaker_volume, -10);
+            chain2.getSynth()-&gt;set(TALNoiseMaker_volume, 0);
+            currentChain = 2;
+        } else {
+            chain1.getSynth()-&gt;set(TALNoiseMaker_volume, 0);
+            chain2.getSynth()-&gt;set(TALNoiseMaker_volume, -10);
+            currentChain = 1;
+        }
+    }
+}
+
+void ofApp::togglePlaying() {
+    playing = !playing;
+    if(!playing) {
+        chain1.midi()-&gt;sendNoteOff(1, note);
+    }
+}
+
+void ofApp::update(){
+    manager.update();
+    
+    //Animate everythung based on sin()
+    val = ofMap(sin(ofGetFrameNum() * 0.03), -1, 1, 0.4, 0.6);
+    chain1.getSynth()-&gt;set(TALNoiseMaker_lfo2rate, val);
+    
+    val = ofMap(sin(ofGetFrameNum() * 0.06), -1, 1, 0.3, 0.8);
+    chain1.getSynth()-&gt;set(TALNoiseMaker_envelopeeditoramount, val);
+    
+    val = ofMap(sin(ofGetFrameNum() * 0.45), -1, 1, 6900, 4000);
+    chain1.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
+    
+    val = ofMap(sin(ofGetFrameNum() * 0.2), -1, 1, 10, 26);
+    chain1.getFilter()-&gt;set(kLowPassParam_Resonance, val);
+    
+    //Exactly the same, but with cos()
+    val = ofMap(cos(ofGetFrameNum() * 0.03), -1, 1, 0.4, 0.6);
+    chain2.getSynth()-&gt;set(TALNoiseMaker_lfo2rate, val);
+    
+    val = ofMap(cos(ofGetFrameNum() * 0.06), -1, 1, 0.3, 0.8);
+    chain2.getSynth()-&gt;set(TALNoiseMaker_envelopeeditoramount, val);
+    
+    val = ofMap(cos(ofGetFrameNum() * 0.45), -1, 1, 6900, 4000);
+    chain2.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
+    
+    val = ofMap(cos(ofGetFrameNum() * 0.2), -1, 1, 10, 26);
+    chain2.getFilter()-&gt;set(kLowPassParam_Resonance, val);
+}</code>
+    </pre>
+</div>
+<p class=description>A simple adjustment, oscillating between two synths</p>
+<audio controls>
+    <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-31.mp3?raw=true" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-05-30</h1>
 		</header>
 		<div class=code>
@@ -417,88 +503,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>Fast sketches are meaningless.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-25.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-05-24</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-24-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-24>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    
-    for(int i = 0; i &lt; width; i += 10) {
-        for(int j = 0; j &lt; height; j += 10) {
-            shape.setupHollowArc(30, 3, 10, 180);
-            shape.setBlur(1);
-            shape.setPosition(ofVec3f(i + 5, j + 5, 0));
-            shape.rotateZ(ofRandom(360));
-            shapes.push_back(shape);
-        }
-    }
-    
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapeSystem.add(shapes.at(i));
-    }
-}
-
-void ofApp::updateAnim(){
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        i % 2 == 0 ?
-            shapes.at(i).incrementRotateZ(12) :
-            shapes.at(i).incrementRotateZ(-12);
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    
-    ofEnableAlphaBlending();
-    
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapes.at(i).setColor(ofColor::white);
-    }
-    shapeSystem.draw();
-    
-    rotateScreen(90);
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapes.at(i).setColor(ofColor(ofColor::black, 192));
-    }
-    shapeSystem.draw();
-    
-    rotateScreen(90);
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapes.at(i).setColor(ofColor(ofColor::black, 128));
-    }
-    shapeSystem.draw();
-    
-    rotateScreen(90);
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapes.at(i).setColor(ofColor(ofColor::black, 64));
-    }
-    shapeSystem.draw();
-    
-    ofDisableAlphaBlending();
-    
-    if(ofGetFrameNum() == 30) renderGif();
-}
-
-void ofApp::rotateScreen(float degrees) {
-    ofTranslate(halfWidth, halfHeight, 0);
-    ofRotate(degrees);
-    ofTranslate(-halfWidth, -halfHeight, 0);
-}</code>
-    </pre>
-</div>
-<p class=description>System.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-24.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

@@ -30,6 +30,83 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-05-03</h1>
+		</header>
+		<div class=code>
+    <ul>
+        <li><a href="/sketch-03-05-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-03>code</a></li>
+        <li><a href=# class=snippet-button>snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    ofEnableAntiAliasing();
+    
+    shapeSystem.setup();
+    camera.setDistance(120);
+    
+    for(int i = 0; i &lt; 24; i++) {
+        GradientShape ring;
+        rings.push_back(ring);
+    }
+    
+    for(int i = 0; i &lt; rings.size(); i++) {
+        if(i % 3 == 0) color.set(255, 0, 0, 80);
+        if(i % 3 == 1) color.set(0, 255, 0, 80);
+        if(i % 3 == 2) color.set(0, 0, 255, 80);
+        
+        rings.at(i).setupHollowRing(60, 3, i * 3); //Resolution, thickness, diameter
+        rings.at(i).setColor(color);
+        rings.at(i).setBlur(3);
+        shapeSystem.add(rings.at(i));
+    }
+}
+
+void ofApp::updateAnim(){
+    float current = sin(ofGetFrameNum() * 0.16);
+    endpoint = ofMap(current, -1, 1, 1257, 1263);
+    rotation = ofMap(current, -1, 1, 0, 360);
+    
+    for(int i = 0; i &lt; rings.size(); i++) {
+        if(i % 6 == 0) rings.at(i).rotateX(rotation);
+        if(i % 6 == 1) rings.at(i).rotateY(rotation);
+        if(i % 6 == 2) rings.at(i).rotateZ(rotation);
+        if(i % 6 == 3) rings.at(i).rotateX(-rotation);
+        if(i % 6 == 4) rings.at(i).rotateY(-rotation);
+        if(i % 6 == 5) rings.at(i).rotateZ(-rotation);
+        
+        rings.at(i).setArcEndpoints(0, endpoint);
+    }
+    shapeSystem.update();
+    
+    if(ofGetFrameNum() == 0) {
+        firstEndpoint = endpoint;
+        lastEndpoint = endpoint;
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    camera.begin();
+    shapeSystem.draw();
+    camera.end();
+    
+    if(endpoint &gt; firstEndpoint &amp;&amp; lastEndpoint &lt; firstEndpoint) {
+        renderGif();
+    }
+    
+    lastEndpoint = endpoint;
+}</code>
+    </pre>
+</div>
+<p class=description>Like yesterday, but now going way past 2&pi; radians (closing the ring shapes hundreds of times, which increases the alpha and generates 'star' artifacts based on segment repetition patterns over time)</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-03.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-05-02</h1>
 		</header>
 		<div class=code>
@@ -497,53 +574,6 @@ float ofApp::getNewOffset() {
 </div>
 <p class=description>Overlaid media with alpha transparency, glimmering when squished into 400 pixels and slowly translated.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-27.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-04-26</h1>
-		</header>
-		<div class=code>
-    <ul>
-        <li><a href="/sketch-26-04-2015/">permalink</a></li>
-        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-26>code</a></li>
-        <li><a href=# class=snippet-button>snippet</a></li>
-    </ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::drawGrid() {
-    for(int i = 0; i &lt; width * 0.1 + 10; i++) {
-        for(int j = 0; j &lt; height * 0.1 + 10; j++) {
-            
-            noise.x = noiseOffset.x + i * scaleX;
-            noise.y = noiseOffset.y + j * scaleY;
-            noise.z = noiseOffset.z + sineOfTheTime;
-            noiseValue = ofNoise(noise.x, noise.y, noise.z);
-            
-            //http://natureofcode.com/book/chapter-3-oscillation#35-polar-vs-cartesian-coordinates
-            theta = noiseValue * 2 * PI;
-            x = r * cos(theta);
-            y = r * sin(theta);
-            
-            ofPushMatrix();
-            ofTranslate(i * 10, j * 10);
-            ofEnableBlendMode(OF_BLENDMODE_ADD);
-            if(j % 2 == 0){
-                ofSetColor(180, 231, 248, 150);
-                ofRect(0, 0, x, y);
-            } else {
-                ofSetColor(255, 180, 180, 128);
-                ofLine(0, 0, x, y);
-            }
-            ofDisableBlendMode();
-            ofPopMatrix();
-        }
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Perlin noise coupled with a little <a href=http://natureofcode.com/book/chapter-3-oscillation#35-polar-vs-cartesian-coordinates>polar to cartesian conversion</a>.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-26.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

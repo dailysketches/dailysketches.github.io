@@ -30,6 +30,49 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-06-09</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-09-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-09>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    fontSize = 64;
+    loadFonts();
+    quarterHeight = halfHeight * 0.5;
+}
+
+void ofApp::updateAnim(){
+    if(ofGetFrameNum() % 3 == 0) {
+        random_shuffle(fonts.begin(), fonts.end());
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::black);
+    ofSetColor(ofColor::white);
+
+    ofSetRectMode(OF_RECTMODE_CENTER);
+    fonts.at(0).drawStringCentered("GOOD", halfWidth, quarterHeight);
+    fonts.at(1).drawStringCentered("BEHAVIOUR", halfWidth, halfHeight + quarterHeight);
+    ofSetRectMode(OF_RECTMODE_CORNER);
+
+    if(ofGetFrameNum() == 60) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>...good behaviour</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-09.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-06-08</h1>
 		</header>
 		<div class=code>
@@ -537,66 +580,6 @@ void ofApp::update(){
 	Your browser does not support the audio element.
 </audio>
 
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-06-02</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-02-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-02>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    playing = true;
-    note = 60;
-
-    manager.setup();
-    manager.toggleDebugUI();
-    manager.add(&amp;chain1, "tal-1", ofColor::blue);
-    manager.add(&amp;chain2, "tal-2", ofColor::red);
-
-    bpm.setBpm(160);
-    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
-    bpm.start();
-}
-
-void ofApp::play(void){
-    if(playing) {
-        chain1.midi()-&gt;sendNoteOn(1, note);
-    }
-}
-
-void ofApp::togglePlaying() {
-    playing = !playing;
-    if(!playing) {
-        chain1.midi()-&gt;sendNoteOff(1, note);
-    }
-}
-
-void ofApp::update(){
-    manager.update();
-
-    val = ofMap(sin(ofGetFrameNum() * 0.04), -1, 1, 30, 59);
-    chain1.getReverb()-&gt;set(kReverbParam_DryWetMix, val);
-
-    val = ofMap(cos(ofGetFrameNum() * 0.005), -1, 1, 0, 100);
-    chain1.getSynth()-&gt;set(TALNoiseMaker_osc1tune, val);
-    
-    val = ofMap(cos(ofGetFrameNum() * 0.0005), -1, 1, 50  , 2 50);
-    chain1.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
-}</code>
-    </pre>
-</div>
-<p class=description>I don't even remember making this one. I think I'll be as surprised as anyone when I hear it. #eyeo</p>
-<audio controls>
-	<source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-02.mp3?raw=true" type="audio/mpeg">
-	Your browser does not support the audio element.
-</audio>
 
 	</article>
 	

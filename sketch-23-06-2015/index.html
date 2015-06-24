@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html class=no-js>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>Sketch 2015-06-23</title>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+
+    <link rel=stylesheet href=/css/main.e693.css>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
+
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+    <script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+
+    <script src=/js/head-scripts.32fa.js></script>
+
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <h1>Daily Sketches</h1>
+<article class=post>
+	<header>
+		<h1>Sketch 2015-06-23</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-23-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-23>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    paused = true;
+    numLayers = 9;
+    topLayer = numLayers - 1;
+    spacing = 100;
+    thickness = 50;
+    offset = 0;
+    increment = 2;
+    masker.setup(numLayers);
+    //masker.toggleOverlay();
+    
+    image.setup("surface.png", width, height, 1, TEXTURE_OFFSET_BOTTOM_LEFT);
+    image.incrementTextureOffsetY(0.5);
+}
+
+void ofApp::updateAnim(){
+    incrementOffset();
+
+    for(int i = 0; i &lt; numLayers - 1; i++) {
+        masker.beginLayer(i);
+        ofBackground(ofColor(0, 0, 0, 0));
+        hue = ofMap(i, 0, numLayers, 20, 140);
+        ofSetColor(ofColor::fromHsb(hue, 255, 255, 240));
+        rotateScreen(i * 45);
+        drawLines();
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white);
+        rotateScreen(i * 45);
+        rotateScreen(90);
+        drawLines();
+        rotateScreen(-90);
+        masker.endMask(i);
+    }
+    
+    masker.beginLayer(topLayer);
+    masker.draw();
+    masker.endLayer(topLayer);
+    
+    masker.beginMask(topLayer);
+    ofSetColor(ofColor::white);
+    image.incrementTextureOffsetX(0.02857142857);
+    image.draw();
+    rotateScreen(180);
+    image.draw();
+    rotateScreen(90);
+    image.draw();
+    rotateScreen(180);
+    image.draw();
+    masker.endMask(topLayer);
+    
+}
+
+void ofApp::drawAnim() {
+    if(ofGetFrameNum() == spacing) {
+        paused = false;
+    }
+    ofBackground(ofColor::black);
+    masker.drawLayer(topLayer);
+    masker.drawOverlay();
+    if(ofGetFrameNum() == spacing + (spacing / increment)) {
+        renderGif();
+    }
+}
+
+void ofApp::incrementOffset() {
+    offset+=increment;
+    if(offset &gt;= spacing) {
+        offset = 0;
+    }
+}
+
+void ofApp::drawLines() {
+    for(int y = -height; y &lt; doubleHeight; y += spacing) {
+        ofRect(-width, y + offset, tripleWidth, thickness);
+    }
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight);
+    ofRotateZ(degrees);
+    ofTranslate(-halfWidth, -halfHeight);
+}</code>
+    </pre>
+</div>
+<p class=description>Textures and computer graphics</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-23.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+<ul id=paging>
+	<li><a href="/">&lt; See all posts</a></li>
+</ul>
+
+    <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
+
+<script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
+<script src=/js/script.9f4d.js></script>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+
+  </body>
+</html>

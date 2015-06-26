@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html class=no-js>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>Sketch 2015-06-25</title>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+
+    <link rel=stylesheet href=/css/main.e693.css>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
+
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+    <script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+
+    <script src=/js/head-scripts.32fa.js></script>
+
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <h1>Daily Sketches</h1>
+<article class=post>
+	<header>
+		<h1>Sketch 2015-06-25</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-25-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-25>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    masker.setup(2);
+    image1.setup("texture1.png");
+    image2.setup("foil.png", 0.5);
+    degrees = rotation = 0;
+    paused = true;
+}
+
+void ofApp::updateAnim(){
+    if(ofGetFrameNum() % 5 == 0) {
+        degrees += 90;
+        image1.setTextureOffset(ofRandom(2), ofRandom(2));
+        image1.setTextureScale(ofRandom(1, 2));
+        scaleIncrement = ofRandom(1) &gt; 0.5 ? 0.3 : -0.3;
+        translateIncrement.x = ofRandom(1) &gt; 0.5 ? 0.5 : -0.5;
+        translateIncrement.y = ofRandom(1) &gt; 0.5 ? 0.05 : -0.05;
+        pointIncrement1.x = ofRandom(1) &gt; 0.5 ? 16 : -8;
+        pointIncrement1.y = ofRandom(1) &gt; 0.5 ? 8 : -16;
+        pointIncrement2.x = ofRandom(1) &gt; 0.5 ? 16 : -8;
+        pointIncrement2.y = ofRandom(1) &gt; 0.5 ? 8 : -16;
+        pointIncrement3.x = ofRandom(1) &gt; 0.5 ? 16 : -8;
+        pointIncrement3.y = ofRandom(1) &gt; 0.5 ? 8 : -16;
+        randomTriangle(triangle1);
+        randomTriangle(triangle2);
+        randomTriangle(triangle3);
+    }
+    
+    image1.incrementTextureScale(scaleIncrement);
+    image1.incrementTextureOffset(translateIncrement);
+    image2.incrementTextureOffsetY(0.02);
+    for(int i = 0; i &lt; 3; i++) {
+        triangle1.at(i) += pointIncrement1;
+        triangle2.at(i) += pointIncrement2;
+        triangle3.at(i) += pointIncrement3;
+    }
+    
+    masker.beginLayer(0);
+    {
+        drawGradientBackground();
+    }
+    masker.endLayer(0);
+    
+    masker.beginMask(0);
+    {
+        ofPushStyle();
+        {
+            ofBackground(ofColor::white);
+            ofSetColor(ofColor::black);
+            drawTriangle(triangle1);
+            drawTriangle(triangle2);
+            drawTriangle(triangle3);
+        }
+        ofPopStyle();
+    }
+    masker.endMask(0);
+    
+    masker.beginLayer(1);
+    {
+        rotation += 4;
+        rotateScreen(rotation);
+        ofSetColor(ofColor::red, ofGetFrameNum() == 0 ? 255 : 110);
+        image1.draw();
+    }
+    masker.endLayer(1);
+    
+    masker.beginMask(1);
+    {
+        ofBackground(ofColor::black);
+        masker.drawLayer(0);
+    }
+    masker.endMask(1);
+}
+
+void ofApp::drawAnim() {
+    if(ofGetFrameNum() == 0) {
+        ofBackground(ofColor::black);
+    }
+    ofSetColor(ofColor::red, ofGetFrameNum() == 0 ? 255 : 128);
+    image2.draw();
+
+    ofSetColor(ofColor::black, 128);
+    ofRect(0, 0, width, height);
+
+    ofPushMatrix();
+    {
+        masker.draw();
+    }
+    ofPopMatrix();
+    masker.drawOverlay();
+    
+    if(ofGetFrameNum() == 100) {
+        paused = false;
+    }
+    
+    if(ofGetFrameNum() == 200) {
+        renderGif();
+    }
+}
+
+void ofApp::drawTriangle(vector&lt;ofPoint&gt; &amp;triangle) {
+    ofBeginShape();
+    for(int i = 0; i &lt; 3; i++) {
+        ofVertex(triangle.at(i).x, triangle.at(i).y);
+    }
+    ofEndShape();
+}
+
+void ofApp::drawGradientBackground() {
+    rotateScreen(degrees);
+    ofBackground(ofColor::black);
+    ofBackgroundGradient(ofColor::white, ofColor::black, OF_GRADIENT_LINEAR);
+}
+
+void ofApp::randomTriangle(vector&lt;ofPoint&gt; &amp;triangle) {
+    triangle.clear();
+    for(int i = 0; i &lt; 3; i++) {
+        triangle.push_back(ofPoint(ofRandom(-width, doubleWidth), ofRandom(-height, doubleHeight)));
+    }
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight);
+    ofRotateZ(degrees);
+    ofTranslate(-halfWidth, -halfHeight);
+}</code>
+    </pre>
+</div>
+<p class=description>Revelations</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-25.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+<ul id=paging>
+	<li><a href="/">&lt; See all posts</a></li>
+</ul>
+
+    <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
+
+<script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
+<script src=/js/script.9f4d.js></script>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+
+  </body>
+</html>

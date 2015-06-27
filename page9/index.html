@@ -30,6 +30,81 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-05-01</h1>
+		</header>
+		<div class=code>
+    <ul>
+        <li><a href="/sketch-01-05-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-01>code</a></li>
+        <li><a href=# class=snippet-button>snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    shapeSystem.setup();
+    camera.setDistance(60);
+    numShapes = 0;
+    
+    float offset = 10;
+    
+    color.set(255, 255, 255, 80);
+    center.z -= offset;
+    outerSquare.setup(++numShapes, center, 2, 4, 0, -5, 35, color);
+    shapeSystem.add(outerSquare);
+    
+    color.set(255, 255, 255, 80);
+    center.z -= offset;
+    innerSquare.setup(++numShapes, center, 2, 4, 0, -5, 20, color);
+    shapeSystem.add(innerSquare);
+    
+    center.z -= offset;
+    color.set(255, 0, 0, 125);
+    ring1.setup(++numShapes, center, 1, 60, 8, 8, 25, color);
+    shapeSystem.add(ring1);
+    
+    center.z -= offset;
+    color.set(255, 0, 0, 125);
+    ring2.setup(++numShapes, center, 1, 60, 8, 8, 25, color);
+    shapeSystem.add(ring2);
+    
+    center.z -= offset;
+    color.set(255, 0, 0, 60);
+    ring3.setup(++numShapes, center, 0, 60, 8, 8, 25, color);
+    shapeSystem.add(ring3);
+    
+    center.z -= offset;
+    color.set(255, 255, 255, 200);
+    sphere.setup(++numShapes, center, 0, 60, 5, 0, 10, color);
+    shapeSystem.add(sphere);
+}
+
+void ofApp::updateAnim(){
+    outerSquare.rotateZ(ofMap(-ofGetFrameNum(), 1, 125, 1, 180));
+    innerSquare.rotateZ(ofMap( ofGetFrameNum(), 1, 125, 1, 180));
+    ring1.positionZ(sin( ofGetFrameNum() * 2       * 0.05) * 100 - 50);
+    ring2.positionZ(sin((ofGetFrameNum() * 2 + 20) * 0.05) * 100 - 50);
+    ring3.positionZ(sin((ofGetFrameNum() * 2 + 40) * 0.05) * 100 - 50);
+    shapeSystem.update();
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    camera.begin();
+    shapeSystem.draw();
+    camera.end();
+    if(ofGetFrameNum() == 125) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Adapting <a href=https://github.com/jasonmcdermott/ofxForums/tree/master/vertexArrayGradientShapes>code</a> to make transformable alpha-blended geometric shapes</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-01.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-04-30</h1>
 		</header>
 		<div class=code>
@@ -437,55 +512,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>Accessing chunks of memory that you're not supposed to access</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-25.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-04-24</h1>
-		</header>
-		<div class=code>
-    <ul>
-        <li><a href="/sketch-24-04-2015/">permalink</a></li>
-        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-24>code</a></li>
-        <li><a href=# class=snippet-button>snippet</a></li>
-    </ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofSetCircleResolution(100);
-    ofNoFill();
-    ofEnableSmoothing();
-    multiplier = 5;
-    switchDirection = false;
-}
-
-void ofApp::updateAnim(){
-    if(switchDirection) {
-        multiplier += 0.2;
-    } else {
-        multiplier -= 0.2;
-    }
-    
-    if(multiplier &lt;= 0.2 || multiplier &gt;= 10) {
-        switchDirection = !switchDirection;
-        if(!switchDirection) saveNow = true;
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    for(int i = 1; i &lt;= 100; i++) {
-        ofCircle(width * 0.5, height * 0.5, i * multiplier);
-        ofCircle(width * 0.5, height * 0.5, i * (15 - multiplier));
-    }
-    if(!renderMode) {
-        ofDrawBitmapString(ofToString(multiplier), 20, 20);
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Concentric circles, moving against each other. As rendered by the pixel grid of your monitor.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-24.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

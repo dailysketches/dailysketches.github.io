@@ -124,12 +124,16 @@ article p {
     font-size: 1.1em;
 }
 
-img, audio {
+img, audio, iframe {
     border: 4px solid #ddd;
     background-color: #ddd;
     width: 600px;
     display: block;
     margin: 0 auto;
+}
+
+iframe {
+    height: 338px;
 }
 
 audio {
@@ -138,10 +142,6 @@ audio {
 
 img.no-frame {
     border: 0;
-}
-
-iframe {
-    width: 500px;
 }
 
 .snippet {
@@ -211,11 +211,15 @@ iframe {
     color: #413939;
 }
 
-@media (max-width: 500px) {
-    img, audio, article, p, header, div, .description {
+@media (max-width: 620px) {
+    img, audio, iframe, article, p, header, div, .description {
         width: 96%;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    iframe {
+        height: 250px;
     }
 }
 
@@ -223,12 +227,6 @@ iframe {
     #paging li {
         display: block;
         margin-top: 2em;
-    }
-}
-
-@media (max-width: 600px) {
-    iframe {
-        width: 90%;
     }
 }
 

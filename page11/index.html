@@ -30,6 +30,182 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-04-28</h1>
+		</header>
+		<div class=code>
+    <ul>
+        <li><a href="/sketch-28-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-28>code</a></li>
+        <li><a href=# class=snippet-button>snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::updateAnim(){
+    for(int i = 0; i &lt; 12; i++) {
+        createMover();
+    }
+    
+    if(ofGetFrameNum() == 40) {
+        trails = true;
+    }
+    
+    if(ofGetFrameNum() == 80) {
+        running = false;
+        stopping = true;
+    }
+    
+    if(ofGetFrameNum() == 94) {
+        stopping = false;
+        trails = false;
+    }
+    
+    if(ofGetFrameNum() == 98 || ofGetFrameNum() == 108) {
+        resetting = !resetting;
+    }
+    
+    if(ofGetFrameNum() == 110) {
+        save = true;
+    }
+    
+    for(int i = 0; i &lt; movers.size(); i++) {
+        movers.at(i).applyForce(gravity);
+        movers.at(i).update();
+    }
+}
+
+void ofApp::drawAnim() {
+    if(!trails) {
+        ofSetHexColor(0x100643);
+        ofRect(0, 0, width, height);
+    }
+    
+    if(running) {
+        for(int i = 0; i &lt; movers.size(); i++) {
+            movers.at(i).draw();
+        }
+    }
+    
+    if(stopping) {
+        ofSetColor(ofColor::white);
+        font.drawString("STOP", 70, 120);
+    }
+    
+    if(resetting) {
+        ofSetColor(ofColor::white);
+        font.drawString("RESET", 64, 120);
+    }
+    
+    if(save) {
+        renderGif();
+        movers.clear();
+        save = !save;
+    }
+}
+
+void ofApp::createMover() {
+    minX = width * 0.4;
+    maxX = width * 0.6;
+    x = ofRandom(minX, maxX);
+    
+    minY = height * 0.1;
+    maxY = height * 0.7;
+    y = ofRandom(minY, maxY);
+    
+    color.setHsb(ofMap(y, minY, maxY, 0, 50), 255, 128);
+    initial = ofVec2f(ofMap(x, minX, maxX, -3, 3), 0);
+    
+    PatternMover mover;
+    mover.setup();
+    mover.setColor(color);
+    mover.setSize(3);
+    mover.applyForce(initial);
+    mover.setLocation(x, y);
+    movers.push_back(mover);
+}</code>
+    </pre>
+</div>
+<p class=description>Toying with simple forces</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-28.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-04-27</h1>
+		</header>
+		<div class=code>
+    <ul>
+        <li><a href="/sketch-27-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-27>code</a></li>
+        <li><a href=# class=snippet-button>snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofDisableArbTex();
+    
+    img.loadImage("tissue.png");
+    texture = img.getTextureReference();
+    texture.setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+    
+    offset = ofRandom(1);
+    shift = false;
+    numShifts = 0;
+    
+    //Position the planes to take up the full screen
+    for(int i = 0; i &lt; 2; i++) {
+        planes.push_back(plane);
+        planes.at(i).set(ofGetHeight(), ofGetWidth());
+        planes.at(i).setPosition(ofGetWidth() * 0.5, ofGetHeight() * 0.5, 0);
+        planes.at(i).setResolution(2, 2);
+    }
+}
+
+void ofApp::updateAnim(){
+    if(!shift &amp;&amp; ofRandom(1) &lt; 0.15) {
+        numShifts++;
+        shift = true;
+        offset = getNewOffset();
+    }
+    
+    tx0 = 0 * offset * 0.1;
+    ty0 = offset + ofGetFrameNum() * 0.001;
+    tx1 = tx0 + 1;
+    ty1 = ty0 + 2;
+    
+    //Position the texture on the plane
+    planes.at(0).mapTexCoords(tx0, ty0, tx1, ty1);
+    planes.at(1).mapTexCoords(tx1, ty1, tx0, ty0);
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    
+    if(shift) {
+        if(ofRandom(1) &gt; 0.2) shift = false;
+    } else {
+        texture.bind();
+        for(int i = 0; i &lt; planes.size(); i++) {
+            planes.at(i).draw();
+        }
+        texture.unbind();
+    }
+}
+
+float ofApp::getNewOffset() {
+    do {
+        candidateOffset = ofRandom(1);
+    } while(abs(candidateOffset - offset) &lt; 0.2);
+    
+    return candidateOffset;
+}</code>
+    </pre>
+</div>
+<p class=description>Overlaid media with alpha transparency, glimmering when squished into 400 pixels and slowly translated.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-27.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-04-26</h1>
 		</header>
 		<div class=code>

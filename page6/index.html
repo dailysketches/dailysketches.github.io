@@ -30,6 +30,134 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-06-02</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-02-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-02>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    playing = true;
+    note = 60;
+
+    manager.setup();
+    manager.toggleDebugUI();
+    manager.add(&amp;chain1, "tal-1", ofColor::blue);
+    manager.add(&amp;chain2, "tal-2", ofColor::red);
+
+    bpm.setBpm(160);
+    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
+    bpm.start();
+}
+
+void ofApp::play(void){
+    if(playing) {
+        chain1.midi()-&gt;sendNoteOn(1, note);
+    }
+}
+
+void ofApp::togglePlaying() {
+    playing = !playing;
+    if(!playing) {
+        chain1.midi()-&gt;sendNoteOff(1, note);
+    }
+}
+
+void ofApp::update(){
+    manager.update();
+
+    val = ofMap(sin(ofGetFrameNum() * 0.04), -1, 1, 30, 59);
+    chain1.getReverb()-&gt;set(kReverbParam_DryWetMix, val);
+
+    val = ofMap(cos(ofGetFrameNum() * 0.005), -1, 1, 0, 100);
+    chain1.getSynth()-&gt;set(TALNoiseMaker_osc1tune, val);
+    
+    val = ofMap(cos(ofGetFrameNum() * 0.0005), -1, 1, 50  , 2 50);
+    chain1.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
+}</code>
+    </pre>
+</div>
+<p class=description>I don't even remember making this one. I think I'll be as surprised as anyone when I hear it. #eyeo</p>
+<audio controls>
+	<source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-02.mp3?raw=true" type="audio/mpeg">
+	Your browser does not support the audio element.
+</audio>
+
+	</article>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-06-01</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-01-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-01>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    manager.setup();
+    manager.toggleDebugUI();
+
+    playing = true;
+    note = 60;
+    
+    for(int i = 0; i &lt; 4; i++){
+        chains.push_back(chain);
+    }
+    
+    for(int i = 0; i &lt; chains.size(); i++){
+        manager.add(&amp;chains.at(i), "tal-" + ofToString(i), ofColor::fromHsb((i * 255 / chains.size()), 255, 255));
+        chains.at(i).midi()-&gt;sendNoteOn(1, note);
+    }
+    
+    bpm.setBpm(160);
+    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
+    bpm.start();
+}
+
+void ofApp::play(void){
+    if(playing) {
+        for(int i = 0; i &lt; chains.size(); i++){
+            val = currentChain == i ? 1 : 0;
+            chains.at(i).getSynth()-&gt;set(TALNoiseMaker_volume, val);
+        }
+
+        currentChain = currentChain == chains.size() - 1 ? 0 : currentChain + 1;
+    }
+}
+
+void ofApp::togglePlaying() {
+    playing = !playing;
+    if(!playing) {
+        for(int i = 0; i &lt; chains.size(); i++){
+            chains.at(i).midi()-&gt;sendNoteOff(1, note);
+        }
+    }
+}
+
+void ofApp::update(){
+    manager.update();
+    
+    val = ofMap(cos(ofGetFrameNum() * 0.04), -1, 1, 0, 1);
+    chains.at(0).getSynth()-&gt;set(TALNoiseMaker_osc1tune, val);
+}</code>
+    </pre>
+</div>
+<p class=description>Time-indexed volume distribution between 4 chains</p>
+<audio controls>
+    <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-01.mp3?raw=true" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-05-31</h1>
 		</header>
 		<div class=code>
@@ -357,152 +485,6 @@ void ofApp::rotateScreen(float degrees) {
 </div>
 <p class=description>Hmm. Cubes.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-27.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-05-26</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-26-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-26>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    
-    for(int i = -halfWidth; i &lt; halfWidth; i += 120) {
-        for(int j = -halfHeight; j &lt; halfHeight; j += 120) {
-            shape.setupHollowSquare(20, 80);
-            shape.setBlur(1);
-            shape.setPosition(i + 5, j + 5);
-            shape.rotateY(ofMap(i, -halfWidth, halfWidth, 0, 90));
-            shape.rotateX(ofMap(j, -halfHeight, halfHeight, 0, 90));
-            shapes.push_back(shape);
-        }
-    }
-    
-    shapeSystem.setup();
-    shapeSystem.setPosition(ofVec3f(halfWidth, halfHeight, 0));
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapeSystem.add(shapes.at(i));
-    }
-}
-
-void ofApp::updateAnim(){
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        i % 2 == 0 ?
-            shapes.at(i).incrementRotateX(12) :
-            shapes.at(i).incrementRotateY(-12);
-    }
-    
-    shapeSystem.incrementRotateX(2);
-    shapeSystem.incrementRotateY(2);
-    shapeSystem.incrementRotateZ(2);
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-
-    ofEnableAlphaBlending();
-    
-    for(int i = -600; i &lt; 600; i+=50) {
-        for(int j = 0; j &lt; shapes.size(); j++) {
-            alpha = ofMap(i, -600, 600, 10, 255);
-            shapes.at(j).positionZ(i);
-            shapes.at(j).setColor(ofColor(ofColor::white, alpha));
-        }
-        shapeSystem.draw();
-    }
-
-    ofDisableAlphaBlending();
-
-    if(ofGetFrameNum() == 180) renderGif();
-}</code>
-    </pre>
-</div>
-<p class=description>Yesterday's squares, evolved (mostly by evolving the <a href=https://github.com/microcosm/ofxShapeSystem>addon</a>)</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-26.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-05-25</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-25-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-25>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    
-    for(int i = 0; i &lt; width; i += 120) {
-        for(int j = 0; j &lt; height; j += 120) {
-            shape.setupHollowSquare(20, 80);
-            shape.setBlur(1);
-            shape.setPosition(ofVec3f(i + 5, j + 5, 0));
-            shape.rotateZ(ofRandom(360));
-            shapes.push_back(shape);
-        }
-    }
-    
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapeSystem.add(shapes.at(i));
-    }
-}
-
-void ofApp::updateAnim(){
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        i % 2 == 0 ?
-            shapes.at(i).incrementRotateZ(12) :
-            shapes.at(i).incrementRotateZ(-12);
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-
-    ofEnableAlphaBlending();
-
-    ofTranslate(-30, -30);
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapes.at(i).setColor(ofColor(ofColor::white, 64));
-    }
-    shapeSystem.draw();
-
-    ofTranslate(10, 10);
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapes.at(i).setColor(ofColor(ofColor::white, 128));
-    }
-    shapeSystem.draw();
-
-    ofTranslate(10, 10);
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapes.at(i).setColor(ofColor(ofColor::white, 192));
-    }
-    shapeSystem.draw();
-
-    ofTranslate(10, 10);
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapes.at(i).setColor(ofColor(ofColor::white, 255));
-    }
-    shapeSystem.draw();
-
-    ofDisableAlphaBlending();
-
-    if(ofGetFrameNum() == 30) renderGif();
-}</code>
-    </pre>
-</div>
-<p class=description>Fast sketches are meaningless.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-25.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

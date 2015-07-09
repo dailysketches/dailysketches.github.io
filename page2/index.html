@@ -9,7 +9,7 @@
 
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
-    <link rel=stylesheet href=/css/main.e693.css>
+    <link rel=stylesheet href=/css/main.d7ec.css>
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
 
@@ -27,6 +27,120 @@
 
     <section class="home posts">
 	<h1>Daily Sketches</h1>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-07-01</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-01-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-01>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setup(ofGetTimestampString("%Y-%m-%d"), 60);
+    
+    ofEnableSmoothing();
+    shapeSystem.setup();
+    masker.setup(8);
+
+    for(int i = 0; i &lt; 8; i++) {
+        textures.push_back(texture);
+        textures.at(i).setup("road" + ofToString(i % 4 + 1) + ".png", (i+1) * 0.3);
+    }
+    
+    shapeSize = 100;
+    thickness = 100;
+    halfShapeSize = shapeSize * 0.5;
+    
+    for(int i = 0; i &lt; gif.width; i += shapeSize) {
+        for(int j = 0; j &lt; gif.height; j += shapeSize) {
+            shape.setupHollowArc(30, thickness, shapeSize, 180);
+            shape.setColor(ofColor::fromHsb(ofRandom(255), ofRandom(100, 255), ofRandom(100, 255)));
+            shape.setBlur(30);
+            shape.setPosition(ofVec3f(i + halfShapeSize, j + halfShapeSize, 0));
+            shape.rotateZ(ofRandom(360));
+            shapes.push_back(shape);
+        }
+    }
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapeSystem.add(shapes.at(i));
+    }
+}
+
+void ofApp::update(){
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        i % 2 == 0 ?
+        shapes.at(i).incrementRotateZ(6) :
+        shapes.at(i).incrementRotateZ(-6);
+    }
+    
+    for(int i = 0; i &lt; masker.numLayers(); i++) {
+        textures.at(i % textures.size()).incrementTextureOffsetY(-0.03333333333);
+        masker.beginLayer(i);
+        {
+            ofBackground(ofColor::black);
+            ofEnableAlphaBlending();
+            rotateScreen(90 * i);
+            shapeSystem.draw();
+            ofDisableAlphaBlending();
+        }
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        {
+            ofEnableAlphaBlending();
+            if(ofGetFrameNum() == 0) {
+                ofBackground(ofColor::black);
+            } else {
+                ofSetColor(ofColor::black, 64);
+                ofRect(0, 0, gif.width, gif.height);
+            }
+
+            ofSetColor(ofColor::white, 196);
+            textures.at(i % textures.size()).draw();
+            if(ofRandom(1) &gt; 0.96) {
+                for(int j = 0; j &lt; 4; j++) {
+                    ofSetColor(j % 2 == 0 ? ofColor(ofColor::white, ofRandom(64, 196)) : ofColor::black);
+                    ofTriangle(ofRandom(-gif.width, 0), ofRandom(-gif.height, 0),
+                               ofRandom(0, gif.width), ofRandom(0, gif.height),
+                               ofRandom(gif.width, gif.doubleWidth), ofRandom(gif.height, gif.doubleHeight));
+                    rotateScreen(90);
+                }
+            }
+            ofDisableAlphaBlending();
+        }
+        masker.endMask(i);
+    }
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofBackground(ofColor::black);
+        masker.draw();
+    }
+    gif.endAndCaptureFrame();
+    gif.draw();
+    
+    masker.drawOverlay();
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(gif.halfWidth, gif.halfHeight, 0);
+    ofRotate(degrees);
+    ofTranslate(-gif.halfWidth, -gif.halfHeight, 0);
+}</code>
+    </pre>
+</div>
+<p class=description>"You no longer require an internal model ... you simply need the ability to visually perceive ... and the experience to move" (<a href=http://psychsciencenotes.blogspot.com/2011/11/embodied-cognition-is-not-what-you.html>source</a>)</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-01.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
 	
 	<article>
 		<header>
@@ -303,12 +417,13 @@ void ofApp::draw(){
     </pre>
 </div>
 <p class=description>Mixing oscillators, filter envelopes and LFO rates</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-28.png?raw=true" alt="Sketch 2015-06-28"></p>
-<audio controls>
-	<source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-28.mp3?raw=true" type="audio/mpeg">
-	Your browser does not support the audio element.
-</audio>
-
+<p>
+    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-28.png?raw=true" alt="Sketch 2015-06-28">
+    <audio controls>
+        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-28.mp3?raw=true" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</p>
 
 	</article>
 	
@@ -374,12 +489,13 @@ void ofApp::draw(){
     </pre>
 </div>
 <p class=description>Playing with delay and the bit crusher</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-27.png?raw=true" alt="Sketch 2015-06-27"></p>
-<audio controls>
-	<source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-27.mp3?raw=true" type="audio/mpeg">
-	Your browser does not support the audio element.
-</audio>
-
+<p>
+    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-27.png?raw=true" alt="Sketch 2015-06-27">
+    <audio controls>
+        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-27.mp3?raw=true" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</p>
 
 	</article>
 	
@@ -438,12 +554,13 @@ void ofApp::bang(ofxTLBangEventArgs &amp;args) {
     </pre>
 </div>
 <p class=description>Modulating filter cutoff and LFO rate</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-26.png?raw=true" alt="Sketch 2015-06-26"></p>
-<audio controls>
-	<source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-26.mp3?raw=true" type="audio/mpeg">
-	Your browser does not support the audio element.
-</audio>
-
+<p>
+    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-26.png?raw=true" alt="Sketch 2015-06-26">
+    <audio controls>
+        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-26.mp3?raw=true" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</p>
 
 	</article>
 	
@@ -587,127 +704,6 @@ void ofApp::rotateScreen(float degrees) {
 </div>
 <p class=description>Revelations</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-25.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-06-24</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-24-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-24>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    paused = true;
-    numLayers = 6;
-    topLayer1 = numLayers - 2;
-    topLayer2 = numLayers - 1;
-    spacing = 100;
-    offset = offset2 = 0;
-    increment = 20;
-    masker.setup(numLayers);
-    
-    image.setup("surface.png", width, height, 1, TEXTURE_OFFSET_BOTTOM_LEFT);
-    image.incrementTextureOffsetY(0.5);
-}
-
-void ofApp::updateAnim(){
-    incrementOffset();
-    
-    for(int i = 0; i &lt; numLayers - 2; i++) {
-        masker.beginLayer(i);
-        {
-            ofBackground(ofColor(ofColor::black, 0));
-            hue = ofMap(i, 0, numLayers, 20, 140);
-            ofSetColor(ofColor::fromHsb(hue, 255, 255, 240));
-            thickness = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 10, 50);
-            ofTranslate(0, i * 10);
-            drawLines(offset, spacing, thickness);
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            ofBackground(ofColor::black);
-            ofSetColor(ofColor::white);
-            thickness = ofMap(sin(ofGetFrameNum() * 0.1), -1, 1, 10, 70);
-            ofTranslate(0, i * 10);
-            drawLines(offset2, spacing, thickness);
-        }
-        masker.endMask(i);
-    }
-    
-    masker.beginLayer(topLayer1);
-    image.draw();
-    masker.endLayer(topLayer1);
-    
-    masker.beginLayer(topLayer2);
-    rotateScreen(90);
-    image.draw();
-    masker.endLayer(topLayer2);
-}
-
-void ofApp::drawAnim() {
-    ofPushMatrix();
-    {
-        ofSetColor(ofColor::black, 20);
-        ofRect(0, 0, width, height);
-        masker.drawLayers(0, 4);
-        ofScale(0.5, 0.5);
-        rotateScreen(90);
-        
-        masker.drawLayer(2);
-        
-        masker.draw();
-        ofScale(0.5, 0.5);
-        rotateScreen(90);
-        
-        masker.drawLayer(1);
-    }
-    ofPopMatrix();
-    masker.drawLayer(5);
-    masker.drawOverlay();
-    
-    if(ofGetFrameNum() == 92) {
-        paused = false;
-    }
-    
-    if(ofGetFrameNum() == 162) {
-        renderGif();
-    }
-}
-
-void ofApp::incrementOffset() {
-    offset+=increment;
-    if(offset &gt;= spacing) {
-        offset = 0;
-    }
-    
-    offset2-=increment;
-    if(offset2 &lt;= -spacing) {
-        offset2 = 0;
-    }
-}
-
-void ofApp::drawLines(float _offset, float _spacing, float _thickness) {
-    for(int y = -height; y &lt; doubleHeight; y += _spacing) {
-        ofRect(-width, y + _offset, tripleWidth, _thickness);
-    }
-}
-
-void ofApp::rotateScreen(float degrees) {
-    ofTranslate(halfWidth, halfHeight);
-    ofRotateZ(degrees);
-    ofTranslate(-halfWidth, -halfHeight);
-}</code>
-    </pre>
-</div>
-<p class=description>It's a glitch.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-24.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

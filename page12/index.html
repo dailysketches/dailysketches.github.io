@@ -3,7 +3,7 @@
   <head>
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge">
-    <title>Sketch 2015-05-08</title>
+    <title>Daily Sketches</title>
     <meta name=description content="">
     <meta name=viewport content="width=device-width,initial-scale=1">
 
@@ -25,48 +25,44 @@
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <h1>Daily Sketches</h1>
-<article class=post>
-	<header>
-		<h1>Sketch 2015-05-08</h1>
-	</header>
-	<div class=code>
-  <ul>
-    <li><a href="/sketch-08-05-2015/">permalink</a></li>
-    <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-08>code</a></li>
-    <li><a href=# class=snippet-button>snippet</a></li>
-  </ul>
-  <pre class=snippet>
-    <code class=cpp>void ofApp::updateAnim(){
-    max = ofMap(sin(ofGetFrameNum() * 0.04), -1, 1, 16, 50);
-    num = ofMap(cos(ofGetFrameNum() * 0.04), -1, 1, 3000, 40);
-}
-
-void ofApp::drawAnim() {
+    <section class="home posts">
+	<h1>Daily Sketches</h1>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-04-22</h1>
+		</header>
+		<div class=code>
+	<ul>
+		<li><a href="/sketch-22-04-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-22>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+	<pre class=snippet>
+		<code class=cpp>void ofApp::drawAnim() {
     ofBackground(0, 0, 0);
-    
-    for(int i = 0; i &lt; num; i++) {
-        ofSetColor(255, 255, 255, 100);
-        if(i % 2 == 0) ofSetColor(255, 0, 0, 100);
-        ofRect(ofRandom(-max, width),
-               ofRandom(-max, height),
-               ofRandom(max),
-               ofRandom(max));
-    }
-    
-    if(ofGetFrameNum() == 150) {
-        renderGif();
+    font.drawString("AN EMPTY\nGESTURE", 12, 85);
+    for(int i = 0; i &lt; 30; i++) {
+        ofLine(ofRandom(520), ofRandom(200), ofRandom(520), ofRandom(200));
     }
 }</code>
-  </pre>
+	</pre>
 </div>
-<p class=description>A false sense of directional movement.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-08.gif?raw=true" alt="Daily sketch"></p>
+<p class=description>Sometimes you just need to start...</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-22.gif?raw=true" alt="Daily sketch"></p>
 
-</article>
-<ul id=paging>
-	<li><a href="/">&lt; See all posts</a></li>
-</ul>
+	</article>
+	
+
+	<ul id=paging>
+		
+			
+				<li><a href="/page11/">&lt; Previous page</a></li>
+			
+		
+		
+	</ul>
+</section>
 
     <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
 

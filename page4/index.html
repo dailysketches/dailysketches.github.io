@@ -9,7 +9,7 @@
 
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
-    <link rel=stylesheet href=/css/main.e693.css>
+    <link rel=stylesheet href=/css/main.d7ec.css>
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
 
@@ -27,6 +27,81 @@
 
     <section class="home posts">
 	<h1>Daily Sketches</h1>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-06-17</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-17-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-17>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    numImages = 8;
+    highestIndex = numImages - 1;
+    image.setup("surface.png");
+    for(int i = 0; i &lt; numImages; i++) {
+        image.setTextureOffsetX(ofRandom(500));
+        image.setTextureScale(ofMap(i, 0, highestIndex, 2, 0.35));
+        image.setPlaneHeight(ofMap(i, 0, highestIndex, 500, 200));
+        image.setPlanePosition(0, ofMap(i, 0, highestIndex, -50, 300));
+        images.push_back(image);
+        imgColors.push_back(ofColor(ofMap(i, 0, highestIndex, 100, 255), ofMap(i, 0, highestIndex, 100, 0), 0, ofMap(i, 0, highestIndex, 0, 255)));
+    }
+
+    system.setup();
+    shape.setupGradientSquare(70, height * 2);
+    shape.positionX(-halfWidth - 35);
+    shape.positionY(40);
+    shape.setColor(ofColor(ofColor::white, 96));
+    system.add(shape);
+}
+
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; numImages; i++) {
+        images.at(i).incrementTextureOffsetX(i % 2 == 0 ? 0.03 : -0.03);
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::black);
+    
+    ofEnableAlphaBlending();
+    for(int i = 0; i &lt; numImages; i++) {
+        ofSetColor(imgColors.at(i));
+        rotateScreen(90);
+        images.at(i).draw();
+        rotateScreen(180);
+        images.at(i).draw();
+        rotateScreen(90);
+    }
+    
+    rotateScreen(180);
+    system.draw();
+    rotateScreen(180);
+    system.draw();
+    
+    ofDisableAlphaBlending();
+    
+    if(ofGetFrameNum() == 67) {
+        renderGif();
+    }
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight);
+    ofRotateZ(degrees);
+    ofTranslate(-halfWidth, -halfHeight);
+}</code>
+    </pre>
+</div>
+<p class=description>Vanishing point</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-17.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
 	
 	<article>
 		<header>
@@ -623,49 +698,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>Three days...</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-11.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-06-10</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-10-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-10>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    fontSize = 64;
-    loadFonts();
-    quarterHeight = halfHeight * 0.5;
-}
-
-void ofApp::updateAnim(){
-    if(ofGetFrameNum() % 3 == 0) {
-        random_shuffle(fonts.begin(), fonts.end());
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(ofColor::black);
-    ofSetColor(ofColor::white);
-
-    ofSetRectMode(OF_RECTMODE_CENTER);
-    fonts.at(0).drawStringCentered("OFF", halfWidth, quarterHeight);
-    fonts.at(1).drawStringCentered("FOR", halfWidth, halfHeight + quarterHeight);
-    ofSetRectMode(OF_RECTMODE_CORNER);
-
-    if(ofGetFrameNum() == 60) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>...off for...</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-10.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

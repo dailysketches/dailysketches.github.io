@@ -30,6 +30,71 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-06-26</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-26-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-26>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 1000);
+    manager.setup();
+    manager.toggleDebugUI();
+    setupAudioUnits();
+    setupTimeline();
+
+    playing = false;
+    note = 60;
+}
+
+void ofApp::setupAudioUnits() {
+    manager.add(&amp;chain, "tal-one", ofColor::blue);
+    chain.link(&amp;noiseMaker).toMixer();
+    manager.loadPresets(&amp;chain);
+}
+
+void ofApp::setupTimeline() {
+    timeline.setup();
+    timeline.setLoopType(OF_LOOP_NONE);
+    timeline.setDurationInSeconds(10);
+    timeline.setOffset(ofVec2f(10, 450));
+    timeline.setWidth(ofGetWidth() - 400);
+    timeline.addBangs("midi");
+    timeline.addCurves("lfo rate", ofRange(0.03, 0.2));
+    timeline.addCurves("filter cutoff", ofRange(0, 1));
+    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
+}
+
+void ofApp::update(){
+    noiseMaker.set(TALNoiseMaker_lfo2rate, timeline.getValue("lfo rate"));
+    noiseMaker.set(TALNoiseMaker_cutoff, timeline.getValue("filter cutoff"));
+}
+
+void ofApp::bang(ofxTLBangEventArgs &amp;args) {
+    if(args.flag == "") {
+        chain.midi()-&gt;sendNoteOn(1, note);
+    } else {
+        chain.midi()-&gt;sendNoteOn(1, ofToInt(args.flag));
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Modulating filter cutoff and LFO rate</p>
+<p>
+    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-26.png?raw=true" alt="Sketch 2015-06-26">
+    <audio controls>
+        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-26.mp3?raw=true" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-06-25</h1>
 		</header>
 		<div class=code>
@@ -584,87 +649,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>Leaves</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-20.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-06-19</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-19-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-19>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    timeline.setOutPointAtFrame(48);
-    timeline.addCurves("layer-1-alpha", ofRange(0, 255));
-    timeline.addCurves("layer-2-alpha", ofRange(0, 255));
-    timeline.addCurves("layer-3-alpha", ofRange(0, 255));
-    timeline.addCurves("layer-1-scale", ofRange(1, 4));
-    timeline.addCurves("layer-2-scale", ofRange(1, 4));
-    timeline.addCurves("layer-3-scale", ofRange(1, 4));
-    timeline.addCurves("layer-1-x", ofRange(0, 1));
-    timeline.addCurves("layer-1-y", ofRange(0, 1));
-    timeline.addCurves("layer-2-x", ofRange(0, 1));
-    timeline.addCurves("layer-2-y", ofRange(0, 1));
-    timeline.addCurves("layer-3-x", ofRange(0, 1));
-    timeline.addCurves("layer-3-y", ofRange(0, 1));
-    timeline.togglePlay();
-
-    leafVertical.setup("leaf-vertical.png", width, height, 2, TEXTURE_OFFSET_BOTTOM_RIGHT);
-    leafDiagonal.setup("leaf-diagonal.png", width, height, 2, TEXTURE_OFFSET_BOTTOM_RIGHT);
-    leafStar.setup("leaf-star.png", width, height, 2, TEXTURE_OFFSET_MIDDLE_CENTER);
-    planes.push_back(&amp;leafVertical);
-    planes.push_back(&amp;leafDiagonal);
-    planes.push_back(&amp;leafStar);
-
-    masker.setup(width, height);
-    masker.newLayer();
-    masker.newLayer();
-    masker.newLayer();
-}
-
-void ofApp::updateAnim(){
-    for(int i = 0; i &lt; planes.size(); i++) {
-        ID = ofToString(i+1);
-        alpha = timeline.getValue("layer-" + ID + "-alpha");
-        scale = timeline.getValue("layer-" + ID + "-scale");
-        position.x = timeline.getValue("layer-" + ID + "-x");
-        position.y = timeline.getValue("layer-" + ID + "-y");
-        masker.beginLayer(i);
-        {
-            ofSetColor(ofColor::white);
-            planes.at(i)-&gt;setTextureScale(scale);
-            planes.at(i)-&gt;setTexturePosition(position.x, position.y);
-            planes.at(i)-&gt;draw();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            ofBackground(ofColor::black);
-            ofSetColor(ofColor::white, alpha);
-            ofRect(0, 0, width, height);
-        }
-        masker.endMask(i);
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(ofColor::black);
-    ofSetColor(ofColor::white);
-    masker.draw();
-    if(ofGetFrameNum() == 48) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Sometimes it doesn't look like much has changed. But the movements in this sketch are based on a series of improvements to <a href=https://github.com/microcosm/ofxTexturePlane>ofxTexturePlane</a>, and the integration of <a href=https://github.com/YCAMInterlab/ofxTimeline>ofxTimeline</a> - opening up new possibilities going forward.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-19.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

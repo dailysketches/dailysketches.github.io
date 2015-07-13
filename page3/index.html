@@ -30,6 +30,253 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-06-29</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-29-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-29>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setupPaused(ofGetTimestampString("%Y-%m-%d"), 30, 59);
+
+    ofEnableSmoothing();
+    shapeSystem.setup();
+
+    image.setup("glass.png", 0.5);
+
+    shapeSize = 100;
+    thickness = 60;
+    halfShapeSize = shapeSize * 0.5;
+
+    for(int i = 0; i &lt; gif.width; i += shapeSize) {
+        for(int j = 0; j &lt; gif.height; j += shapeSize) {
+            shape.setupHollowArc(30, thickness, shapeSize, 180);
+            shape.setColor(ofColor::white);
+            shape.setBlur(25);
+            shape.setPosition(ofVec3f(i + halfShapeSize, j + halfShapeSize, 0));
+            shape.rotateZ(ofRandom(360));
+            shapes.push_back(shape);
+        }
+    }
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapeSystem.add(shapes.at(i));
+    }
+}
+
+void ofApp::update(){
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        i % 2 == 0 ?
+        shapes.at(i).incrementRotateZ(12) :
+        shapes.at(i).incrementRotateZ(-12);
+    }
+
+    image.incrementTextureOffsetY(0.06666666666);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        if(ofGetFrameNum() == 0) ofBackground(0, 0, 0);
+        image.draw();
+        ofSetColor(ofColor::black, 16);
+        ofRect(0, 0, gif.width, gif.height);
+        
+        ofEnableAlphaBlending();
+        
+        for(int i = 0; i &lt; shapes.size(); i++) {
+            shapes.at(i).setColor(ofColor::white);
+        }
+        shapeSystem.draw();
+        
+        rotateScreen(90);
+        for(int i = 0; i &lt; shapes.size(); i++) {
+            shapes.at(i).setColor(ofColor(ofColor::black, 192));
+        }
+        shapeSystem.draw();
+        
+        rotateScreen(90);
+        for(int i = 0; i &lt; shapes.size(); i++) {
+            shapes.at(i).setColor(ofColor(ofColor::black, 164));
+        }
+        shapeSystem.draw();
+        
+        rotateScreen(90);
+        for(int i = 0; i &lt; shapes.size(); i++) {
+            shapes.at(i).setColor(ofColor(ofColor::black, 128));
+        }
+        shapeSystem.draw();
+        
+        ofDisableAlphaBlending();
+    }
+    gif.endAndCaptureFrame();
+    gif.draw();
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(gif.halfWidth, gif.halfHeight, 0);
+    ofRotate(degrees);
+    ofTranslate(-gif.halfWidth, -gif.halfHeight, 0);
+}</code>
+    </pre>
+</div>
+<p class=description>We'll live as one family</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-29.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-06-28</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-28-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-28>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 1000);
+    manager.setup();
+    manager.toggleDebugUI();
+    setupAudioUnits();
+    setupTimeline();
+
+    playing = false;
+    note = 60;
+}
+
+void ofApp::setupAudioUnits() {
+    manager.add(&amp;chain, "tal-one", ofColor::blue);
+    chain.link(&amp;noiseMaker).toMixer();
+    manager.loadPresets(&amp;chain);
+}
+
+void ofApp::setupTimeline() {
+    timeline.setup();
+    timeline.setLoopType(OF_LOOP_NORMAL);
+    timeline.setDurationInSeconds(30);
+    timeline.setOffset(ofVec2f(10, 450));
+    timeline.setWidth(ofGetWidth() - 400);
+    timeline.addCurves("master osc 1 (pulse)", ofRange(0, 1));
+    timeline.addCurves("master osc 2 (triangle)", ofRange(0, 1));
+    timeline.addCurves("envelope amount (x8)", ofRange(0, 1));
+    timeline.addCurves("lfo 2 rate", ofRange(0, 1));
+    timeline.addBangs("midi events");
+    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
+}
+
+void ofApp::update(){
+    noiseMaker.set(TALNoiseMaker_osc1volume, timeline.getValue("master osc 1 (pulse)"));
+    noiseMaker.set(TALNoiseMaker_osc2volume, timeline.getValue("master osc 2 (triangle)"));
+    noiseMaker.set(TALNoiseMaker_envelopeeditoramount, timeline.getValue("envelope amount (x8)"));
+    noiseMaker.set(TALNoiseMaker_lfo2rate, timeline.getValue("lfo 2 rate"));
+}
+
+void ofApp::bang(ofxTLBangEventArgs &amp;args) {
+    if(args.flag == "") {
+        chain.midi()-&gt;sendNoteOn(1, note);
+    } else {
+        chain.midi()-&gt;sendNoteOn(1, ofToInt(args.flag));
+    }
+}
+
+void ofApp::draw(){
+    manager.draw();
+    timeline.draw();
+}</code>
+    </pre>
+</div>
+<p class=description>Mixing oscillators, filter envelopes and LFO rates</p>
+<p>
+    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-28.png?raw=true" alt="Sketch 2015-06-28">
+    <audio controls>
+        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-28.mp3?raw=true" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</p>
+
+	</article>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-06-27</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-27-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-27>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 1000);
+    manager.setup();
+    manager.toggleDebugUI();
+    setupAudioUnits();
+    setupTimeline();
+
+    playing = false;
+    note = 60;
+}
+
+void ofApp::setupAudioUnits() {
+    manager.add(&amp;chain, "tal-one", ofColor::blue);
+    chain.link(&amp;noiseMaker).toMixer();
+    manager.loadPresets(&amp;chain);
+}
+
+void ofApp::setupTimeline() {
+    timeline.setup();
+    timeline.setLoopType(OF_LOOP_NORMAL);
+    timeline.setDurationInSeconds(30);
+    timeline.setOffset(ofVec2f(10, 450));
+    timeline.setWidth(ofGetWidth() - 400);
+    timeline.addCurves("osc crush bits", ofRange(0, 1));
+    timeline.addCurves("delay wet", ofRange(0, 1));
+    timeline.addCurves("delay time", ofRange(0, 1));
+    timeline.addBangs("midi events");
+    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
+}
+
+void ofApp::update(){
+    noiseMaker.set(TALNoiseMaker_oscbitcrusher, timeline.getValue("osc crush bits"));
+    noiseMaker.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
+    noiseMaker.set(TALNoiseMaker_delaytime, timeline.getValue("delay time"));
+}
+
+void ofApp::bang(ofxTLBangEventArgs &amp;args) {
+    if(args.flag == "") {
+        chain.midi()-&gt;sendNoteOn(1, note);
+    } else {
+        chain.midi()-&gt;sendNoteOn(1, ofToInt(args.flag));
+    }
+}
+
+void ofApp::draw(){
+    manager.draw();
+    timeline.draw();
+}</code>
+    </pre>
+</div>
+<p class=description>Playing with delay and the bit crusher</p>
+<p>
+    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-27.png?raw=true" alt="Sketch 2015-06-27">
+    <audio controls>
+        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-27.mp3?raw=true" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-06-26</h1>
 		</header>
 		<div class=code>
@@ -457,198 +704,6 @@ void ofApp::rotateScreen(float degrees) {
 </div>
 <p class=description>Textures and computer graphics</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-23.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-06-22</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-22-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-22>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    masker.setup();
-    layer1 = masker.newLayer();
-    image1.setup("cardboard.png", width, height, 1, TEXTURE_OFFSET_MIDDLE_CENTER);
-    image2.setup("cardboard-mask.png", width, height, 1, TEXTURE_OFFSET_MIDDLE_CENTER);
-}
-
-void ofApp::updateAnim(){
-    masker.beginLayer(layer1);
-    {
-        ofBackground(ofColor::black);
-        ofSetColor(ofColor::white);
-        image1.incrementTextureOffsetY(0.02);
-        image1.draw();
-    }
-    masker.endLayer(layer1);
-
-    masker.beginMask(layer1);
-    {
-        ofBackground(ofColor::black);
-        ofSetColor(ofColor::white);
-        image2.incrementTextureOffsetY(-0.02);
-        image2.draw();
-    }
-    masker.endMask(layer1);
-}
-
-void ofApp::drawAnim() {
-    ofBackground(ofColor::black);
-    ofSetColor(ofColor::white);
-    masker.draw();
-    if(ofGetFrameNum() == 100) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Overlaying the same texture as a mask</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-22.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-06-21</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-21-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-21>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    velocities[TEXTURE_OFFSET_TOP_RIGHT] = -0.004;
-    velocities[TEXTURE_OFFSET_MIDDLE_RIGHT] = 0.004;
-    velocities[TEXTURE_OFFSET_BOTTOM_RIGHT] = 0.004;
-    
-    image1.setup("cardboard.png", halfWidth, height, 1);
-    image2.setup("cardboard.png", -halfWidth, height, 1);
-    image2.setPlanePosition(width, 0);
-}
-
-void ofApp::updateAnim(){
-    if(ofGetFrameNum() % 10 == 0) {
-        lastOffset1 = getRandomOffset();
-        image1.setTextureOffset(lastOffset1);
-        lastOffset2 = getRandomOffset();
-        image2.setTextureOffset(lastOffset2);
-    }
-    image1.incrementTextureOffsetY(velocities[lastOffset1]);
-    image2.incrementTextureOffsetY(velocities[lastOffset2]);
-}
-
-void ofApp::drawAnim() {
-    ofBackground(ofColor::black);
-    image1.draw();
-    image2.draw();
-    if(ofGetFrameNum() == 70) {
-        renderGif();
-    }
-}
-
-ofxTexturePlaneOffset ofApp::getRandomOffset() {
-    switch((int)floor(ofRandom(3))) {
-        case 0:
-            return TEXTURE_OFFSET_TOP_RIGHT;
-        case 1:
-            return TEXTURE_OFFSET_MIDDLE_RIGHT;
-        case 2:
-            return TEXTURE_OFFSET_BOTTOM_RIGHT;
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Just moving textures around.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-21.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-06-20</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-20-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-20>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    leafVertical.setup("leaf-vertical.png", width, height, 1, TEXTURE_OFFSET_MIDDLE_CENTER);
-    leafDiagonal.setup("leaf-diagonal.png", width, height, 4, TEXTURE_OFFSET_MIDDLE_CENTER);
-    leafStar.setup("leaf-star.png", width, height, 2, TEXTURE_OFFSET_MIDDLE_CENTER);
-    planes.push_back(&amp;leafVertical);
-    planes.push_back(&amp;leafDiagonal);
-    planes.push_back(&amp;leafStar);
-
-    mask1.setup("mask-texture-1.png", width, height, 8, TEXTURE_OFFSET_MIDDLE_CENTER);
-    masks.push_back(&amp;mask1);
-    mask2.setup("mask-texture-2.png", width, height, 10, TEXTURE_OFFSET_MIDDLE_CENTER);
-    masks.push_back(&amp;mask2);
-
-    numLayers = 2;
-    layerIds = masker.setup(width, height, numLayers);
-    increment = 0.02;
-}
-
-void ofApp::updateAnim(){
-    leafStar.incrementTextureOffsetY(increment);
-
-    for(int i = 0; i &lt; numLayers; i++) {
-        masker.beginLayer(layerIds.at(i));
-        {
-            scale1 = ofMap(sin(ofGetFrameNum() * increment), -1, 1, 0.7, 5);
-            scale2 = ofMap(cos(ofGetFrameNum() * increment), -1, 1, 2.5, 4);
-            ofSetColor(ofColor::red, alpha);
-            planes.at(i)-&gt;incrementTextureOffsetY(i % 2 == 0 ? increment : -increment);
-            planes.at(i)-&gt;setTextureScale(i % 2 == 0 ? scale1 : scale2);
-            planes.at(i)-&gt;draw();
-        }
-        masker.endLayer(layerIds.at(i));
-
-        masker.beginMask(layerIds.at(i));
-        {
-            maskIncrement = ofGetFrameNum() * ((i % 2) - 0.5) * 0.125;
-            maskIncrement = ofMap(sin(maskIncrement), 1, -1, 0.001, -0.001);
-            if(i % 2 == 1) maskIncrement *= 5;
-            
-            scale1 = ofMap(sin(ofGetFrameNum() * increment), -1, 1, 3, 9);
-            scale2 = ofMap(cos(ofGetFrameNum() * increment), -1, 1, 6, 12);
-
-            ofBackground(ofColor::black);
-            ofSetColor(ofColor::white);
-            masks.at(i)-&gt;incrementTextureOffsetY(maskIncrement);
-            masks.at(i)-&gt;setTextureScale(i % 2 == 0 ? scale1 : scale2);
-            masks.at(i)-&gt;draw();
-        }
-        masker.endMask(layerIds.at(i));
-    }
-}
-
-void ofApp::drawAnim() {
-    alpha = ofGetFrameNum() == 0 || ofRandom(1) &gt; 0.5 ? 255 : 128;
-    ofSetColor(ofColor::red, alpha);
-    leafStar.draw();
-
-    ofSetColor(ofColor::white);
-    masker.draw();
-    if(ofGetFrameNum() == numFrames) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Leaves</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-20.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

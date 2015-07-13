@@ -30,6 +30,265 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-06-08</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-08-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-08>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    shapeSystem.setup();
+    shape1.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
+    shape2.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
+    shape3.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
+    shape4.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
+
+    shape1.setPosition(halfWidth*0.5, halfHeight*0.5);
+    shapeSystem.add(shape1);
+    
+    shape2.setPosition(halfWidth*0.5+halfWidth, halfHeight*0.5);
+    shapeSystem.add(shape2);
+    
+    shape3.setPosition(halfWidth*0.5, halfHeight*0.5+halfHeight);
+    shapeSystem.add(shape3);
+    
+    shape4.setPosition(halfWidth*0.5+halfHeight, halfHeight*0.5+halfHeight);
+    shapeSystem.add(shape4);
+    
+    masker.setup(width, height);
+    layerId = masker.newLayer();
+    
+    ofDisableArbTex();
+    offset = ofRandom(3);
+    setupImage("foil.png", &amp;img, &amp;tex);
+
+    plane.set(width, height);
+    plane.setPosition(halfWidth, halfHeight, 0);
+    plane.setResolution(2, 2);
+}
+
+void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
+    img-&gt;loadImage(file);
+    *tex = img-&gt;getTextureReference();
+    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+}
+
+void ofApp::drawLayer(ofTexture *tex) {
+    plane.mapTexCoords(tx0, ty0, tx1, ty1);
+    plane.mapTexCoords(tx1, ty1, tx0, ty0);
+    tex-&gt;bind();
+    plane.draw();
+    tex-&gt;unbind();
+}
+
+void ofApp::updateAnim(){
+    masker.beginLayer(layerId);
+    if(ofRandom(1) &gt; 0.4) ofBackground(ofColor::black);
+    ofSetColor(ofColor::red);
+    tx0 = -ofGetFrameNum() * 0.00006 + offset + ofRandom(-0.09, 0.09);
+    ty0 = ofGetFrameNum() * 0.005;
+    tx1 = tx0 - 1;
+    ty1 = ty0 - 0.25;
+    drawLayer(&amp;tex);
+    masker.endLayer(layerId);
+    
+    masker.beginMask(layerId);
+    ofBackground(ofColor::black);
+    if(ofGetFrameNum() == 0 || ofRandom(1) &gt; 0.2) {
+        ofSetColor(ofColor::white, 32);
+        for(int i = 0; i &lt; 30; i++) {
+            ofTriangle(ofRandom(-width, width*2), ofRandom(-height, height*2),
+                       ofRandom(-width, width*2), ofRandom(-height, height*2),
+                       ofRandom(-width, width*2), ofRandom(-height, height*2));
+        }
+    } else if(ofRandom(1) &gt; 0.15) {
+        offset = ofRandom(3);
+    }
+    masker.endMask(layerId);
+}
+
+void ofApp::drawAnim() {
+    if(ofRandom(1) &gt; 0.4) ofBackground(ofColor::black);
+    ofSetColor(ofColor::white);
+
+    tx0 = ofGetFrameNum() * 0.00006 + offset;
+    tx1 = tx0 - 1;
+    
+    ofTranslate(-halfWidth, -halfHeight, 0);
+    drawLayer(&amp;tex);
+    masker.draw();
+    
+    ofTranslate(width, 0, 0);
+    drawLayer(&amp;tex);
+    masker.draw();
+    
+    ofTranslate(0, height, 0);
+    drawLayer(&amp;tex);
+    masker.draw();
+    
+    ofTranslate(-width, 0, 0);
+    drawLayer(&amp;tex);
+    masker.draw();
+    
+    ofTranslate(halfWidth, -halfHeight, 0);
+    shapeSystem.draw();
+    
+    if(ofGetFrameNum() == 72) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>A continued exploration of texture</p>
+<p><img class=no-frame src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-08.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-06-07</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-07-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-07>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    size = 60;
+    margin = width - size;
+    halfMargin = margin * 0.5;
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::white);
+    
+    ofSetColor(ofColor::black, 10);
+    for(int i = 0; i &lt; 1400; i++) {
+        x = width * 0.5 - size * 0.5 + (ofRandom(margin) - halfMargin);
+        y = floor(ofRandom(height/size)) * size;
+        ofRect(x, y, size, size);
+    }
+    
+    ofSetColor(ofColor::white, 64);
+    for(int i = 0; i &lt; height/size; i++) {
+        ofRect(halfMargin, i * size + size * 0.5, width - margin, 4);
+    }
+    
+    ofSetColor(ofColor::white, 64);
+    for(int i = -height; i &lt; height; i++) {
+        ofRect(halfMargin, (i * size * 0.5) + ofGetFrameNum(), width - margin, 4);
+        ofRect(halfMargin, (i * size * 0.5) - ofGetFrameNum(), width - margin, 4);
+    }
+    
+    if(ofGetFrameNum() == 30) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Running out of time.</p>
+<p><img class=no-frame src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-07.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-06-06</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-06-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-06>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofDisableArbTex();
+    setupImage("surface.png", &amp;img, &amp;tex);
+
+    plane.setResolution(2, 2);
+    
+    offset.set(1, 0.04);
+}
+
+void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
+    img-&gt;loadImage(file);
+    *tex = img-&gt;getTextureReference();
+    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+}
+
+void ofApp::drawLayer(ofTexture *tex) {
+    tx0 = offset.x;
+    ty0 = offset.y;
+    tx1 = tx0 - 0.66666668;
+    ty1 = ty0 - 1;
+    plane.setPosition(halfWidth, halfHeight, 0);
+    plane.set(width, height);
+    plane.mapTexCoords(tx0, ty0, tx1, ty1);
+    plane.mapTexCoords(tx1, ty1, tx0, ty0);
+    tex-&gt;bind();
+    plane.draw();
+    tex-&gt;unbind();
+}
+
+void ofApp::drawLayer2(ofTexture *tex) {
+    tx0 = offset.x - (0.66666668 * 0.5);
+    ty0 = offset.y -0.5;
+    tx1 = tx0 - (0.66666668 * 0.5);
+    ty1 = ty0 - 0.5;
+    plane.setPosition(halfWidth*0.5, halfHeight*0.5, 0);
+    plane.set(halfWidth, halfHeight);
+    plane.mapTexCoords(tx0, ty0, tx1, ty1);
+    plane.mapTexCoords(tx1, ty1, tx0, ty0);
+    tex-&gt;bind();
+    plane.draw();
+    tex-&gt;unbind();
+}
+
+void ofApp::rotateScreen(float degrees, int amount) {
+    ofTranslate(amount, amount, 0);
+    ofRotate(degrees);
+    ofTranslate(-amount, -amount, 0);
+}
+
+void ofApp::updateAnim(){
+    offset.x += 0.02;
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::black);
+    ofSetColor(ofColor::wheat);
+    
+    
+    offset.y = 0.02;
+    drawLayer(&amp;tex);
+    rotateScreen(90, halfWidth);
+    drawLayer(&amp;tex);
+    rotateScreen(90, halfHeight);
+    drawLayer(&amp;tex);
+    rotateScreen(90, halfWidth);
+    drawLayer(&amp;tex);
+    rotateScreen(90, halfHeight);
+    drawLayer2(&amp;tex); //cover up
+
+    if(ofGetFrameNum() == 100) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Folded like the top of a cardbaord box</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-06.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-06-05</h1>
 		</header>
 		<div class=code>
@@ -337,230 +596,6 @@ void ofApp::update(){
 <audio controls>
 	<source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-02.mp3?raw=true" type="audio/mpeg">
 	Your browser does not support the audio element.
-</audio>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-06-01</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-01-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-01>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    manager.setup();
-    manager.toggleDebugUI();
-
-    playing = true;
-    note = 60;
-    
-    for(int i = 0; i &lt; 4; i++){
-        chains.push_back(chain);
-    }
-    
-    for(int i = 0; i &lt; chains.size(); i++){
-        manager.add(&amp;chains.at(i), "tal-" + ofToString(i), ofColor::fromHsb((i * 255 / chains.size()), 255, 255));
-        chains.at(i).midi()-&gt;sendNoteOn(1, note);
-    }
-    
-    bpm.setBpm(160);
-    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
-    bpm.start();
-}
-
-void ofApp::play(void){
-    if(playing) {
-        for(int i = 0; i &lt; chains.size(); i++){
-            val = currentChain == i ? 1 : 0;
-            chains.at(i).getSynth()-&gt;set(TALNoiseMaker_volume, val);
-        }
-
-        currentChain = currentChain == chains.size() - 1 ? 0 : currentChain + 1;
-    }
-}
-
-void ofApp::togglePlaying() {
-    playing = !playing;
-    if(!playing) {
-        for(int i = 0; i &lt; chains.size(); i++){
-            chains.at(i).midi()-&gt;sendNoteOff(1, note);
-        }
-    }
-}
-
-void ofApp::update(){
-    manager.update();
-    
-    val = ofMap(cos(ofGetFrameNum() * 0.04), -1, 1, 0, 1);
-    chains.at(0).getSynth()-&gt;set(TALNoiseMaker_osc1tune, val);
-}</code>
-    </pre>
-</div>
-<p class=description>Time-indexed volume distribution between 4 chains</p>
-<audio controls>
-    <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-01.mp3?raw=true" type="audio/mpeg">
-    Your browser does not support the audio element.
-</audio>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-05-31</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-31-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-31>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    manager.setup();
-    manager.toggleDebugUI();
-    manager.add(&amp;chain1, "tal-one", ofColor::blue);
-    manager.add(&amp;chain2, "tal-two", ofColor::blue);
-
-    playing = false;
-    note = 60;
-    
-    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
-    bpm.start();
-    chain1.midi()-&gt;sendNoteOn(1, note);
-    chain2.midi()-&gt;sendNoteOn(1, note);
-}
-
-void ofApp::play(void){
-    if(playing) {
-        if(currentChain == 1) {
-            chain1.getSynth()-&gt;set(TALNoiseMaker_volume, -10);
-            chain2.getSynth()-&gt;set(TALNoiseMaker_volume, 0);
-            currentChain = 2;
-        } else {
-            chain1.getSynth()-&gt;set(TALNoiseMaker_volume, 0);
-            chain2.getSynth()-&gt;set(TALNoiseMaker_volume, -10);
-            currentChain = 1;
-        }
-    }
-}
-
-void ofApp::togglePlaying() {
-    playing = !playing;
-    if(!playing) {
-        chain1.midi()-&gt;sendNoteOff(1, note);
-    }
-}
-
-void ofApp::update(){
-    manager.update();
-    
-    //Animate everythung based on sin()
-    val = ofMap(sin(ofGetFrameNum() * 0.03), -1, 1, 0.4, 0.6);
-    chain1.getSynth()-&gt;set(TALNoiseMaker_lfo2rate, val);
-    
-    val = ofMap(sin(ofGetFrameNum() * 0.06), -1, 1, 0.3, 0.8);
-    chain1.getSynth()-&gt;set(TALNoiseMaker_envelopeeditoramount, val);
-    
-    val = ofMap(sin(ofGetFrameNum() * 0.45), -1, 1, 6900, 4000);
-    chain1.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
-    
-    val = ofMap(sin(ofGetFrameNum() * 0.2), -1, 1, 10, 26);
-    chain1.getFilter()-&gt;set(kLowPassParam_Resonance, val);
-    
-    //Exactly the same, but with cos()
-    val = ofMap(cos(ofGetFrameNum() * 0.03), -1, 1, 0.4, 0.6);
-    chain2.getSynth()-&gt;set(TALNoiseMaker_lfo2rate, val);
-    
-    val = ofMap(cos(ofGetFrameNum() * 0.06), -1, 1, 0.3, 0.8);
-    chain2.getSynth()-&gt;set(TALNoiseMaker_envelopeeditoramount, val);
-    
-    val = ofMap(cos(ofGetFrameNum() * 0.45), -1, 1, 6900, 4000);
-    chain2.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
-    
-    val = ofMap(cos(ofGetFrameNum() * 0.2), -1, 1, 10, 26);
-    chain2.getFilter()-&gt;set(kLowPassParam_Resonance, val);
-}</code>
-    </pre>
-</div>
-<p class=description>A simple adjustment, oscillating between two synths</p>
-<audio controls>
-    <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-31.mp3?raw=true" type="audio/mpeg">
-    Your browser does not support the audio element.
-</audio>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-05-30</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-30-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-30>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>ofxAudioUnitManager manager;
-TALNoiseMakerChain talChain;
-ofxBpm bpm;
-
-void ofApp::setup(){
-    manager.setup();
-    manager.toggleDebugUI();
-    manager.add(&amp;talChain, "tal-one", ofColor::blue);
-
-    playing = false;
-    note = 60;
-    
-    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
-    bpm.start();
-    talChain.getFilter()-&gt;getUnit()-&gt;printParameterList();
-}
-
-void ofApp::play(void){
-    if(playing) {
-        talChain.midi()-&gt;sendNoteOn(1, note);
-    }
-}
-
-void ofApp::togglePlaying() {
-    playing = !playing;
-    if(!playing) {
-        talChain.midi()-&gt;sendNoteOff(1, note);
-    }
-}
-
-void ofApp::update(){
-    manager.update();
-
-    val = ofMap(sin(ofGetFrameNum() * 0.03), -1, 1, 0.4, 0.6);
-    talChain.getSynth()-&gt;set(TALNoiseMaker_lfo2rate, val);
-
-    val = ofMap(sin(ofGetFrameNum() * 0.06), -1, 1, 0.3, 0.8);
-    talChain.getSynth()-&gt;set(TALNoiseMaker_envelopeeditoramount, val);
-
-    val = ofMap(sin(ofGetFrameNum() * 0.45), -1, 1, 6900, 4000);
-    talChain.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
-
-    val = ofMap(sin(ofGetFrameNum() * 0.2), -1, 1, 10, 26);
-    talChain.getFilter()-&gt;set(kLowPassParam_Resonance, val);
-}
-
-void ofApp::draw(){
-    manager.draw();
-}</code>
-    </pre>
-</div>
-<p class=description>First sound sketch. The result of a long journey <a href=https://github.com/microcosm/ofxAudioUnitManager>finishing my own tools</a>.</p>
-<audio controls>
-    <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-30.mp3?raw=true" type="audio/mpeg">
-    Your browser does not support the audio element.
 </audio>
 
 	</article>

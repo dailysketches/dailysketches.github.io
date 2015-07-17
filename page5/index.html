@@ -30,6 +30,200 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-06-19</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-19-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-19>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    timeline.setOutPointAtFrame(48);
+    timeline.addCurves("layer-1-alpha", ofRange(0, 255));
+    timeline.addCurves("layer-2-alpha", ofRange(0, 255));
+    timeline.addCurves("layer-3-alpha", ofRange(0, 255));
+    timeline.addCurves("layer-1-scale", ofRange(1, 4));
+    timeline.addCurves("layer-2-scale", ofRange(1, 4));
+    timeline.addCurves("layer-3-scale", ofRange(1, 4));
+    timeline.addCurves("layer-1-x", ofRange(0, 1));
+    timeline.addCurves("layer-1-y", ofRange(0, 1));
+    timeline.addCurves("layer-2-x", ofRange(0, 1));
+    timeline.addCurves("layer-2-y", ofRange(0, 1));
+    timeline.addCurves("layer-3-x", ofRange(0, 1));
+    timeline.addCurves("layer-3-y", ofRange(0, 1));
+    timeline.togglePlay();
+
+    leafVertical.setup("leaf-vertical.png", width, height, 2, TEXTURE_OFFSET_BOTTOM_RIGHT);
+    leafDiagonal.setup("leaf-diagonal.png", width, height, 2, TEXTURE_OFFSET_BOTTOM_RIGHT);
+    leafStar.setup("leaf-star.png", width, height, 2, TEXTURE_OFFSET_MIDDLE_CENTER);
+    planes.push_back(&amp;leafVertical);
+    planes.push_back(&amp;leafDiagonal);
+    planes.push_back(&amp;leafStar);
+
+    masker.setup(width, height);
+    masker.newLayer();
+    masker.newLayer();
+    masker.newLayer();
+}
+
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; planes.size(); i++) {
+        ID = ofToString(i+1);
+        alpha = timeline.getValue("layer-" + ID + "-alpha");
+        scale = timeline.getValue("layer-" + ID + "-scale");
+        position.x = timeline.getValue("layer-" + ID + "-x");
+        position.y = timeline.getValue("layer-" + ID + "-y");
+        masker.beginLayer(i);
+        {
+            ofSetColor(ofColor::white);
+            planes.at(i)-&gt;setTextureScale(scale);
+            planes.at(i)-&gt;setTexturePosition(position.x, position.y);
+            planes.at(i)-&gt;draw();
+        }
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        {
+            ofBackground(ofColor::black);
+            ofSetColor(ofColor::white, alpha);
+            ofRect(0, 0, width, height);
+        }
+        masker.endMask(i);
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::black);
+    ofSetColor(ofColor::white);
+    masker.draw();
+    if(ofGetFrameNum() == 48) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Sometimes it doesn't look like much has changed. But the movements in this sketch are based on a series of improvements to <a href=https://github.com/microcosm/ofxTexturePlane>ofxTexturePlane</a>, and the integration of <a href=https://github.com/YCAMInterlab/ofxTimeline>ofxTimeline</a> - opening up new possibilities going forward.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-19.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-06-18</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-18-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-18>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    masker.setup();
+    layer1 = masker.newLayer();
+    layer2 = masker.newLayer();
+    layer3 = masker.newLayer();
+
+    leafVertical.setup("leaf-vertical.png", 2, TEXTURE_OFFSET_BOTTOM_RIGHT);
+    leafDiagonal.setup("leaf-diagonal.png", 2, TEXTURE_OFFSET_BOTTOM_RIGHT);
+    leafStar.setup("leaf-star.png", 2, TEXTURE_OFFSET_MIDDLE_CENTER);
+    
+    layer1Alpha = 0;
+    layer2Alpha = 0;
+    layer3Alpha = 0;
+}
+
+void ofApp::updateAnim() {
+    masker.beginLayer(layer1);
+    {
+        ofSetColor(ofColor::white);
+        leafVertical.incrementTextureScale(0.02);
+        leafVertical.incrementTextureOffset(0.01, 0.025);
+        leafVertical.draw();
+    }
+    masker.endLayer(layer1);
+
+    masker.beginMask(layer1);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white, animateAlpha(0, 13, layer1Alpha));
+        ofRect(0, 0, width, height);
+    }
+    masker.endMask(layer1);
+    
+    masker.beginLayer(layer2);
+    {
+        ofSetColor(ofColor::white);
+        if(ofGetFrameNum() &gt; 21) {
+            leafDiagonal.incrementTextureScale(-0.04);
+            leafDiagonal.incrementTextureOffset(0.016, 0.016);
+        }
+        leafDiagonal.draw();
+    }
+    masker.endLayer(layer2);
+    
+    masker.beginMask(layer2);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white, animateAlpha(21, 39, layer2Alpha));
+        ofRect(0, 0, width, height);
+    }
+    masker.endMask(layer2);
+    
+    masker.beginLayer(layer3);
+    {
+        ofSetColor(ofColor::white);
+        if(ofGetFrameNum() &gt; 36) {
+            leafStar.incrementTextureScale(-0.04);
+            leafStar.incrementTextureOffset(0.001, 0.001);
+        }
+        leafStar.draw();
+    }
+    masker.endLayer(layer3);
+    
+    masker.beginMask(layer3);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white, animateAlpha(36, 50, layer3Alpha));
+        ofRect(0, 0, width, height);
+    }
+    masker.endMask(layer3);
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::black);
+    ofSetColor(ofColor::white);
+
+    masker.draw();
+    masker.drawOverlay();
+
+    if(ofGetFrameNum() &gt; 40 &amp;&amp; layer3Alpha &lt;= 0) {
+        renderGif();
+    }
+}
+
+float ofApp::animateAlpha(int fromFrame, int toFrame, float &amp;alpha) {
+    if(ofGetFrameNum() &gt; fromFrame &amp;&amp; ofGetFrameNum() &lt;= toFrame &amp;&amp; alpha &lt; 255) {
+        alpha += 30;
+    }
+    
+    if(ofGetFrameNum() &gt; toFrame &amp;&amp; alpha &gt; 0) {
+        alpha -= 30;
+    }
+    
+    return alpha;
+}</code>
+    </pre>
+</div>
+<p class=description>Developing the texture planing toolkit...</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-18.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-06-17</h1>
 		</header>
 		<div class=code>
@@ -519,185 +713,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>What on earth is going on with these masks?</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-13.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-06-12</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-12-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-12>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    shapeSystem.setup();
-    shape1.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
-    shape2.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
-    shape3.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
-    shape4.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
-
-    shape1.setPosition(halfWidth*0.5, halfHeight*0.5);
-    shapeSystem.add(shape1);
-    
-    shape2.setPosition(halfWidth*0.5+halfWidth, halfHeight*0.5);
-    shapeSystem.add(shape2);
-    
-    shape3.setPosition(halfWidth*0.5, halfHeight*0.5+halfHeight);
-    shapeSystem.add(shape3);
-    
-    shape4.setPosition(halfWidth*0.5+halfHeight, halfHeight*0.5+halfHeight);
-    shapeSystem.add(shape4);
-    
-    masker.setup(width, height);
-    layer1 = masker.newLayer();
-    layer2 = masker.newLayer();
-    
-    ofDisableArbTex();
-    offset = ofRandom(3);
-    setupImage("foil.png", &amp;img1, &amp;tex1);
-    setupImage("glass.png", &amp;img2, &amp;tex2);
-
-    plane.set(width, height);
-    plane.setPosition(halfWidth, halfHeight, 0);
-    plane.setResolution(2, 2);
-}
-
-void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
-    img-&gt;loadImage(file);
-    *tex = img-&gt;getTextureReference();
-    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
-}
-
-void ofApp::drawLayer(ofTexture *tex) {
-    plane.mapTexCoords(tx0, ty0, tx1, ty1);
-    plane.mapTexCoords(tx1, ty1, tx0, ty0);
-    tex-&gt;bind();
-    plane.draw();
-    tex-&gt;unbind();
-}
-
-void ofApp::updateAnim(){
-    masker.beginLayer(layer1);
-    if(ofRandom(1) &gt; 0.4) ofBackground(ofColor::black);
-    ofSetColor(ofColor::white);
-    tx0 = -ofGetFrameNum() * 0.00006 + offset + ofRandom(-0.09, 0.09);
-    ty0 = ofGetFrameNum() * 0.005;
-    tx1 = tx0 - 1;
-    ty1 = ty0 - 0.25;
-    drawLayer(&amp;tex1);
-    masker.endLayer(layer1);
-    
-    masker.beginMask(layer1);
-    ofBackground(ofColor::black);
-    if(ofGetFrameNum() == 0 || ofRandom(1) &gt; 0.2) {
-        ofSetColor(ofColor::white, 32);
-        for(int i = 0; i &lt; 30; i++) {
-            ofTriangle(ofRandom(-width, width*2), ofRandom(-height, height*2),
-                       ofRandom(-width, width*2), ofRandom(-height, height*2),
-                       ofRandom(-width, width*2), ofRandom(-height, height*2));
-        }
-    } else if(ofRandom(1) &gt; 0.15) {
-        offset = ofRandom(3);
-    }
-    masker.endMask(layer1);
-    
-    masker.beginMask(layer2);
-    if(ofRandom(1) &gt; 0.4) ofBackground(ofColor::black);
-    ofSetColor(ofColor::white);
-    
-    tx0 = ofGetFrameNum() * 0.00006 + offset;
-    tx1 = tx0 - 1;
-    
-    ofTranslate(-halfWidth, -halfHeight, 0);
-    drawLayer(&amp;tex1);
-    masker.drawLayer(layer1);
-    
-    ofTranslate(width, 0, 0);
-    drawLayer(&amp;tex1);
-    masker.drawLayer(layer1);
-    
-    ofTranslate(0, height, 0);
-    drawLayer(&amp;tex1);
-    masker.drawLayer(layer1);
-    
-    ofTranslate(-width, 0, 0);
-    drawLayer(&amp;tex1);
-    masker.drawLayer(layer1);
-    
-    ofTranslate(halfWidth, -halfHeight, 0);
-    shapeSystem.draw();
-    masker.endMask(layer2);
-
-    masker.beginLayer(layer2);
-    ofSetColor(ofColor::white, 32);
-    tx0 = ofGetFrameNum() * 0.005;
-    ty0 = -ofGetFrameNum() * 0.00006 + offset + ofRandom(-0.09, 0.09);
-    tx1 = tx0 - 0.25;
-    ty1 = ty0 - 1;
-    drawLayer(&amp;tex2);
-    masker.endLayer(layer2);
-}
-
-void ofApp::drawAnim() {
-    ofBackground(ofColor::black);
-    
-    masker.draw();
-    
-    if(ofGetFrameNum() == 72) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>The texture from a few days ago, but with a new masking technique</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-12.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-06-11</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-11-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-11>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    fontSize = 64;
-    loadFonts();
-    quarterHeight = halfHeight * 0.5;
-}
-
-void ofApp::updateAnim(){
-    if(ofGetFrameNum() % 3 == 0) {
-        random_shuffle(fonts.begin(), fonts.end());
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(ofColor::black);
-    ofSetColor(ofColor::white);
-
-    ofSetRectMode(OF_RECTMODE_CENTER);
-    fonts.at(0).drawStringCentered("THREE", halfWidth, quarterHeight);
-    fonts.at(1).drawStringCentered("DAYS", halfWidth, halfHeight + quarterHeight);
-    ofSetRectMode(OF_RECTMODE_CORNER);
-
-    if(ofGetFrameNum() == 60) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Three days...</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-11.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

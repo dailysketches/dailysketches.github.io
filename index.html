@@ -30,6 +30,173 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-07-17</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-17-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-17>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 800);
+    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 50, 150, 500, 500);
+    masker.setup(500, 500, 5, ISOLATE_LAYERS);
+    masker.toggleOverlay();
+
+    face.setup(&quot;face.png&quot;, 500, 500, 1.0, TEXTURE_OFFSET_MIDDLE_CENTER);
+    wall.setup(&quot;foil4.png&quot;, 500, 500, 1.0);
+    wallMask.setup(&quot;card-invert-wall.png&quot;, 500, 500, 1.0);
+    for(int i = 0; i &lt; 4; i++) {
+        walls.push_back(wall);
+        wallMasks.push_back(wallMask);
+    }
+}
+
+void ofApp::update(){
+    float sine = sin(ofGetFrameNum() * 0.05);
+    alpha = ofMap(sine, -1, 1, 20, 220);
+    
+    for(int i = 0; i &lt; 4; i++) {
+        masker.beginLayer(i);
+        {
+            gif.rotateAroundCenter(i * 90);
+            walls.at(i).incrementTextureOffsetY(-0.02);
+            walls.at(i).setTextureScale(ofMap(sine, -1, 1, 1.0, 4.0));
+            ofSetColor(i % 2 == 0 ? ofColor(ofColor::red, alpha) : ofColor(ofColor::white, alpha));
+            walls.at(i).draw();
+        }
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        {
+            ofSetColor(ofColor::white);
+            gif.rotateAroundCenter(i * 90);
+            wallMasks.at(i).setTextureScale(ofMap(sine, -1, 1, 0.5, 0.5));
+            wallMasks.at(i).incrementTextureOffsetY(-0.05);
+            wallMasks.at(i).draw();
+            if(i == 0) {
+                ofSetColor(ofColor::black);
+                ofRect(0, gif.halfHeight, gif.width, gif.halfHeight);
+            }
+        }
+        masker.endMask(i);
+    }
+    
+    masker.beginLayer(4);
+    {
+        ofSetColor(ofColor(ofColor::red, alpha));
+        walls.at(0).draw();
+    }
+    masker.endLayer(4);
+    
+    masker.beginMask(4);
+    {
+        wallMasks.at(0).draw();
+        ofSetColor(ofColor::black);
+        ofRect(0, 0, gif.width, gif.halfHeight);
+    }
+    masker.endMask(4);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    ofPushStyle();
+    {
+        ofEnableAlphaBlending();
+        if(ofGetFrameNum() == 0) {
+            ofBackground(ofColor::black);
+        }
+        if(ofRandom(1) &gt; ofMap(alpha, 0, 255, 0.7, 1)) {
+            ofSetColor(ofColor(ofColor::white, 255-alpha));
+            face.setTextureOffset(TEXTURE_OFFSET_MIDDLE_CENTER);
+            face.incrementTextureOffset(ofRandom(-0.05, 0.05), ofRandom(-0.5, 0.5));
+            face.draw();
+        } else {
+            ofSetColor(ofColor(ofColor::black, alpha));
+            ofRect(0, 0, gif.width, gif.height);
+        }
+        masker.draw();
+        ofDisableAlphaBlending();
+    }
+    ofPopStyle();
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>That weird illusion thing again with 'impossible' walls.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-17.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-07-16</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-16-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-16>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 800);
+    gif.setup(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 64, 500, 500);
+    masker.setup(500, 500, 1);
+    masker.toggleOverlay();
+    foil.setup(&quot;foil1.png&quot;, 500, 500, 2.0, TEXTURE_OFFSET_MIDDLE_CENTER);
+    glass.setup(&quot;glass1-inverted.png&quot;, 500, 500, 1.0, TEXTURE_OFFSET_MIDDLE_CENTER);
+}
+
+void ofApp::update(){
+    masker.beginLayer(0);
+    {
+        foil.setTexturePosition(ofRandom(2), ofRandom(2));
+        foil.setTextureScale(ofRandom(1.0, 6.0));
+        ofSetColor(ofColor::red);
+        foil.draw();
+    }
+    masker.endLayer(0);
+
+    masker.beginMask(0);
+    {
+        glass.setTexturePosition(ofRandom(2), ofRandom(2));
+        glass.setTextureScale(ofRandom(1.0, 6.0));
+        ofBackground(ofColor::white);
+        if(ofRandom(1) &gt; 0.25) {
+            ofSetColor(ofColor(ofColor::white, 120));
+            glass.draw();
+        }
+    }
+    masker.endMask(0);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    ofPushStyle();
+    {
+        ofBackground(ofColor::white);
+        ofSetColor(ofColor::white);
+        masker.draw();
+    }
+    ofPopStyle();
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>Forced to stay awake</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-16.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-07-15</h1>
 		</header>
 		<div class=code>
@@ -550,148 +717,6 @@ void ofApp::draw(){
 </div>
 <p class=description>I'm pretty sure this is what I was trying to do yesterday</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-11.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-07-10</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-10-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-10>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(500, 500);
-    gif.setupPaused(ofGetTimestampString("out/%Y-%m-%d"), 40, 80);
-    masker.setup(1);
-    image.setup("road.png");
-    image.setTexturePositionY(0.5);
-    transp.setup("road-transp.png");
-    goingUp = true;
-    directionChanged = true;
-    position = 0.5;
-}
-
-void ofApp::update(){
-    masker.beginLayer(0);
-    {
-        image.incrementTextureOffsetY(0.05);
-        image.draw();
-    }
-    masker.endLayer(0);
-    
-    masker.beginMask(0);
-    {
-        if(ofRandom(1) &gt; 0.6) {
-            goingUp = !goingUp;
-            directionChanged = true;
-        }
-        
-        if(directionChanged) {
-            alpha = 255;
-            directionChanged = false;
-        } else {
-            alpha = 32;
-        }
-        position += goingUp ? 0.01 : -0.01;
-        transp.setTexturePositionY(position);
-        
-        ofSetColor(ofColor::white, alpha);
-        if(ofGetFrameNum() == 0) {
-            ofSetColor(ofColor::black);
-        }
-        ofRect(0, 0, gif.width, gif.height);
-        ofSetColor(ofColor::white);
-        transp.draw();
-    }
-    masker.endMask(0);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        masker.draw();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Bringing the texture to the front</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-10.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-07-09</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-09-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-09>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 900);
-    bpm = 90;
-    playing = false;
-
-    utils.setup();
-    manager.setup();
-    manager.toggleDebugUI();
-    setupAudioUnits();
-    setupTimeline();
-}
-
-void ofApp::setupAudioUnits() {
-    noiseMaker1.setup('aumu', 'ncut', 'TOGU', AU_TYPE_SYNTH, "TALNoiseMaker");
-    manager.add(&amp;chain1, "tal-one", ofColor::blue);
-    chain1.link(&amp;noiseMaker1).toMixer();
-    manager.loadPresets(&amp;chain1);
-}
-
-void ofApp::setupTimeline() {
-    timeline.setup();
-    timeline.setLoopType(OF_LOOP_NORMAL);
-    timeline.setShowBPMGrid(true);
-    timeline.enableSnapToBPM(true);
-    timeline.setBPM(bpm);
-    timeline.setDurationInSeconds(36);
-    timeline.setOffset(ofVec2f(10, 480));
-    timeline.setWidth(ofGetWidth() - 400);
-    timeline.addCurves("filter cutoff");
-    timeline.addSwitches("midi events");
-    ofAddListener(timeline.events().switched, this, &amp;ofApp::switchFired);
-}
-
-void ofApp::update(){
-    noiseMaker1.set(TALNoiseMaker_cutoff, timeline.getValue("filter cutoff"));
-}
-
-void ofApp::switchFired(ofxTLSwitchEventArgs &amp;args) {
-    string command = args.switchName + (args.on ? " ON" : " OFF");
-    cout &lt;&lt; endl &lt;&lt; ofGetTimestampString() &lt;&lt; endl;
-    cout &lt;&lt; "switch fired: " &lt;&lt; command &lt;&lt; endl;
-    utils.executeMidiCommand(command, chain1.midi());
-}</code>
-    </pre>
-</div>
-<p class=description>Weird tubular sound</p>
-<p>
-	<img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-09.png?raw=true" alt="Sketch 2015-07-09">
-	<audio controls>
-		<source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-09.mp3?raw=true" type="audio/mpeg">
-		Your browser does not support the audio element.
-	</audio>
-</p>
-
 
 	</article>
 	

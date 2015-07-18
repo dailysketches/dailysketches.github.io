@@ -33,10 +33,12 @@
 	<nav role=navigation>
 		<h1>Navigation</h1>
 		<ul>
-			<li>All sketches</li>
-			<li><a href="/selected/">Selected sketches</a></li>
+			<li><a href="/">All sketches</a></li>
+			<li>Selected sketches</li>
 		</ul>
 	</nav>
+	
+	
 	
 	<article>
 		<header>
@@ -110,172 +112,13 @@ void ofApp::draw(){
 
 	</article>
 	
-	<article>
-		<header>
-			<h1>Sketch 2015-07-17</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-17-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-17>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 800);
-    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 50, 150, 500, 500);
-    masker.setup(500, 500, 5, ISOLATE_LAYERS);
-    masker.toggleOverlay();
-
-    face.setup(&quot;face.png&quot;, 500, 500, 1.0, TEXTURE_OFFSET_MIDDLE_CENTER);
-    wall.setup(&quot;foil4.png&quot;, 500, 500, 1.0);
-    wallMask.setup(&quot;card-invert-wall.png&quot;, 500, 500, 1.0);
-    for(int i = 0; i &lt; 4; i++) {
-        walls.push_back(wall);
-        wallMasks.push_back(wallMask);
-    }
-}
-
-void ofApp::update(){
-    float sine = sin(ofGetFrameNum() * 0.05);
-    alpha = ofMap(sine, -1, 1, 20, 220);
-    
-    for(int i = 0; i &lt; 4; i++) {
-        masker.beginLayer(i);
-        {
-            gif.rotateAroundCenter(i * 90);
-            walls.at(i).incrementTextureOffsetY(-0.02);
-            walls.at(i).setTextureScale(ofMap(sine, -1, 1, 1.0, 4.0));
-            ofSetColor(i % 2 == 0 ? ofColor(ofColor::red, alpha) : ofColor(ofColor::white, alpha));
-            walls.at(i).draw();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            ofSetColor(ofColor::white);
-            gif.rotateAroundCenter(i * 90);
-            wallMasks.at(i).setTextureScale(ofMap(sine, -1, 1, 0.5, 0.5));
-            wallMasks.at(i).incrementTextureOffsetY(-0.05);
-            wallMasks.at(i).draw();
-            if(i == 0) {
-                ofSetColor(ofColor::black);
-                ofRect(0, gif.halfHeight, gif.width, gif.halfHeight);
-            }
-        }
-        masker.endMask(i);
-    }
-    
-    masker.beginLayer(4);
-    {
-        ofSetColor(ofColor(ofColor::red, alpha));
-        walls.at(0).draw();
-    }
-    masker.endLayer(4);
-    
-    masker.beginMask(4);
-    {
-        wallMasks.at(0).draw();
-        ofSetColor(ofColor::black);
-        ofRect(0, 0, gif.width, gif.halfHeight);
-    }
-    masker.endMask(4);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    ofPushStyle();
-    {
-        ofEnableAlphaBlending();
-        if(ofGetFrameNum() == 0) {
-            ofBackground(ofColor::black);
-        }
-        if(ofRandom(1) &gt; ofMap(alpha, 0, 255, 0.7, 1)) {
-            ofSetColor(ofColor(ofColor::white, 255-alpha));
-            face.setTextureOffset(TEXTURE_OFFSET_MIDDLE_CENTER);
-            face.incrementTextureOffset(ofRandom(-0.05, 0.05), ofRandom(-0.5, 0.5));
-            face.draw();
-        } else {
-            ofSetColor(ofColor(ofColor::black, alpha));
-            ofRect(0, 0, gif.width, gif.height);
-        }
-        masker.draw();
-        ofDisableAlphaBlending();
-    }
-    ofPopStyle();
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>That weird illusion thing again with 'impossible' walls.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-17.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
 	
-	<article>
-		<header>
-			<h1>Sketch 2015-07-16</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-16-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-16>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 800);
-    gif.setup(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 64, 500, 500);
-    masker.setup(500, 500, 1);
-    masker.toggleOverlay();
-    foil.setup(&quot;foil1.png&quot;, 500, 500, 2.0, TEXTURE_OFFSET_MIDDLE_CENTER);
-    glass.setup(&quot;glass1-inverted.png&quot;, 500, 500, 1.0, TEXTURE_OFFSET_MIDDLE_CENTER);
-}
-
-void ofApp::update(){
-    masker.beginLayer(0);
-    {
-        foil.setTexturePosition(ofRandom(2), ofRandom(2));
-        foil.setTextureScale(ofRandom(1.0, 6.0));
-        ofSetColor(ofColor::red);
-        foil.draw();
-    }
-    masker.endLayer(0);
-
-    masker.beginMask(0);
-    {
-        glass.setTexturePosition(ofRandom(2), ofRandom(2));
-        glass.setTextureScale(ofRandom(1.0, 6.0));
-        ofBackground(ofColor::white);
-        if(ofRandom(1) &gt; 0.25) {
-            ofSetColor(ofColor(ofColor::white, 120));
-            glass.draw();
-        }
-    }
-    masker.endMask(0);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    ofPushStyle();
-    {
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        masker.draw();
-    }
-    ofPopStyle();
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Forced to stay awake</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-16.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
+	
+	
+	
+	
+	
+	
 	
 	<article>
 		<header>
@@ -414,6 +257,10 @@ void ofApp::draw(){
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-15.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
+	
+	
+	
+	
 	
 	<article>
 		<header>
@@ -559,175 +406,550 @@ void ofApp::draw(){
 
 	</article>
 	
-	<article>
-		<header>
-			<h1>Sketch 2015-07-13</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-13-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-13>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    increment = 0.01;
-    ofSetWindowShape(500, 500);
-    gif.setupPaused(ofGetTimestampString("out/%Y-%m-%d"), 230, 279);
-    gif.fadeInOut(8, 2, ofColor::white, 1);
-    masker.setup(3);
-    transp1.setup("road-transp.png");
-    transp1.setTexturePositionY(0.5);
-    transp2.setup("road-transp.png");
-    transp2.setTexturePositionY(0.5);
-    transp3.setup("road-transp.png");
-    transp3.setTexturePositionY(0.5);
-    transp4.setup("road-transp.png");
-    transp4.setTexturePositionY(0.5);
-    transp5.setup("road-transp.png");
-    transp5.setTexturePositionY(0.5);
-    transp6.setup("road-transp.png");
-    transp6.setTexturePositionY(0.5);
-}
-
-void ofApp::update(){
-    masker.beginLayer(0);
-    {
-        transp1.incrementTextureOffsetY(-increment);
-        transp1.incrementTextureScale(-increment);
-        transp1.draw();
-    }
-    masker.endLayer(0);
-
-    masker.beginMask(0);
-    {
-        transp2.incrementTextureOffsetY(-increment);
-        transp2.incrementTextureScale(-increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp2.draw();
-    }
-    masker.endMask(0);
-    
-    masker.beginLayer(1);
-    {
-        transp3.incrementTextureOffsetY(increment);
-        transp3.incrementTextureScale(increment);
-        transp3.draw();
-    }
-    masker.endLayer(1);
-    
-    masker.beginMask(1);
-    {
-        transp4.incrementTextureOffsetY(increment);
-        transp4.incrementTextureScale(increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp4.draw();
-    }
-    masker.endMask(1);
-    
-    masker.beginLayer(2);
-    {
-        transp5.incrementTextureOffsetX(increment);
-        transp5.incrementTextureScale(-increment);
-        transp5.draw();
-    }
-    masker.endLayer(2);
-    
-    masker.beginMask(2);
-    {
-        transp6.incrementTextureOffsetX(-increment);
-        transp6.incrementTextureScale(increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp6.draw();
-    }
-    masker.endMask(2);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofBackground(ofColor::white);
-        masker.draw();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Textures set loose to emerge</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-13.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<article>
 		<header>
-			<h1>Sketch 2015-07-12</h1>
+			<h1>Sketch 2015-06-17</h1>
 		</header>
 		<div class=code>
     <ul>
-		<li><a href="/sketch-12-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-12>code</a></li>
+		<li><a href="/sketch-17-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-17>code</a></li>
 		<li><a href=# class=snippet-button>snippet</a></li>
 	</ul>
     <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    increment = 0.02;
-    ofSetWindowShape(500, 500);
-    gif.setupPaused(ofGetTimestampString("out/%Y-%m-%d"), 105, 140);
-    gif.fadeInOut(17, 4, ofColor::red, 1);
-    masker.setup(1);
-    transp1.setup("road-transp.png");
-    transp1.setTexturePositionY(0.5);
-    transp2.setup("road-transp.png");
-    transp2.setTexturePositionY(0.5);
+        <code class=cpp>void ofApp::setupAnim() {
+    numImages = 8;
+    highestIndex = numImages - 1;
+    image.setup("surface.png");
+    for(int i = 0; i &lt; numImages; i++) {
+        image.setTextureOffsetX(ofRandom(500));
+        image.setTextureScale(ofMap(i, 0, highestIndex, 2, 0.35));
+        image.setPlaneHeight(ofMap(i, 0, highestIndex, 500, 200));
+        image.setPlanePosition(0, ofMap(i, 0, highestIndex, -50, 300));
+        images.push_back(image);
+        imgColors.push_back(ofColor(ofMap(i, 0, highestIndex, 100, 255), ofMap(i, 0, highestIndex, 100, 0), 0, ofMap(i, 0, highestIndex, 0, 255)));
+    }
+
+    system.setup();
+    shape.setupGradientSquare(70, height * 2);
+    shape.positionX(-halfWidth - 35);
+    shape.positionY(40);
+    shape.setColor(ofColor(ofColor::white, 96));
+    system.add(shape);
 }
 
-void ofApp::update(){
-    masker.beginLayer(0);
-    {
-        transp1.incrementTextureScale(-increment);
-        transp1.draw();
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; numImages; i++) {
+        images.at(i).incrementTextureOffsetX(i % 2 == 0 ? 0.03 : -0.03);
     }
-    masker.endLayer(0);
-
-    masker.beginMask(0);
-    {
-        transp2.incrementTextureScale(-increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp2.draw();
-    }
-    masker.endMask(0);
 }
 
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofBackground(ofColor::red);
-        masker.draw();
+void ofApp::drawAnim() {
+    ofBackground(ofColor::black);
+    
+    ofEnableAlphaBlending();
+    for(int i = 0; i &lt; numImages; i++) {
+        ofSetColor(imgColors.at(i));
+        rotateScreen(90);
+        images.at(i).draw();
+        rotateScreen(180);
+        images.at(i).draw();
+        rotateScreen(90);
     }
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
+    
+    rotateScreen(180);
+    system.draw();
+    rotateScreen(180);
+    system.draw();
+    
+    ofDisableAlphaBlending();
+    
+    if(ofGetFrameNum() == 67) {
+        renderGif();
+    }
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight);
+    ofRotateZ(degrees);
+    ofTranslate(-halfWidth, -halfHeight);
 }</code>
     </pre>
 </div>
-<p class=description>Transparencies masking transparencies (against a red background)</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-12.gif?raw=true" alt="Daily sketch"></p>
+<p class=description>Vanishing point</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-17.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	
-
-	<ul id=paging>
-		
-		
-			<li><a href="/page2/">Next page &gt;</a></li>
-		
+	
+	
+	
+	
+	
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-06-15</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-15-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-15>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
 	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    masker.setup(width, height);
+    layer1 = masker.newLayer();
+    layer2 = masker.newLayer();
+    
+    image1.setup("foil.png");
+    image2.setup("foil.png");
+    
+    image1.setOffsetX(0);
+    image1.setOffsetY(0);
+    image2.setOffsetX(1);
+    image2.setOffsetY(1);
+    
+    pos = 0;
+    size = width * 0.2;
+}
+
+void ofApp::updateAnim(){
+    pos+=10;
+    if(pos &gt; height * 2) {
+        pos = 0;
+    }
+    
+    masker.beginLayer(layer1);
+    {
+        image1.incrementOffsetX(0.01);
+        image1.incrementOffsetY(0.01);
+        image1.draw();
+    }
+    masker.endLayer(layer1);
+    
+    masker.beginMask(layer1);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white);
+        for(int x = 0; x &lt; size; x++) {
+            if(x % 2 == 0) {
+                ofRect(x * size, height - pos, size, height);
+            }
+        }
+    }
+    masker.endMask(layer1);
+
+    masker.beginLayer(layer2);
+    {
+        image2.incrementOffsetX(-0.01);
+        image2.incrementOffsetY(-0.01);
+        image2.draw();
+    }
+    masker.endLayer(layer2);
+    
+    masker.beginMask(layer2);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white);
+        for(int x = 0; x &lt; size; x++) {
+            if(x % 2 != 0) {
+                ofRect(x * size, pos - height, size, height);
+            }
+        }
+    }
+    masker.endMask(layer2);
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::black);
+    masker.draw();
+    masker.drawOverlay();
+    
+    if(ofGetFrameNum() == 100) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Masking and texture planes are getting much easier</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-15.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-06-04</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-04-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-04>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>
+//Pattern based on http://www.openprocessing.org/sketch/157035
+
+ofxLayerMask masker;
+int layerId;
+
+float tx0, ty0, tx1, ty1;
+float offset;
+ofImage img;
+ofTexture tex;
+ofPlanePrimitive plane;
+
+float x, y, radians;
+
+void ofApp::setupAnim() {
+    masker.setup(width, height);
+    layerId = masker.newLayer();
+    
+    ofDisableArbTex();
+    offset = ofRandom(3);
+    setupImage("face.png", &amp;img, &amp;tex);
+
+    plane.set(width, height);
+    plane.setPosition(halfWidth, halfHeight, 0);
+    plane.setResolution(2, 2);
+}
+
+void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
+    img-&gt;loadImage(file);
+    *tex = img-&gt;getTextureReference();
+    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+}
+
+void ofApp::drawLayer(ofTexture *tex) {
+    plane.mapTexCoords(tx0, ty0, tx1, ty1);
+    plane.mapTexCoords(tx1, ty1, tx0, ty0);
+    tex-&gt;bind();
+    plane.draw();
+    tex-&gt;unbind();
+}
+
+void ofApp::updateAnim(){
+    masker.beginLayer(layerId);
+    ofBackground(ofColor::black);
+    ofSetColor(ofColor::white);
+    tx0 = 1;
+    ty0 = ofGetFrameNum() * 0.0012 + offset;
+    tx1 = tx0 - 1;
+    ty1 = ty0 - 0.2;
+    drawLayer(&amp;tex);
+    masker.endLayer(layerId);
+    
+    masker.beginMask(layerId);
+    ofBackground(ofColor::black);
+    if(ofGetFrameNum() == 0 || ofRandom(1) &gt; 0.6) {
+        ofTriangle(ofRandom(-width, width*2), ofRandom(-height, height*2),
+                   ofRandom(-width, width*2), ofRandom(-height, height*2),
+                   ofRandom(-width, width*2), ofRandom(-height, height*2));
+    } else if(ofRandom(1) &gt; 0.3) {
+        offset = ofRandom(3);
+    }
+    masker.endMask(layerId);
+}
+
+void ofApp::drawAnim() {
+    if(ofGetFrameNum() == 0) ofBackground(ofColor::black);
+    ofSetColor(ofColor::white, 40);
+    drawLayer(&amp;tex);
+
+    ofSetColor(ofColor::white, 15);
+    ofTranslate(halfWidth, halfHeight);
+    for (int i = 0; i &lt; 360; i+=6) {
+        for (int q = 0; q &lt; 360; q+=360) {
+            radians = ofDegToRad(q + i + ofGetFrameNum() * 5);
+            
+            x = ofMap(sin(radians) * i, -600, -10, i, 0);
+            y = ofMap(cos(radians) * i, -600, -10, 0, i);
+            ofCircle(x, y, 2);
+            ofCircle(y, x, 2);
+            ofCircle(-x, -y, 2);
+            ofCircle(-y, -x, 2);
+            
+            x = ofMap(sin(radians) * i, -600, -10, -i, 0);
+            ofCircle(x, y, 2);
+            ofCircle(y, x, 2);
+            ofCircle(-x, -y, 2);
+            ofCircle(-y, -x, 2);
+        }
+    }
+    ofTranslate(-halfWidth, -halfHeight);
+    masker.draw();
+    if(ofGetFrameNum() == 72) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Frustration can be bitter sweet</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-04.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-05-14</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-14-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-14>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    masker.setup(width, height);
+    fadeIn = true;
+    fadeOut = false;
+    alpha = 255;
+
+    ofDisableArbTex();
+    setupImage("tissue.png", &amp;img1, &amp;tex1, &amp;offset1);
+    setupImage("road.png", &amp;img2, &amp;tex2, &amp;offset2);
+
+    plane.set(width, height);
+    plane.setPosition(width * 0.5, height * 0.5, 0);
+    plane.setResolution(2, 2);
+}
+
+void ofApp::setupImage(string file, ofImage *img, ofTexture *tex, float *offset) {
+    img-&gt;loadImage(file);
+    *tex = img-&gt;getTextureReference();
+    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+    *offset = ofRandom(1);
+}
+
+void ofApp::updateAnim(){
+    masker.beginBackground();
+    ofBackground(0, 0, 0, 255);
+    ofSetColor(ofColor::red);
+    tx0 = -0.5;
+    ty0 = -ofGetFrameNum() * 0.003 + offset1;
+    tx1 = tx0 + 1;
+    ty1 = ty0 + 0.5;
+    drawLayer(&amp;tex2);
+    masker.endBackground();
+    
+    masker.beginMask();
+    ofEnableAlphaBlending();
+    ofBackground(0, 0, 0, 255);
+    ofSetColor(ofColor::white);
+    tx0 = -0.35;
+    ty0 = ofGetFrameNum() * 0.01 + offset1;
+    tx1 = tx0 + 0.7;
+    ty1 = ty0 + 0.25;
+    drawLayer(&amp;tex1);
+    
+    ty0 = -ofGetFrameNum() * 0.02 + offset1;
+    ty1 = ty0 + 0.25;
+    drawLayer(&amp;tex1);
+    
+    ty0 = ofGetFrameNum() * 0.01 + offset2;
+    ty1 = ty0 + 0.25;
+    drawLayer(&amp;tex1);
+    
+    ty0 = -ofGetFrameNum() * 0.02 + offset2;
+    ty1 = ty0 + 0.25;
+    drawLayer(&amp;tex1);
+    
+    ofRect(0, 0, 70, height);
+    ofRect(width - 70, 0, 70, height);
+    ofDisableAlphaBlending();
+    masker.endMask();
+    
+    masker.beginForeground();
+    ofBackground(0, 0, 0, 255);
+    ofSetColor(ofColor::white);
+    tx0 = -0.5;
+    ty0 = -ofGetFrameNum() * 0.0012 + offset2;
+    tx1 = tx0 + 1;
+    ty1 = ty0 + 0.5;
+    drawLayer(&amp;tex2);
+    masker.endForeground();
+}</code>
+    </pre>
+</div>
+<p class=description>Blood pump.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-14.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </section>
 
     <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>

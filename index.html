@@ -30,6 +30,78 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-07-18</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-18-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-18>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 800);
+    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 30, 75, 500, 500, ISOLATE_DRAWING);
+    masker.setup(500, 500, 1, ISOLATE_LAYERS);
+    masker.toggleOverlay();
+
+    glass1.setup(&quot;glass.png&quot;, 500, 500, 2.0);
+    glass2.setup(&quot;glass.png&quot;, 500, 500, 2.0);
+    framesBeforeRefresh = 15;
+}
+
+void ofApp::update(){
+    if(ofGetFrameNum() % framesBeforeRefresh == 0) {
+        refresh = true;
+        int offsetIndex = floor(ofGetFrameNum() / framesBeforeRefresh);
+        offsetIndex = ((offsetIndex % 3) + 0) * 2;
+        glass1.setTextureOffset(offsetIndex);
+        glass2.setTextureOffset(offsetIndex);
+        glass1.setTextureScale(3.0);
+        glass2.setTextureScale(3.0);
+    } else {
+        refresh = false;
+        glass1.incrementTextureScale(-0.05);
+        glass2.incrementTextureScale(0.05);
+    }
+    
+    masker.beginLayer(0);
+    {
+        glass1.draw();
+    }
+    masker.endLayer(0);
+    
+    masker.beginMask(0);
+    {
+        glass2.draw();
+    }
+    masker.endMask(0);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofEnableAlphaBlending();
+        if(refresh) {
+            ofSetColor(ofColor::red);
+            ofRect(0, 0, gif.width, gif.height);
+        }
+        masker.draw();
+        ofDisableAlphaBlending();
+    }
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>&quot;...a conscious, purposeful, and personal subject confronting an unconscious, purposeless, and impersonal universe...&quot; (<a href=http://www.gaiamind.com/Tarnas.html>Richard Tarnas</a>)</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-18.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-07-17</h1>
 		</header>
 		<div class=code>
@@ -636,87 +708,6 @@ void ofApp::draw(){
 </div>
 <p class=description>Transparencies masking transparencies (against a red background)</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-12.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-07-11</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-11-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-11>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    beginRecordingOnFrame = 20;
-    endRecordingAfterFrame = 40;
-    increment = 0.01;
-    ofSetWindowShape(500, 500);
-    gif.setupPaused(ofGetTimestampString("out/%Y-%m-%d"), beginRecordingOnFrame);
-    masker.setup(1);
-    image.setup("road.png");
-    image.setTexturePositionY(0.5);
-    transp.setup("road-transp.png");
-    goingUp = true;
-    position = 0.5;
-}
-
-void ofApp::update(){
-    masker.beginMask(0);
-    {
-        alpha = 32;
-        if(ofRandom(1) &gt; 0.6) {
-            goingUp = !goingUp;
-            alpha = 255;
-        }
-
-        position += goingUp ? increment : -increment;
-        transp.setTexturePositionY(position);
-        
-        ofSetColor(ofColor::white, alpha);
-        if(ofGetFrameNum() == 0) {
-            ofSetColor(ofColor::black);
-        }
-        ofRect(0, 0, gif.width, gif.height);
-        ofSetColor(ofColor::white);
-        transp.draw();
-    }
-    masker.endMask(0);
-
-    masker.beginLayer(0);
-    {
-        image.setTexturePositionY(1-position);
-        image.draw();
-    }
-    masker.endLayer(0);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        masker.draw();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-
-    if(ofGetFrameNum() == beginRecordingOnFrame) {
-        positionOnRecord = position;
-    }
-
-    if(ofGetFrameNum() &gt; endRecordingAfterFrame &amp;&amp;
-       (position == positionOnRecord - increment ||
-        position == positionOnRecord + increment)) {
-        gif.renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>I'm pretty sure this is what I was trying to do yesterday</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-11.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

@@ -30,6 +30,87 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-07-11</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-11-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-11>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    beginRecordingOnFrame = 20;
+    endRecordingAfterFrame = 40;
+    increment = 0.01;
+    ofSetWindowShape(500, 500);
+    gif.setupPaused(ofGetTimestampString("out/%Y-%m-%d"), beginRecordingOnFrame);
+    masker.setup(1);
+    image.setup("road.png");
+    image.setTexturePositionY(0.5);
+    transp.setup("road-transp.png");
+    goingUp = true;
+    position = 0.5;
+}
+
+void ofApp::update(){
+    masker.beginMask(0);
+    {
+        alpha = 32;
+        if(ofRandom(1) &gt; 0.6) {
+            goingUp = !goingUp;
+            alpha = 255;
+        }
+
+        position += goingUp ? increment : -increment;
+        transp.setTexturePositionY(position);
+        
+        ofSetColor(ofColor::white, alpha);
+        if(ofGetFrameNum() == 0) {
+            ofSetColor(ofColor::black);
+        }
+        ofRect(0, 0, gif.width, gif.height);
+        ofSetColor(ofColor::white);
+        transp.draw();
+    }
+    masker.endMask(0);
+
+    masker.beginLayer(0);
+    {
+        image.setTexturePositionY(1-position);
+        image.draw();
+    }
+    masker.endLayer(0);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        masker.draw();
+    }
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+
+    if(ofGetFrameNum() == beginRecordingOnFrame) {
+        positionOnRecord = position;
+    }
+
+    if(ofGetFrameNum() &gt; endRecordingAfterFrame &amp;&amp;
+       (position == positionOnRecord - increment ||
+        position == positionOnRecord + increment)) {
+        gif.renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>I'm pretty sure this is what I was trying to do yesterday</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-11.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-07-10</h1>
 		</header>
 		<div class=code>
@@ -332,74 +413,6 @@ void ofApp::switchFired(ofxTLSwitchEventArgs &amp;args) {
     <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-05.png?raw=true" alt="Sketch 2015-07-05">
     <audio controls>
         <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-05.mp3?raw=true" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-</p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-07-04</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-04-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-04>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 900);
-    utils.setup();
-    manager.setup();
-    manager.toggleDebugUI();
-    setupAudioUnits();
-    setupTimeline();
-
-    playing = false;
-}
-
-void ofApp::setupAudioUnits() {
-    manager.add(&amp;chain1, "tal-one", ofColor::blue);
-    manager.add(&amp;chain2, "tal-two", ofColor::red);
-    chain1.link(&amp;noiseMaker1).toMixer();
-    chain2.link(&amp;noiseMaker2).toMixer();
-    manager.loadPresets(&amp;chain1);
-    manager.loadPresets(&amp;chain2);
-}
-
-void ofApp::setupTimeline() {
-    timeline.setup();
-    timeline.setLoopType(OF_LOOP_NORMAL);
-    timeline.setDurationInSeconds(30);
-    timeline.setOffset(ofVec2f(10, 480));
-    timeline.setWidth(ofGetWidth() - 400);
-    timeline.addCurves("portamento");
-    timeline.addCurves("delay wet");
-    timeline.addFlags("midi events");
-    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
-}
-
-void ofApp::update(){
-    noiseMaker1.set(TALNoiseMaker_portamento, timeline.getValue("portamento"));
-    noiseMaker1.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
-    noiseMaker2.set(TALNoiseMaker_portamento, timeline.getValue("portamento"));
-    noiseMaker2.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
-}
-
-void ofApp::bang(ofxTLBangEventArgs &amp;args) {
-    cout &lt;&lt; "bang fired: " &lt;&lt; args.flag &lt;&lt; endl;
-    utils.executeMidiCommand(args.flag, chain1.midi());
-    utils.executeMidiCommand(args.flag, chain2.midi());
-}</code>
-    </pre>
-</div>
-<p class=description>Portamento, a warm tone and two identical synths</p>
-<p>
-    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-04.png?raw=true" alt="Sketch 2015-07-04">
-    <audio controls>
-        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-04.mp3?raw=true" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 </p>

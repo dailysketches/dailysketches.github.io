@@ -3,7 +3,17 @@ layout: default
 title: Daily Sketches
 ---
 <section class="home posts">
-	<h1>Daily Sketches</h1>
+	<section class="explanation">
+		<h1>Daily Sketches</h1>
+		<p class="intro">Every day I make a sketch. Most are generated from code since my <a href="http://jahya.net/works/">primary medium</a> is computing technology. The code produces a graphic or a sound, which I render and upload.</p>
+	</section>
+	<nav role="navigation">
+		<h1>Navigation</h1>
+		<ul>
+			<li>All sketches</li>
+			<li><a href="/selected/">Selected sketches</a></li>
+		</ul>
+	</nav>
 	{% for post in paginator.posts %}
 	<article>
 		<header>

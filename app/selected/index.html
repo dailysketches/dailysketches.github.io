@@ -1,0 +1,19 @@
+---
+layout: default
+title: Daily Sketches
+---
+<section class="home posts">
+	<h1>Daily Sketches</h1>
+	{% for post in site.posts %}
+	{% for tag in post.tags %}
+	{% if tag == 'selected' %}
+	<article>
+		<header>
+			<h1>{{ post.title }}</h1>
+		</header>
+		{{ post.content }}
+	</article>
+	{% endif %}
+	{% endfor %}
+	{% endfor %}
+</section>

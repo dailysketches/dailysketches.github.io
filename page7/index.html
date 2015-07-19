@@ -40,6 +40,55 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-06-07</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-07-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-07>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    size = 60;
+    margin = width - size;
+    halfMargin = margin * 0.5;
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::white);
+    
+    ofSetColor(ofColor::black, 10);
+    for(int i = 0; i &lt; 1400; i++) {
+        x = width * 0.5 - size * 0.5 + (ofRandom(margin) - halfMargin);
+        y = floor(ofRandom(height/size)) * size;
+        ofRect(x, y, size, size);
+    }
+    
+    ofSetColor(ofColor::white, 64);
+    for(int i = 0; i &lt; height/size; i++) {
+        ofRect(halfMargin, i * size + size * 0.5, width - margin, 4);
+    }
+    
+    ofSetColor(ofColor::white, 64);
+    for(int i = -height; i &lt; height; i++) {
+        ofRect(halfMargin, (i * size * 0.5) + ofGetFrameNum(), width - margin, 4);
+        ofRect(halfMargin, (i * size * 0.5) - ofGetFrameNum(), width - margin, 4);
+    }
+    
+    if(ofGetFrameNum() == 30) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Running out of time.</p>
+<p><img class=no-frame src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-07.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-06-06</h1>
 		</header>
 		<div class=code>
@@ -505,92 +554,6 @@ void ofApp::update(){
 <p class=description>Time-indexed volume distribution between 4 chains</p>
 <audio controls>
     <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-01.mp3?raw=true" type="audio/mpeg">
-    Your browser does not support the audio element.
-</audio>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-05-31</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-31-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-31>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    manager.setup();
-    manager.toggleDebugUI();
-    manager.add(&amp;chain1, "tal-one", ofColor::blue);
-    manager.add(&amp;chain2, "tal-two", ofColor::blue);
-
-    playing = false;
-    note = 60;
-    
-    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
-    bpm.start();
-    chain1.midi()-&gt;sendNoteOn(1, note);
-    chain2.midi()-&gt;sendNoteOn(1, note);
-}
-
-void ofApp::play(void){
-    if(playing) {
-        if(currentChain == 1) {
-            chain1.getSynth()-&gt;set(TALNoiseMaker_volume, -10);
-            chain2.getSynth()-&gt;set(TALNoiseMaker_volume, 0);
-            currentChain = 2;
-        } else {
-            chain1.getSynth()-&gt;set(TALNoiseMaker_volume, 0);
-            chain2.getSynth()-&gt;set(TALNoiseMaker_volume, -10);
-            currentChain = 1;
-        }
-    }
-}
-
-void ofApp::togglePlaying() {
-    playing = !playing;
-    if(!playing) {
-        chain1.midi()-&gt;sendNoteOff(1, note);
-    }
-}
-
-void ofApp::update(){
-    manager.update();
-    
-    //Animate everythung based on sin()
-    val = ofMap(sin(ofGetFrameNum() * 0.03), -1, 1, 0.4, 0.6);
-    chain1.getSynth()-&gt;set(TALNoiseMaker_lfo2rate, val);
-    
-    val = ofMap(sin(ofGetFrameNum() * 0.06), -1, 1, 0.3, 0.8);
-    chain1.getSynth()-&gt;set(TALNoiseMaker_envelopeeditoramount, val);
-    
-    val = ofMap(sin(ofGetFrameNum() * 0.45), -1, 1, 6900, 4000);
-    chain1.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
-    
-    val = ofMap(sin(ofGetFrameNum() * 0.2), -1, 1, 10, 26);
-    chain1.getFilter()-&gt;set(kLowPassParam_Resonance, val);
-    
-    //Exactly the same, but with cos()
-    val = ofMap(cos(ofGetFrameNum() * 0.03), -1, 1, 0.4, 0.6);
-    chain2.getSynth()-&gt;set(TALNoiseMaker_lfo2rate, val);
-    
-    val = ofMap(cos(ofGetFrameNum() * 0.06), -1, 1, 0.3, 0.8);
-    chain2.getSynth()-&gt;set(TALNoiseMaker_envelopeeditoramount, val);
-    
-    val = ofMap(cos(ofGetFrameNum() * 0.45), -1, 1, 6900, 4000);
-    chain2.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
-    
-    val = ofMap(cos(ofGetFrameNum() * 0.2), -1, 1, 10, 26);
-    chain2.getFilter()-&gt;set(kLowPassParam_Resonance, val);
-}</code>
-    </pre>
-</div>
-<p class=description>A simple adjustment, oscillating between two synths</p>
-<audio controls>
-    <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-31.mp3?raw=true" type="audio/mpeg">
     Your browser does not support the audio element.
 </audio>
 

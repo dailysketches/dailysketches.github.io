@@ -40,6 +40,90 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-07-07</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-07-07-2015/">permalink</a></li>
+	</ul>
+</div>
+<p class=description>Sketch renders using a <a href=https://github.com/microcosm/ofxProjectionMask>projection mask</a></p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/pictures/2015-07-07.jpg?raw=true" alt="Sketch 2015-07-07"></p>
+
+	</article>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-07-06</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-06-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-06>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 900);
+    bpm = 60;
+    playing = false;
+
+    utils.setup();
+    manager.setup();
+    manager.toggleDebugUI();
+    setupAudioUnits();
+    setupTimeline();
+}
+
+void ofApp::setupAudioUnits() {
+    manager.add(&amp;chain1, "tal-one", ofColor::blue);
+    chain1.link(&amp;noiseMaker1).toMixer();
+    manager.loadPresets(&amp;chain1);
+}
+
+void ofApp::setupTimeline() {
+    timeline.setup();
+    timeline.setLoopType(OF_LOOP_NORMAL);
+    timeline.setShowBPMGrid(true);
+    timeline.enableSnapToBPM(true);
+    timeline.setBPM(bpm);
+    timeline.setDurationInSeconds(36);
+    timeline.setOffset(ofVec2f(10, 480));
+    timeline.setWidth(ofGetWidth() - 400);
+    timeline.addCurves("lfo rate");
+    timeline.addCurves("delay wet");
+    timeline.addCurves("env amount");
+    timeline.addSwitches("midi events");
+    ofAddListener(timeline.events().switched, this, &amp;ofApp::switchFired);
+}
+
+void ofApp::update(){
+    noiseMaker1.set(TALNoiseMaker_lfo2rate, timeline.getValue("lfo rate"));
+    noiseMaker1.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
+    noiseMaker1.set(TALNoiseMaker_envelopeeditoramount, timeline.getValue("env amount"));
+}
+
+void ofApp::switchFired(ofxTLSwitchEventArgs &amp;args) {
+    string command = args.switchName + (args.on ? " ON" : " OFF");
+    cout &lt;&lt; endl &lt;&lt; ofGetTimestampString() &lt;&lt; endl;
+    cout &lt;&lt; "switch fired: " &lt;&lt; command &lt;&lt; endl;
+    utils.executeMidiCommand(command, chain1.midi());
+}</code>
+    </pre>
+</div>
+<p class=description>A denser sound</p>
+<p>
+    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-06.png?raw=true" alt="Sketch 2015-07-06">
+    <audio controls>
+        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-06.mp3?raw=true" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-07-05</h1>
 		</header>
 		<div class=code>
@@ -423,217 +507,6 @@ void ofApp::rotateScreen(float degrees) {
 </div>
 <p class=description>"You no longer require an internal model ... you simply need the ability to visually perceive ... and the experience to move" (<a href=http://psychsciencenotes.blogspot.com/2011/11/embodied-cognition-is-not-what-you.html>source</a>)</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-01.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-06-30</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-30-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-30>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    finalFrame = 59;
-    frameDecay = 64;
-    lastDrawableFrameForLoop = finalFrame - (256 / frameDecay);
-    ofSetWindowShape(500, 500);
-    gif.setup(ofGetTimestampString("%Y-%m-%d"), finalFrame);
-
-    ofEnableSmoothing();
-    shapeSystem.setup();
-    masker.setup(4);
-    
-    for(int i = 0; i &lt; 4; i++) {
-        textures.push_back(texture);
-        textures.at(i).setup("road" + ofToString(i + 1) + ".png");
-    }
-
-    shapeSize = gif.width * 0.5;
-    thickness = gif.width * 0.45;
-    halfShapeSize = shapeSize * 0.5;
-
-    for(int i = 0; i &lt; gif.width; i += shapeSize) {
-        for(int j = 0; j &lt; gif.height; j += shapeSize) {
-            shape.setupHollowArc(30, thickness, shapeSize, 180);
-            shape.setColor(ofColor::fromHsb(ofRandom(100, 120), ofRandom(100, 255), ofRandom(100, 255)));
-            shape.setBlur(30);
-            shape.setPosition(ofVec3f(i + halfShapeSize, j + halfShapeSize, 0));
-            shape.rotateZ(ofRandom(360));
-            shapes.push_back(shape);
-        }
-    }
-    
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapeSystem.add(shapes.at(i));
-    }
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        i % 2 == 0 ?
-        shapes.at(i).incrementRotateZ(12) :
-        shapes.at(i).incrementRotateZ(-12);
-    }
-
-    for(int i = 0; i &lt; masker.numLayers(); i++) {
-        masker.beginLayer(i);
-        {
-            ofBackground(ofColor::black);
-            ofEnableAlphaBlending();
-            rotateScreen(90 * i);
-            shapeSystem.draw();
-            ofDisableAlphaBlending();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            ofBackground(ofColor::black);
-            if(ofRandom(1) &gt; 0.6 &amp;&amp; ofGetFrameNum() &lt;= lastDrawableFrameForLoop) {
-                int j = floor(ofRandom(3.9999999));
-                textures.at(j).setTextureScale(ofRandom(0.1, 2));
-                textures.at(j).setTexturePosition(ofRandom(-1, 1), ofRandom(-1, 1));
-                textures.at(j).draw();
-            }
-        }
-        masker.endMask(i);
-    }
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofEnableAlphaBlending();
-        if(ofGetFrameNum() == 0) {
-            ofBackground(ofColor::black);
-        } else {
-            ofSetColor(ofColor::black, frameDecay);
-            ofRect(0, 0, gif.width, gif.height);
-        }
-        masker.draw();
-        ofDisableAlphaBlending();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-
-    masker.drawOverlay();
-}
-
-void ofApp::rotateScreen(float degrees) {
-    ofTranslate(gif.halfWidth, gif.halfHeight, 0);
-    ofRotate(degrees);
-    ofTranslate(-gif.halfWidth, -gif.halfHeight, 0);
-}</code>
-    </pre>
-</div>
-<p class=description>Shuffling through the patterns</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-30.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-06-29</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-29-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-29>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(500, 500);
-    gif.setupPaused(ofGetTimestampString("%Y-%m-%d"), 30, 59);
-
-    ofEnableSmoothing();
-    shapeSystem.setup();
-
-    image.setup("glass.png", 0.5);
-
-    shapeSize = 100;
-    thickness = 60;
-    halfShapeSize = shapeSize * 0.5;
-
-    for(int i = 0; i &lt; gif.width; i += shapeSize) {
-        for(int j = 0; j &lt; gif.height; j += shapeSize) {
-            shape.setupHollowArc(30, thickness, shapeSize, 180);
-            shape.setColor(ofColor::white);
-            shape.setBlur(25);
-            shape.setPosition(ofVec3f(i + halfShapeSize, j + halfShapeSize, 0));
-            shape.rotateZ(ofRandom(360));
-            shapes.push_back(shape);
-        }
-    }
-    
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapeSystem.add(shapes.at(i));
-    }
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        i % 2 == 0 ?
-        shapes.at(i).incrementRotateZ(12) :
-        shapes.at(i).incrementRotateZ(-12);
-    }
-
-    image.incrementTextureOffsetY(0.06666666666);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        if(ofGetFrameNum() == 0) ofBackground(0, 0, 0);
-        image.draw();
-        ofSetColor(ofColor::black, 16);
-        ofRect(0, 0, gif.width, gif.height);
-        
-        ofEnableAlphaBlending();
-        
-        for(int i = 0; i &lt; shapes.size(); i++) {
-            shapes.at(i).setColor(ofColor::white);
-        }
-        shapeSystem.draw();
-        
-        rotateScreen(90);
-        for(int i = 0; i &lt; shapes.size(); i++) {
-            shapes.at(i).setColor(ofColor(ofColor::black, 192));
-        }
-        shapeSystem.draw();
-        
-        rotateScreen(90);
-        for(int i = 0; i &lt; shapes.size(); i++) {
-            shapes.at(i).setColor(ofColor(ofColor::black, 164));
-        }
-        shapeSystem.draw();
-        
-        rotateScreen(90);
-        for(int i = 0; i &lt; shapes.size(); i++) {
-            shapes.at(i).setColor(ofColor(ofColor::black, 128));
-        }
-        shapeSystem.draw();
-        
-        ofDisableAlphaBlending();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-}
-
-void ofApp::rotateScreen(float degrees) {
-    ofTranslate(gif.halfWidth, gif.halfHeight, 0);
-    ofRotate(degrees);
-    ofTranslate(-gif.halfWidth, -gif.halfHeight, 0);
-}</code>
-    </pre>
-</div>
-<p class=description>We'll live as one family</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-29.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

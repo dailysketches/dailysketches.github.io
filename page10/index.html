@@ -40,6 +40,99 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-05-20</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-20-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-20>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    ofSetLineWidth(4);
+    masker.setup(width, height);
+    
+    img1.loadImage("whole-foods.png");
+    img2.loadImage("excess.png");
+    
+    for(int i = 0; i &lt; 40; i++) {
+        ofxAnimatableFloat animHeight;
+        animHeight.reset(ofRandom(90));
+        heights.push_back(animHeight);
+        
+        ofxAnimatableFloat opacity;
+        opacity.reset(ofMap(i, 0, 300, 120, 255));
+        opacities.push_back(opacity);
+        
+        ofxAnimatableFloat target;
+        target.reset(ceil(ofRandom(-height, height * 2)));
+        targets.push_back(target);
+        
+        ofxAnimatableFloat position;
+        position.reset(createDistinct(target.val()));
+        position.setCurve(SWIFT_GOOGLE);
+        position.setRepeatType(LOOP_BACK_AND_FORTH);
+        position.setDuration(ceil(ofRandom(4)) * 0.5);
+        position.animateTo(targets.at(i).val());
+        positions.push_back(position);
+    }
+}
+
+float ofApp::createDistinct(float from) {
+    float candidate;
+    do candidate = ceil(ofRandom(-height, height * 2));
+    while(abs(candidate - from) &lt; 150);
+    return candidate;
+}
+
+void ofApp::updateAnim(){
+    ofEnableAlphaBlending();
+    
+    masker.beginBackground();
+    img1.draw(0, 0);
+    ofSetColor(ofColor(ofColor::black, 40));
+    ofRect(0, 0, width, height);
+    masker.endBackground();
+    
+    masker.beginMask();
+    ofBackground(ofColor::black);
+    for(int i = 0; i &lt; positions.size(); i++) {
+        positions.at(i).update(0.05);
+        ofSetColor(ofColor::white, opacities.at(i).val());
+        ofRect(0, positions.at(i).val(), width, heights.at(i).val());
+    }
+    masker.endMask();
+    
+    masker.beginForeground();
+    img2.draw(0, 0);
+    ofSetColor(ofColor(ofColor::black, 40));
+    ofRect(0, 0, width, height);
+    masker.endForeground();
+    
+    ofDisableAlphaBlending();
+}
+
+void ofApp::drawAnim() {
+    masker.draw();
+    bool allFinished = true;
+    for(int i = 0; i &lt; positions.size(); i++) {
+        if(positions.at(i).getPlayCount() &lt; 1) {
+            allFinished = false;
+        }
+    }
+    if(allFinished) renderGif();
+}</code>
+    </pre>
+</div>
+<p class=description>Vacation Day 1</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-20.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-05-19</h1>
 		</header>
 		<div class=code>
@@ -617,65 +710,6 @@ void ofApp::updateAnim(){
 </div>
 <p class=description>Blood pump.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-14.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-05-13</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-13-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-13>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    numShapes = 4;
-    spacing = width / numShapes; //20
-    offset = spacing * 0.5;      //10
-    
-    for(int x = 0; x &lt; numShapes; x++) {
-        for(int y = 0; y &lt; numShapes; y++) {
-            for(int size = spacing - 2; size &gt; 0; size-=4) {
-                ofxShape shape;
-                shape.setupHollowSquare(1, size);
-                shape.positionX(x * spacing + offset);
-                shape.positionY(y * spacing + offset);
-                shape.positionZ(100);
-                shapes.push_back(shape);
-            }
-        }
-    }
-    
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        system.add(shapes.at(i));
-    }
-}
-
-void ofApp::updateAnim(){
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        if(i % 2 == 0) {
-            shapes.at(i).incrementRotateZ(1);
-        } else {
-            shapes.at(i).incrementRotateZ(-1);
-        }
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    system.draw();
-    
-    if(ofGetFrameNum() == 90) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Looking for simple interactions which work against the pixel grid</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-13.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

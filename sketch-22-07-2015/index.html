@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html class=no-js>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>Sketch 2015-07-22</title>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+
+    <link rel=stylesheet href=/css/main.0328.css>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
+
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+    <script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+
+    <script src=/js/head-scripts.32fa.js></script>
+
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <h1>Daily Sketches</h1>
+<article class=post>
+	<header>
+		<h1>Sketch 2015-07-22</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-22-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-22>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 800);
+    numLayers = 6;
+    gif.setup(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 80, 500, 500, ISOLATE_DRAWING);
+    gif.fadeInOut(2, 4, 4);
+    masker.setup(500, 500, numLayers, ISOLATE_LAYERS);
+    masker.toggleOverlay();
+    glass.setup(&quot;glass3.png&quot;, 500, 500, 2.0);
+    wbw.setup(&quot;wbw.png&quot;, 500, 500, 0.5);
+    for(int i = 0; i &lt; numLayers; i++) {
+        wbw.setTextureOffset(i);
+        wbws.push_back(wbw);
+    }
+    bwb.setup(&quot;bwb.png&quot;, 500, 500, 0.25);
+    for(int i = 0; i &lt; numLayers; i++) {
+        bwb.setTextureOffset(8-i);
+        bwbs.push_back(bwb);
+    }
+}
+
+void ofApp::update(){
+    for(int i = 0; i &lt; numLayers; i++) {
+        wbws.at(i).incrementTextureOffset(-0.01, i % 2 == 0 ? -0.01 : 0.01);
+        bwbs.at(i).incrementTextureOffset(i % 2 == 0 ? 0.01 : 0, i % 2 == 0 ? -0.01 : 0.01);
+        
+        masker.beginLayer(i);
+        {
+            if(i % 2 == 0) {
+                ofSetColor(ofColor:: red);
+                for(int y = i * 2; y &lt; gif.height; y+=10) {
+                    ofLine(0, y, gif.width, y);
+                }
+            } else {
+                wbws.at(i).draw();
+            }
+        }
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        {
+            bwbs.at(i).draw();
+        }
+        masker.endMask(i);
+    }
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        glass.incrementTextureOffsetY(0.01);
+        glass.draw();
+        masker.draw();
+    }
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>An endless process</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-22.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+<ul id=paging>
+	<li><a href="/">&lt; See all posts</a></li>
+</ul>
+
+    <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
+
+<script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
+<script src=/js/script.9f4d.js></script>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+
+  </body>
+</html>

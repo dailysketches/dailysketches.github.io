@@ -3,7 +3,7 @@
   <head>
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge">
-    <title>Sketch 2015-07-20</title>
+    <title>Sketch 2015-07-23</title>
     <meta name=description content="">
     <meta name=viewport content="width=device-width,initial-scale=1">
 
@@ -28,86 +28,66 @@
     <h1>Daily Sketches</h1>
 <article class=post>
 	<header>
-		<h1>Sketch 2015-07-20</h1>
+		<h1>Sketch 2015-07-23</h1>
 	</header>
 	<div class=code>
     <ul>
-		<li><a href="/sketch-20-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-20>code</a></li>
+		<li><a href="/sketch-23-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-23>code</a></li>
 		<li><a href=# class=snippet-button>snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setup(){
     ofSetWindowShape(1000, 800);
-    gif.setup(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 100, 500, 500, ISOLATE_DRAWING);
-    masker.setup(500, 500, 3, ISOLATE_LAYERS);
+    numLayers = 2;
+    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 100, 180, 500, 500, ISOLATE_DRAWING);
+    gif.fadeInOut(2, 4, 4);
+    masker.setup(500, 500, numLayers, ISOLATE_LAYERS);
     masker.toggleOverlay();
-    mask.setup(&quot;face-mask.png&quot;, 500, 500, 1.5, TEXTURE_OFFSET_MIDDLE_CENTER);
-    glass.setup(&quot;glass3.png&quot;, 500, 500, 2.0);
-    shapeSystem.setup();
-    numPerDimension.x = 2;
-    numPerDimension.y = numPerDimension.x * 2;
-    spacing.x = gif.width / numPerDimension.x;
-    halfSpacing.x = spacing.x * 0.5;
-    spacing.y = gif.height / numPerDimension.y;
-    halfSpacing.y = spacing.y * 0.5;
-    for(int x = 0; x &lt; numPerDimension.x; x++) {
-        for(int y = 0; y &lt; numPerDimension.y; y++) {
-            shape.setupFilledSquare(halfSpacing.x);
-            shape.setPosition(
-                x * spacing.x + halfSpacing.x*0.5 + (y % 2 == 0 ? halfSpacing.x : 0),
-                y * spacing.y + halfSpacing.y);
-            shapes.push_back(shape);
-        }
+    foil.setup(&quot;foil.png&quot;, 500, 500, 6.0);
+    wbw.setup(&quot;wbw.png&quot;, 500, 500, 0.5);
+    for(int i = 0; i &lt; numLayers; i++) {
+        wbw.setTextureOffset(i);
+        wbws.push_back(wbw);
     }
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapeSystem.add(shapes.at(i));
+    mask.setup(&quot;foil.png&quot;, 500, 500, 2.0);
+    for(int i = 0; i &lt; numLayers; i++) {
+        mask.setTextureOffset(8-i);
+        masks.push_back(mask);
     }
 }
 
 void ofApp::update(){
-    mask.incrementTextureOffsetY(0.02);
-    glass.incrementTextureOffsetY(0.08);
-    masker.beginLayer(0);
-    {
-        ofBackground(ofColor::black);
-        shapeSystem.draw();
+    for(int i = 0; i &lt; numLayers; i++) {
+        wbws.at(i).incrementTextureOffset(-0.01, i % 2 == 0 ? -0.01 : 0.01);
+        masks.at(i).incrementTextureOffset(i % 2 == 0 ? 0.005 : 0, i % 2 == 0 ? -0.005 : 0.01);
+        
+        masker.beginLayer(i);
+        {
+            if(i % 2 == 0) {
+                ofSetColor(ofColor::powderBlue);
+                for(int y = i * 2; y &lt; gif.height; y+=4) {
+                    ofLine(0, y, gif.width, y);
+                }
+            } else {
+                wbws.at(i).draw();
+            }
+        }
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        {
+            masks.at(i).draw();
+        }
+        masker.endMask(i);
     }
-    masker.endLayer(0);
-    
-    masker.beginMask(0);
-    {
-        ofBackground(ofColor::black);
-        mask.draw();
-    }
-    masker.endMask(0);
-    
-    masker.beginLayer(1);
-    {
-        ofSetColor(ofColor::red);
-        glass.draw();
-    }
-    masker.endLayer(1);
-    
-    masker.beginMask(1);
-    {
-        masker.drawLayer(0, false);
-    }
-    masker.endMask(1);
-    
-    masker.beginLayer(2);
-    {
-        ofBackground(ofColor::white);
-        masker.drawLayer(1);
-        masker.drawLayer(0);
-    }
-    masker.endLayer(2);
 }
 
 void ofApp::draw(){
     gif.begin();
     {
-        ofBackground(ofColor::white);
+        foil.incrementTextureOffset(0.0015, 0.0015);
+        foil.draw();
         masker.draw();
     }
     gif.endAndCaptureFrame();
@@ -116,8 +96,8 @@ void ofApp::draw(){
 }</code>
     </pre>
 </div>
-<p class=description>A torn checkerboard</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-20.gif?raw=true" alt="Daily sketch"></p>
+<p class=description>Floating</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-23.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 <ul id=paging>

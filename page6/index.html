@@ -9,7 +9,7 @@
 
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
-    <link rel=stylesheet href=/css/main.0328.css>
+    <link rel=stylesheet href=/css/main.1e97.css>
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
 
@@ -17,7 +17,7 @@
     <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
     <script src=//code.jquery.com/jquery-2.1.3.min.js></script>
 
-    <script src=/js/head-scripts.32fa.js></script>
+    <script src=/js/head-scripts.d41d.js></script>
 
   </head>
   <body>
@@ -37,6 +37,119 @@
 			<li><a href="/selected/">Selected sketches</a></li>
 		</ul>
 	</nav>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-06-18</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-18-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-18>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    masker.setup();
+    layer1 = masker.newLayer();
+    layer2 = masker.newLayer();
+    layer3 = masker.newLayer();
+
+    leafVertical.setup("leaf-vertical.png", 2, TEXTURE_OFFSET_BOTTOM_RIGHT);
+    leafDiagonal.setup("leaf-diagonal.png", 2, TEXTURE_OFFSET_BOTTOM_RIGHT);
+    leafStar.setup("leaf-star.png", 2, TEXTURE_OFFSET_MIDDLE_CENTER);
+    
+    layer1Alpha = 0;
+    layer2Alpha = 0;
+    layer3Alpha = 0;
+}
+
+void ofApp::updateAnim() {
+    masker.beginLayer(layer1);
+    {
+        ofSetColor(ofColor::white);
+        leafVertical.incrementTextureScale(0.02);
+        leafVertical.incrementTextureOffset(0.01, 0.025);
+        leafVertical.draw();
+    }
+    masker.endLayer(layer1);
+
+    masker.beginMask(layer1);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white, animateAlpha(0, 13, layer1Alpha));
+        ofRect(0, 0, width, height);
+    }
+    masker.endMask(layer1);
+    
+    masker.beginLayer(layer2);
+    {
+        ofSetColor(ofColor::white);
+        if(ofGetFrameNum() &gt; 21) {
+            leafDiagonal.incrementTextureScale(-0.04);
+            leafDiagonal.incrementTextureOffset(0.016, 0.016);
+        }
+        leafDiagonal.draw();
+    }
+    masker.endLayer(layer2);
+    
+    masker.beginMask(layer2);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white, animateAlpha(21, 39, layer2Alpha));
+        ofRect(0, 0, width, height);
+    }
+    masker.endMask(layer2);
+    
+    masker.beginLayer(layer3);
+    {
+        ofSetColor(ofColor::white);
+        if(ofGetFrameNum() &gt; 36) {
+            leafStar.incrementTextureScale(-0.04);
+            leafStar.incrementTextureOffset(0.001, 0.001);
+        }
+        leafStar.draw();
+    }
+    masker.endLayer(layer3);
+    
+    masker.beginMask(layer3);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white, animateAlpha(36, 50, layer3Alpha));
+        ofRect(0, 0, width, height);
+    }
+    masker.endMask(layer3);
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::black);
+    ofSetColor(ofColor::white);
+
+    masker.draw();
+    masker.drawOverlay();
+
+    if(ofGetFrameNum() &gt; 40 &amp;&amp; layer3Alpha &lt;= 0) {
+        renderGif();
+    }
+}
+
+float ofApp::animateAlpha(int fromFrame, int toFrame, float &amp;alpha) {
+    if(ofGetFrameNum() &gt; fromFrame &amp;&amp; ofGetFrameNum() &lt;= toFrame &amp;&amp; alpha &lt; 255) {
+        alpha += 30;
+    }
+    
+    if(ofGetFrameNum() &gt; toFrame &amp;&amp; alpha &gt; 0) {
+        alpha -= 30;
+    }
+    
+    return alpha;
+}</code>
+    </pre>
+</div>
+<p class=description>Developing the texture planing toolkit...</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-18.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
 	
 	<article>
 		<header>
@@ -665,49 +778,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>The texture from a few days ago, but with a new masking technique</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-12.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-06-11</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-11-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-11>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    fontSize = 64;
-    loadFonts();
-    quarterHeight = halfHeight * 0.5;
-}
-
-void ofApp::updateAnim(){
-    if(ofGetFrameNum() % 3 == 0) {
-        random_shuffle(fonts.begin(), fonts.end());
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(ofColor::black);
-    ofSetColor(ofColor::white);
-
-    ofSetRectMode(OF_RECTMODE_CENTER);
-    fonts.at(0).drawStringCentered("THREE", halfWidth, quarterHeight);
-    fonts.at(1).drawStringCentered("DAYS", halfWidth, halfHeight + quarterHeight);
-    ofSetRectMode(OF_RECTMODE_CORNER);
-
-    if(ofGetFrameNum() == 60) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Three days...</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-11.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

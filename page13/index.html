@@ -9,7 +9,7 @@
 
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
-    <link rel=stylesheet href=/css/main.0328.css>
+    <link rel=stylesheet href=/css/main.1e97.css>
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
 
@@ -17,7 +17,7 @@
     <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
     <script src=//code.jquery.com/jquery-2.1.3.min.js></script>
 
-    <script src=/js/head-scripts.32fa.js></script>
+    <script src=/js/head-scripts.d41d.js></script>
 
   </head>
   <body>
@@ -37,6 +37,84 @@
 			<li><a href="/selected/">Selected sketches</a></li>
 		</ul>
 	</nav>
+	
+	<article>
+		<header>
+			<h1>Sketch 2015-04-30</h1>
+		</header>
+		<div class=code>
+    <ul>
+        <li><a href="/sketch-30-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-30>code</a></li>
+        <li><a href=# class=snippet-button>snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    coordinateSystemCenter = ofPoint(width * 0.5, height * 0.5);
+    outerRadius = width * 0.4;
+    innerRadius = width * 0.2;
+    ofEnableAntiAliasing();
+    ofEnableSmoothing();
+    ofSetLineWidth(1);
+    
+    for(int i = 0; i &lt; 30; i++) {
+        innerSpread.push_back(i * 36 + ofRandom(18));
+        outerSpread.push_back(i * 36 + 18 + ofRandom(18));
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    ofTranslate(coordinateSystemCenter);
+    
+    ofPushMatrix();
+    ofRotateZ(-ofGetFrameNum());
+    drawArc(innerRadius, 120);
+    ofPopMatrix();
+    
+    ofPushMatrix();
+    ofRotateZ(ofGetFrameNum());
+    drawArc(outerRadius, 220);
+    ofPopMatrix();
+    
+    for(int i = 0; i &lt; 10; i++) {
+        ofPushMatrix();
+        ofRotateZ(innerSpread.at(i) + ofGetFrameNum() * 4);
+        ofLine(0, -height*0.2, 0, -height*0.25);
+        ofPopMatrix();
+    }
+    
+    for(int i = 0; i &lt; 20; i++) {
+        ofPushMatrix();
+        ofRotateZ(innerSpread.at(i) - ofGetFrameNum() * 4);
+        ofLine(0, -height*0.25, 0, -height*0.3);
+        ofPopMatrix();
+    }
+    
+    for(int i = 0; i &lt; 30; i++) {
+        ofPushMatrix();
+        ofRotateZ(innerSpread.at(i) - ofGetFrameNum() * 2);
+        ofLine(0, -height*0.3, 0, -height*0.5);
+        ofPopMatrix();
+    }
+    
+    for(int i = 0; i &lt; 20; i++) {
+        ofPushMatrix();
+        ofRotateZ(outerSpread.at(i) - ofGetFrameNum() * 2);
+        ofLine(0, -height*0.45, 0, -height*0.5);
+        ofPopMatrix();
+    }
+    
+    if(ofGetFrameNum() == 360) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>The magic of transforms: translate, rotate, translate. The first translation kicks off your coordinate system.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-30.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
 	
 	<article>
 		<header>
@@ -418,61 +496,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>Concentric circles, moving against each other. As rendered by the pixel grid of your monitor.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-24.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-04-23</h1>
-		</header>
-		<div class=code>
-    <ul>
-        <li><a href="/sketch-23-04-2015/">permalink</a></li>
-        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-23>code</a></li>
-        <li><a href=# class=snippet-button>snippet</a></li>
-    </ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    increment = 10;
-    max = 400;
-    pos = 0;
-}
-
-void ofApp::updateAnim(){
-    pos += increment;
-    if(pos &gt; max * 2) {
-        pos = 0;
-        vertical = !vertical;
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    for(int i = 1; i &lt;= max; i++) {
-        if(vertical) drawVerticalLines(i);
-        else drawHorizontalLines(i);
-    }
-}
-
-void ofApp::drawVerticalLines(int x) {
-    if(x % 2 == 0) {
-        ofLine(x, pos - max, x, pos);
-    } else {
-        ofLine(x, height - pos, x, max * 2 - pos);
-    }
-}
-
-void ofApp::drawHorizontalLines(int y) {
-    if(y % 2 == 0) {
-        ofLine(pos - max, y, pos, y);
-    } else {
-        ofLine(height - pos, y, max * 2 - pos, y);
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Something feels beautiful about working with the simplicity of lines.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-23.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

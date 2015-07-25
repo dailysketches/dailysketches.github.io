@@ -1,0 +1,23 @@
+---
+layout: default
+title: Daily Sketches
+---
+<section class="home posts">
+	<section class="explanation">
+		<h1>Daily Sketches</h1>
+		<p class="intro">Every day I make a sketch. Most are generated from code since my <a href="http://jahya.net/works/">primary medium</a> is computing technology. The code produces a graphic or a sound, which I render and upload.</p>
+	</section>
+	{% for cat in site.categories %}
+		{% assign category = cat.[0] %}
+		{{ category }}
+
+		{% for post in site.categories[category] %}
+		<article>
+			<header>
+				<h1>{{ post.title }}</h1>
+			</header>
+		</article>
+		{% endfor %}
+
+	{% endfor %}
+</section>

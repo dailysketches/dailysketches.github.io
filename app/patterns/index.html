@@ -10,8 +10,8 @@ title: Daily Sketches
 	{% for t in site.tags %}
 		{% assign tag = t.[0] %}
 		{% if tag contains 'pattern-' %}
-			{% assign pattern = tag | remove_first: "pattern-" %}
-			<section>
+			{% assign pattern = tag | remove_first: "pattern-" | replace: "-", " " | capitalize %}
+			<section class="pattern">
 				<header>
 					<h1>{{ pattern }}</h1>
 				</header>
@@ -20,6 +20,7 @@ title: Daily Sketches
 					<header>
 						<h1>{{ post.title }}</h1>
 					</header>
+					{{ post.content }}
 				</article>
 				{% endfor %}
 			</section>

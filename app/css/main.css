@@ -187,6 +187,10 @@ img.no-frame {
     margin: 0;
 }
 
+.pattern h1 {
+    text-transform: capitalize;
+}
+
 .snippet {
     display: none;
 }

@@ -188,6 +188,13 @@ img.no-frame {
     margin: 0;
 }
 
+.examples {
+    background-color: #eee;
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: 4em;
+}
+
 .pattern h1 {
     text-transform: capitalize;
 }

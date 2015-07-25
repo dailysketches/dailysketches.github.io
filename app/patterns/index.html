@@ -44,14 +44,17 @@ title: Daily Sketches
         				</div>
 					{% endif %}
 				</header>
-				{% for post in site.tags[tag] %}
-				<article>
-					<header>
-						<h1>{{ post.title }}</h1>
-					</header>
-					{{ post.content }}
-				</article>
-				{% endfor %}
+				<h2>Examples:</h2>
+				<div class="examples">
+					{% for post in site.tags[tag] %}
+					<article>
+						<header>
+							<h1>{{ post.title }}</h1>
+						</header>
+						{{ post.content }}
+					</article>
+					{% endfor %}
+				</div>
 			</section>
 		{% endif %}
 	{% endfor %}

@@ -40,6 +40,80 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-07-10</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-10-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-10>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setupPaused(ofGetTimestampString("out/%Y-%m-%d"), 40, 80);
+    masker.setup(1);
+    image.setup("road.png");
+    image.setTexturePositionY(0.5);
+    transp.setup("road-transp.png");
+    goingUp = true;
+    directionChanged = true;
+    position = 0.5;
+}
+
+void ofApp::update(){
+    masker.beginLayer(0);
+    {
+        image.incrementTextureOffsetY(0.05);
+        image.draw();
+    }
+    masker.endLayer(0);
+    
+    masker.beginMask(0);
+    {
+        if(ofRandom(1) &gt; 0.6) {
+            goingUp = !goingUp;
+            directionChanged = true;
+        }
+        
+        if(directionChanged) {
+            alpha = 255;
+            directionChanged = false;
+        } else {
+            alpha = 32;
+        }
+        position += goingUp ? 0.01 : -0.01;
+        transp.setTexturePositionY(position);
+        
+        ofSetColor(ofColor::white, alpha);
+        if(ofGetFrameNum() == 0) {
+            ofSetColor(ofColor::black);
+        }
+        ofRect(0, 0, gif.width, gif.height);
+        ofSetColor(ofColor::white);
+        transp.draw();
+    }
+    masker.endMask(0);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        masker.draw();
+    }
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>Bringing the texture to the front</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-10.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-07-09</h1>
 		</header>
 		<div class=code>
@@ -336,79 +410,6 @@ void ofApp::bang(ofxTLBangEventArgs &amp;args) {
     <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-04.png?raw=true" alt="Sketch 2015-07-04">
     <audio controls>
         <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-04.mp3?raw=true" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-</p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-07-03</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-03-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-03>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 800);
-    manager.setup();
-    manager.toggleDebugUI();
-    setupAudioUnits();
-    setupTimeline();
-
-    playing = false;
-    note = 60;
-}
-
-void ofApp::setupAudioUnits() {
-    manager.add(&amp;chain, "tal-one", ofColor::blue);
-    chain.link(&amp;noiseMaker).toMixer();
-    manager.loadPresets(&amp;chain);
-}
-
-void ofApp::setupTimeline() {
-    timeline.setup();
-    timeline.setLoopType(OF_LOOP_NORMAL);
-    timeline.setDurationInSeconds(30);
-    timeline.setOffset(ofVec2f(10, 480));
-    timeline.setWidth(ofGetWidth() - 400);
-    timeline.addFlags("midi events");
-    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
-}
-
-void ofApp::update(){
-    
-}
-
-void ofApp::bang(ofxTLBangEventArgs &amp;args) {
-    if(args.flag == "") {
-        chain.midi()-&gt;sendNoteOn(1, note);
-    } else {
-        interpretMidiFlag(args.flag);
-    }
-}
-
-void ofApp::interpretMidiFlag(string flag) {
-    vector&lt;string&gt; args = ofSplitString(flag, " ");
-    int note = ofToInt(args.at(0));
-    bool onCommand = args.at(1) == "ON";
-    if(onCommand) {
-        chain.midi()-&gt;sendNoteOn(1, note);
-    } else {
-        chain.midi()-&gt;sendNoteOff(1, note);
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Time for MIDI event interpretation in the timeline</p>
-<p>
-    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-03.png?raw=true" alt="Sketch 2015-07-03">
-    <audio controls>
-        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-03.mp3?raw=true" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 </p>

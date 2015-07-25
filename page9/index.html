@@ -40,6 +40,63 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-05-29</h1>
+		</header>
+		<div class=code>
+    <ul>
+		<li><a href="/sketch-29-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-29>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    maskOpacity = 0;
+    paused = false;
+    maskOpacity = 30;
+}
+
+void ofApp::drawAnim() {
+    ofEnableAlphaBlending();
+    if(ofGetFrameNum() == 0) ofBackground(ofColor::black);
+    ofSetColor(0, 0, 0, maskOpacity);
+    ofRect(0, 0, width, height);
+    
+    ofSetColor(ofColor::red);
+    for(int i = 0; i &lt; 360; i+=10) {
+        for(int j = 0; j &lt; 4; j++) {
+            x = ofRandom(0, width);
+            y = ofMap(sin(ofGetFrameNum() * 0.06), -1, 1, -20, halfWidth);
+            ofLine(x, y, x, y + 50);
+        }
+        rotateScreen(i);
+    }
+    
+    ofDisableAlphaBlending();
+    
+    if(ofGetFrameNum() &gt; 96) {
+        maskOpacity += 40;
+    }
+    
+    if(maskOpacity &gt; 255) {
+        renderGif();
+    }
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight, 0);
+    ofRotate(degrees);
+    ofTranslate(-halfWidth, -halfHeight, 0);
+}</code>
+    </pre>
+</div>
+<p class=description>A little patience.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-29.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-05-28</h1>
 		</header>
 		<div class=code>
@@ -452,98 +509,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>Sterility and warmth on the last day in Miami</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-23.gif?raw=true" alt="Daily sketch"></p>
-
-	</article>
-	
-	<article>
-		<header>
-			<h1>Sketch 2015-05-22</h1>
-		</header>
-		<div class=code>
-    <ul>
-		<li><a href="/sketch-22-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-22>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    ofSetLineWidth(4);
-    masker.setup(width, height);
-    paused = true;
-    
-    img1.loadImage("chihuly-1.png");
-    img2.loadImage("chihuly-2.png");
-    numBoxSets = 200;
-}
-
-void ofApp::rotateScreen(float degrees) {
-    ofTranslate(halfWidth, halfHeight, 0);
-    ofRotate(degrees);
-    ofTranslate(-halfWidth, -halfHeight, 0);
-}
-
-void ofApp::updateAnim(){
-    ofEnableAlphaBlending();
-    ofEnableBlendMode(OF_BLENDMODE_ADD);
-    
-    masker.beginBackground();
-    img1.draw(0, 0);
-    ofSetColor(ofColor(ofColor::black, 40));
-    ofRect(0, 0, width, height);
-    masker.endBackground();
-    
-    masker.beginMask();
-    ofBackground(ofColor::black);
-    for(int i = 0; i &lt; numBoxSets; i++) {
-        for(int j = 0; j &lt; width; j+=20) {
-            ofSetColor(ofColor::white, ofRandom(10, 35));
-            
-            ofRect(
-                   ofRandom(j - 10, j + 10),
-                   ofMap(i, 0, numBoxSets, width * 0.5, width),
-                   ofRandom(2, 20),
-                   ofRandom(20, 50));
-        }
-        rotateScreen(10);
-    }
-    masker.endMask();
-    
-    masker.beginForeground();
-    img2.draw(0, 0);
-    ofSetColor(ofColor(ofColor::black, 40));
-    ofRect(0, 0, width, height);
-    masker.endForeground();
-    
-    ofDisableBlendMode();
-    ofDisableAlphaBlending();
-}
-
-void ofApp::drawAnim() {
-    masker.draw();
-    ofEnableAlphaBlending();
-    for(int i = 0; i &lt; numBoxSets; i++) {
-        for(int j = 0; j &lt; width; j+=20) {
-            if(j % 40 == 0) ofSetColor(ofColor::white, ofRandom(1, 7));
-            else ofSetColor(ofColor::black, ofRandom(1, 7));
-            
-            ofRect(
-                ofRandom(j - 10, j + 10),
-                ofMap(i, 0, numBoxSets, 30, -30),
-                ofRandom(2, 20),
-                ofRandom(20, 50));
-        }
-        rotateScreen(10);
-    }
-    ofDisableAlphaBlending();
-    
-    if(ofGetFrameNum() == 50) paused = false;
-    if(ofGetFrameNum() == 80) renderGif();
-}</code>
-    </pre>
-</div>
-<p class=description>Vacation Day 3 - Dale Chihuly at Fairchild Botanical Garden</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-22.gif?raw=true" alt="Daily sketch"></p>
 
 	</article>
 	

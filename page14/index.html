@@ -40,6 +40,55 @@
 	
 	<article>
 		<header>
+			<h1>Sketch 2015-04-24</h1>
+		</header>
+		<div class=code>
+    <ul>
+        <li><a href="/sketch-24-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-24>code</a></li>
+        <li><a href=# class=snippet-button>snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofSetCircleResolution(100);
+    ofNoFill();
+    ofEnableSmoothing();
+    multiplier = 5;
+    switchDirection = false;
+}
+
+void ofApp::updateAnim(){
+    if(switchDirection) {
+        multiplier += 0.2;
+    } else {
+        multiplier -= 0.2;
+    }
+    
+    if(multiplier &lt;= 0.2 || multiplier &gt;= 10) {
+        switchDirection = !switchDirection;
+        if(!switchDirection) saveNow = true;
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    for(int i = 1; i &lt;= 100; i++) {
+        ofCircle(width * 0.5, height * 0.5, i * multiplier);
+        ofCircle(width * 0.5, height * 0.5, i * (15 - multiplier));
+    }
+    if(!renderMode) {
+        ofDrawBitmapString(ofToString(multiplier), 20, 20);
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Concentric circles, moving against each other. As rendered by the pixel grid of your monitor.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-24.gif?raw=true" alt="Daily sketch"></p>
+
+	</article>
+	
+	<article>
+		<header>
 			<h1>Sketch 2015-04-23</h1>
 		</header>
 		<div class=code>

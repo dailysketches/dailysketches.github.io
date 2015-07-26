@@ -46,6 +46,74 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-07-04</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-04-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-04>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 900);
+    utils.setup();
+    manager.setup();
+    manager.toggleDebugUI();
+    setupAudioUnits();
+    setupTimeline();
+
+    playing = false;
+}
+
+void ofApp::setupAudioUnits() {
+    manager.add(&amp;chain1, "tal-one", ofColor::blue);
+    manager.add(&amp;chain2, "tal-two", ofColor::red);
+    chain1.link(&amp;noiseMaker1).toMixer();
+    chain2.link(&amp;noiseMaker2).toMixer();
+    manager.loadPresets(&amp;chain1);
+    manager.loadPresets(&amp;chain2);
+}
+
+void ofApp::setupTimeline() {
+    timeline.setup();
+    timeline.setLoopType(OF_LOOP_NORMAL);
+    timeline.setDurationInSeconds(30);
+    timeline.setOffset(ofVec2f(10, 480));
+    timeline.setWidth(ofGetWidth() - 400);
+    timeline.addCurves("portamento");
+    timeline.addCurves("delay wet");
+    timeline.addFlags("midi events");
+    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
+}
+
+void ofApp::update(){
+    noiseMaker1.set(TALNoiseMaker_portamento, timeline.getValue("portamento"));
+    noiseMaker1.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
+    noiseMaker2.set(TALNoiseMaker_portamento, timeline.getValue("portamento"));
+    noiseMaker2.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
+}
+
+void ofApp::bang(ofxTLBangEventArgs &amp;args) {
+    cout &lt;&lt; "bang fired: " &lt;&lt; args.flag &lt;&lt; endl;
+    utils.executeMidiCommand(args.flag, chain1.midi());
+    utils.executeMidiCommand(args.flag, chain2.midi());
+}</code>
+    </pre>
+</div>
+<p class=description>Portamento, a warm tone and two identical synths</p>
+<p>
+    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-04.png?raw=true" alt="Sketch 2015-07-04">
+    <audio controls>
+        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-04.mp3?raw=true" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-07-03</h1>
 	</header>
 	<div class=code>
@@ -575,78 +643,6 @@ void ofApp::draw(){
     <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-28.png?raw=true" alt="Sketch 2015-06-28">
     <audio controls>
         <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-28.mp3?raw=true" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-</p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-06-27</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-27-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-27>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 1000);
-    manager.setup();
-    manager.toggleDebugUI();
-    setupAudioUnits();
-    setupTimeline();
-
-    playing = false;
-    note = 60;
-}
-
-void ofApp::setupAudioUnits() {
-    manager.add(&amp;chain, "tal-one", ofColor::blue);
-    chain.link(&amp;noiseMaker).toMixer();
-    manager.loadPresets(&amp;chain);
-}
-
-void ofApp::setupTimeline() {
-    timeline.setup();
-    timeline.setLoopType(OF_LOOP_NORMAL);
-    timeline.setDurationInSeconds(30);
-    timeline.setOffset(ofVec2f(10, 450));
-    timeline.setWidth(ofGetWidth() - 400);
-    timeline.addCurves("osc crush bits", ofRange(0, 1));
-    timeline.addCurves("delay wet", ofRange(0, 1));
-    timeline.addCurves("delay time", ofRange(0, 1));
-    timeline.addBangs("midi events");
-    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
-}
-
-void ofApp::update(){
-    noiseMaker.set(TALNoiseMaker_oscbitcrusher, timeline.getValue("osc crush bits"));
-    noiseMaker.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
-    noiseMaker.set(TALNoiseMaker_delaytime, timeline.getValue("delay time"));
-}
-
-void ofApp::bang(ofxTLBangEventArgs &amp;args) {
-    if(args.flag == "") {
-        chain.midi()-&gt;sendNoteOn(1, note);
-    } else {
-        chain.midi()-&gt;sendNoteOn(1, ofToInt(args.flag));
-    }
-}
-
-void ofApp::draw(){
-    manager.draw();
-    timeline.draw();
-}</code>
-    </pre>
-</div>
-<p class=description>Playing with delay and the bit crusher</p>
-<p>
-    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-27.png?raw=true" alt="Sketch 2015-06-27">
-    <audio controls>
-        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-27.mp3?raw=true" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 </p>

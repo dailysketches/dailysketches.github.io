@@ -6,38 +6,11 @@ title: Daily Sketches
 	{% assign tag = t.[0] %}
 	{% if tag contains 'pattern-' %}
 		{% assign pattern = tag | remove_first: "pattern-" | replace: "-", " " | capitalize %}
+		{% assign pattern_file = tag | remove_first: "pattern-" | prepend: "patterns/" | append: ".html" %}
 		<section class="pattern">
 			<header>
 				<h1>{{ pattern }}</h1>
-				{% if tag contains 'overlay-with-stuff' %}
-					<p class="description">Description for overlay with stuff. Praesent ullamcorper non nisi vitae rutrum. Praesent sit amet elit at risus posuere porta.</p>
-					<div class="code">
-						<a href="#" class="snippet-button">pseudocode</a>
-						<pre class="snippet">
-							<code class="cpp">Some pseudocode</code>
-						</pre>
-					</div>
-				{% endif %}
-
-				{% if tag contains 'another-pattern' %}
-					<p class="description">Description for another pattern. Praesent ullamcorper non nisi vitae rutrum. Praesent sit amet elit at risus posuere porta.</p>
-					<div class="code">
-						<a href="#" class="snippet-button">pseudocode</a>
-						<pre class="snippet">
-							<code class="cpp">Some pseudocode</code>
-						</pre>
-					</div>
-				{% endif %}
-
-				{% if tag contains 'some-other-pattern' %}
-					<p class="description">Description for some other pattern. Praesent ullamcorper non nisi vitae rutrum. Praesent sit amet elit at risus posuere porta.</p>
-					<div class="code">
-						<a href="#" class="snippet-button">pseudocode</a>
-						<pre class="snippet">
-							<code class="cpp">Some pseudocode</code>
-						</pre>
-					</div>
-				{% endif %}
+				{% include {{ pattern_file }} %}
 			</header>
 			<h2>Examples:</h2>
 			<div class="examples">

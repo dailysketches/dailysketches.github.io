@@ -1,7 +1,8 @@
 $(document).ready(function() {
 	function init() {
 		initHighlightJs();
-		enableViewSnippet();
+		enableViewToggle('.snippet-button', '.code', '.snippet');
+		enableViewToggle('.examples-button', '.pattern', '.examples');
 	}
 
 	function initHighlightJs() {
@@ -10,10 +11,10 @@ $(document).ready(function() {
 		/* jshint ignore:end */
 	}
 
-	function enableViewSnippet() {
-		$('.snippet-button').each(function() {
+	function enableViewToggle(trigger, root, target) {
+		$(trigger).each(function() {
 			var button = $(this);
-			var snippet = button.closest('.code').children('.snippet');
+			var snippet = button.closest(root).children(target);
 
 			button.click(function(e) {
 				e.preventDefault();

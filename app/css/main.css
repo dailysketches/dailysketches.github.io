@@ -113,7 +113,7 @@ h1 {
 }
 
 article {
-    margin: 2.4em 0;
+    padding-bottom: 3em;
     border-top: 1px solid #eee;
 }
 
@@ -194,10 +194,15 @@ img.no-frame {
     max-width: 900px;
     margin: 0 auto;
     padding-bottom: 4em;
+    display: none;
 }
 
 .pattern {
     margin-bottom: 3em;
+}
+
+.pattern>header {
+    margin-bottom: 2.4em;
 }
 
 .pattern>header>h1 {

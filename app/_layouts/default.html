@@ -31,9 +31,27 @@
     <!--[if lt IE 8]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
-    {{ content }}
-
+    <section class="home posts">
+        <section class="explanation">
+            <h1>Daily Sketches</h1>
+            <p class="intro">Every day I make a sketch. Most are generated from code since my <a href="http://jahya.net/works/">primary medium</a> is computing technology. The code produces a graphic or a sound, which I render and upload.</p>
+        </section>
+        <nav role="navigation">
+            <h1>Navigation</h1>
+            {% assign pageurl = page.url %}
+            <ul>
+                <li>
+                    {% unless pageurl == '/index.html' %}<a href="/">{% endunless %}
+                    All sketches{% unless pageurl == '/index.html' %}</a>{% endunless %}
+                </li>
+                <li>
+                    {% unless pageurl contains 'selected' %}<a href="/selected/">{% endunless %}
+                    Selected sketches{% unless pageurl contains 'selected' %}</a>{% endunless %}
+                </li>
+            </ul>
+        </nav>
+        {{ content }}
+    </section>
     {% include scripts.html %}
     {% include googleanalytics.html %}
 

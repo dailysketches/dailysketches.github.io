@@ -2,60 +2,54 @@
 layout: default
 title: Daily Sketches
 ---
-<section class="home posts">
-	<section class="explanation">
-		<h1>Daily Sketches</h1>
-		<p class="intro">Every day I make a sketch. Most are generated from code since my <a href="http://jahya.net/works/">primary medium</a> is computing technology. The code produces a graphic or a sound, which I render and upload.</p>
-	</section>
-	{% for t in site.tags %}
-		{% assign tag = t.[0] %}
-		{% if tag contains 'pattern-' %}
-			{% assign pattern = tag | remove_first: "pattern-" | replace: "-", " " | capitalize %}
-			<section class="pattern">
-				<header>
-					<h1>{{ pattern }}</h1>
-					{% if tag contains 'overlay-with-stuff' %}
-						<p class="description">Description for overlay with stuff. Praesent ullamcorper non nisi vitae rutrum. Praesent sit amet elit at risus posuere porta.</p>
-						<div class="code">
-							<a href="#" class="snippet-button">pseudocode</a>
-							<pre class="snippet">
-	        					<code class="cpp">Some pseudocode</code>
-	        				</pre>
-        				</div>
-					{% endif %}
+{% for t in site.tags %}
+	{% assign tag = t.[0] %}
+	{% if tag contains 'pattern-' %}
+		{% assign pattern = tag | remove_first: "pattern-" | replace: "-", " " | capitalize %}
+		<section class="pattern">
+			<header>
+				<h1>{{ pattern }}</h1>
+				{% if tag contains 'overlay-with-stuff' %}
+					<p class="description">Description for overlay with stuff. Praesent ullamcorper non nisi vitae rutrum. Praesent sit amet elit at risus posuere porta.</p>
+					<div class="code">
+						<a href="#" class="snippet-button">pseudocode</a>
+						<pre class="snippet">
+							<code class="cpp">Some pseudocode</code>
+						</pre>
+					</div>
+				{% endif %}
 
-					{% if tag contains 'another-pattern' %}
-						<p class="description">Description for another pattern. Praesent ullamcorper non nisi vitae rutrum. Praesent sit amet elit at risus posuere porta.</p>
-						<div class="code">
-							<a href="#" class="snippet-button">pseudocode</a>
-							<pre class="snippet">
-	        					<code class="cpp">Some pseudocode</code>
-	        				</pre>
-        				</div>
-					{% endif %}
+				{% if tag contains 'another-pattern' %}
+					<p class="description">Description for another pattern. Praesent ullamcorper non nisi vitae rutrum. Praesent sit amet elit at risus posuere porta.</p>
+					<div class="code">
+						<a href="#" class="snippet-button">pseudocode</a>
+						<pre class="snippet">
+							<code class="cpp">Some pseudocode</code>
+						</pre>
+					</div>
+				{% endif %}
 
-					{% if tag contains 'some-other-pattern' %}
-						<p class="description">Description for some other pattern. Praesent ullamcorper non nisi vitae rutrum. Praesent sit amet elit at risus posuere porta.</p>
-						<div class="code">
-							<a href="#" class="snippet-button">pseudocode</a>
-							<pre class="snippet">
-	        					<code class="cpp">Some pseudocode</code>
-	        				</pre>
-        				</div>
-					{% endif %}
-				</header>
-				<h2>Examples:</h2>
-				<div class="examples">
-					{% for post in site.tags[tag] %}
-					<article>
-						<header>
-							<h1>{{ post.title }}</h1>
-						</header>
-						{{ post.content }}
-					</article>
-					{% endfor %}
-				</div>
-			</section>
-		{% endif %}
-	{% endfor %}
-</section>
+				{% if tag contains 'some-other-pattern' %}
+					<p class="description">Description for some other pattern. Praesent ullamcorper non nisi vitae rutrum. Praesent sit amet elit at risus posuere porta.</p>
+					<div class="code">
+						<a href="#" class="snippet-button">pseudocode</a>
+						<pre class="snippet">
+							<code class="cpp">Some pseudocode</code>
+						</pre>
+					</div>
+				{% endif %}
+			</header>
+			<h2>Examples:</h2>
+			<div class="examples">
+				{% for post in site.tags[tag] %}
+				<article>
+					<header>
+						<h1>{{ post.title }}</h1>
+					</header>
+					{{ post.content }}
+				</article>
+				{% endfor %}
+			</div>
+		</section>
+	{% endif %}
+{% endfor %}

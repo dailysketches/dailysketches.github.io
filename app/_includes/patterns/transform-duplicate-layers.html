@@ -1,0 +1,46 @@
+<p class="description">Layers of transformations of a single <a href="https://graphicdesign.stackexchange.com/questions/21685/replacing-whiteness-with-transparency-in-cs6">partially transparent</a> image. The same image is used in both layers and masks, with similar but differented transformations.</p>
+<div class="code">
+	{% include pattern-menu.html %}
+	<pre class="snippet">
+		<code class="cpp">void ofApp::setup(){
+    increment = 0.02;
+    numLayers = 3;
+    filename = "translucent-image.png";
+
+    masker.setup(3);
+    plane.setup(filename);
+    for(int i = 0; i &lt; numLayers; i++) {
+        layers.push_back(plane);
+        masks.push_back(plane);
+    }
+}
+
+void ofApp::update(){
+    for(int i = 0; i &lt; numLayers; i++) {
+        masker.beginLayer(i);
+        {
+            if(i == 0) { //Layer-specific transforms }
+            layers.at(i).draw();
+        }
+        masker.endLayer(i);
+
+        masker.beginMask(i);
+        {
+            ofBackground(ofColor::white);
+            if(i == 0) { //Layer-specific transforms }
+            masks.at(i).draw();
+        }
+        masker.endMask(i);
+    }
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofBackground(ofColor::white);
+        masker.draw();
+    }
+    gif.endAndCaptureFrame();
+}</code>
+	</pre>
+</div>

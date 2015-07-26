@@ -1,0 +1,36 @@
+<p class="description">Transforming the texture of an "object" at variance to the object outline or implied movement.</p>
+<div class="code">
+	{% include pattern-menu.html %}
+	<pre class="snippet">
+		<code class="cpp">ofxLayerMask masker;
+ofxTexturePlane mask, texture;
+
+void ofApp::setup(){
+    masker.setup(1);
+    mask.setup("black-and-white-mask.png");
+    texture.setup("texture.png");
+    increment = 0.02;
+}
+
+void ofApp::update(){
+    mask.incrementTextureOffsetY(increment);
+    texture.incrementTextureOffsetY(-increment);
+
+    masker.beginLayer();
+    {
+        texture.draw();
+    }
+    masker.endLayer();
+
+    masker.beginMask();
+    {
+        mask.draw();
+    }
+    masker.endMask();
+}
+
+void ofApp::draw(){
+    masker.draw();
+}</code>
+	</pre>
+</div>

@@ -2,12 +2,16 @@
 <div class="code">
 	{% include pattern-menu.html %}
 	<pre class="snippet">
-		<code class="cpp">void ofApp::setup(){
+		<code class="cpp">ofxLayerMask masker;
+ofxTexturePlane plane;
+vector&lt;ofxTexturePlane&gt; layers, masks;
+
+void ofApp::setup(){
     increment = 0.02;
     numLayers = 3;
     filename = "translucent-image.png";
 
-    masker.setup(3);
+    masker.setup(numLayers);
     plane.setup(filename);
     for(int i = 0; i &lt; numLayers; i++) {
         layers.push_back(plane);
@@ -35,12 +39,8 @@ void ofApp::update(){
 }
 
 void ofApp::draw(){
-    gif.begin();
-    {
-        ofBackground(ofColor::white);
-        masker.draw();
-    }
-    gif.endCaptureDraw();
+    ofBackground(ofColor::white);
+    masker.draw();
 }</code>
 	</pre>
 </div>

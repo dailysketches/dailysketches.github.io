@@ -129,9 +129,16 @@ p {
 img, audio, iframe {
     border: 4px solid #ddd;
     background-color: #ddd;
-    width: 600px;
     display: block;
     margin: 0 auto;
+}
+
+img {
+    max-width: 600px;
+}
+
+audio, iframe {
+    width: 600px;
 }
 
 iframe {
@@ -284,9 +291,13 @@ img.no-frame {
 
 @media (max-width: 620px) {
     img, audio, iframe, article, p, header, div, .description {
-        width: 96%;
+        width: 98%;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    .intro, .description {
+        width: 92%;
     }
 
     iframe {

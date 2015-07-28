@@ -46,6 +46,88 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-05-24</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-24-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-24>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    
+    for(int i = 0; i &lt; width; i += 10) {
+        for(int j = 0; j &lt; height; j += 10) {
+            shape.setupHollowArc(30, 3, 10, 180);
+            shape.setBlur(1);
+            shape.setPosition(ofVec3f(i + 5, j + 5, 0));
+            shape.rotateZ(ofRandom(360));
+            shapes.push_back(shape);
+        }
+    }
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapeSystem.add(shapes.at(i));
+    }
+}
+
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        i % 2 == 0 ?
+            shapes.at(i).incrementRotateZ(12) :
+            shapes.at(i).incrementRotateZ(-12);
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    
+    ofEnableAlphaBlending();
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor::white);
+    }
+    shapeSystem.draw();
+    
+    rotateScreen(90);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::black, 192));
+    }
+    shapeSystem.draw();
+    
+    rotateScreen(90);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::black, 128));
+    }
+    shapeSystem.draw();
+    
+    rotateScreen(90);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::black, 64));
+    }
+    shapeSystem.draw();
+    
+    ofDisableAlphaBlending();
+    
+    if(ofGetFrameNum() == 30) renderGif();
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight, 0);
+    ofRotate(degrees);
+    ofTranslate(-halfWidth, -halfHeight, 0);
+}</code>
+    </pre>
+</div>
+<p class=description>System.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-24.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-05-23</h1>
 	</header>
 	<div class=code>
@@ -588,119 +670,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>Transmission static.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-18.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-05-17</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-17-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-17>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    masker.setup(width, height);
-    fadeIn = true;
-    fadeOut = false;
-    alpha = 255;
-
-    ofDisableArbTex();
-    setupImage("tissue-inverted.png", &amp;img1, &amp;tex1, &amp;offset1);
-    setupImage("road.png", &amp;img2, &amp;tex2, &amp;offset2);
-
-    plane.set(width, height);
-    plane.setPosition(width * 0.5, height * 0.5, 0);
-    plane.setResolution(2, 2);
-}
-
-void ofApp::updateAnim(){
-    masker.beginBackground();
-    ofBackground(0, 0, 0, 255);
-    masker.endBackground();
-    
-    masker.beginMask();
-    ofEnableAlphaBlending();
-    ofBackground(0, 0, 0, 255);
-    ofSetColor(ofColor::white);
-    
-    ofTranslate(0, 0, 250);
-    ofBackground(255, 255, 255);
-    for(int i = 0; i &lt; 360; i+= 1) {
-        rotateScreen(i);
-        drawLayer(&amp;tex1);
-    }
-    ofDisableAlphaBlending();
-    masker.endMask();
-    
-    masker.beginForeground();
-    ofBackground(0, 0, 0, 255);
-    ofSetColor(ofColor(62, 225, 255));
-    tx0 = -ofGetFrameNum() * 0.030 + offset2;
-    ty0 = -ofGetFrameNum() * 0.030 + offset2;
-    tx1 = tx0 + (ofGetFrameNum() * 0.030 + offset2) * 2;
-    ty1 = ty0 + (ofGetFrameNum() * 0.030 + offset2) * 2;
-    drawLayer(&amp;tex2);
-    masker.endForeground();
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    ofSetColor(ofColor::white);
-    ofEnableAlphaBlending();
-    masker.draw();
-    
-    if(fadeIn) {
-        alpha -= 24;
-        if(alpha &lt;= 0) fadeIn = false;
-    }
-    
-    if(fadeOut) {
-        alpha += 24;
-        if(alpha &gt;= 300) renderGif();
-    }
-    
-    ofSetColor(0, 0, 0, alpha);
-    ofRect(0, 0, width, height);
-
-    if(ofGetFrameNum() == 60) {
-        fadeOut = true;
-    }
-    ofDisableAlphaBlending();
-}
-
-void ofApp::drawLayer(ofTexture *tex) {
-    tx0 = -0.35;
-    ty0 = ofGetFrameNum() * 0.0128 + offset1;
-    tx1 = tx0 + 3;
-    ty1 = ty0 + 1.5;
-    plane.mapTexCoords(tx0, ty0, tx1, ty1);
-    plane.mapTexCoords(tx1, ty1, tx0, ty0);
-    tex-&gt;bind();
-    plane.draw();
-    tex-&gt;unbind();
-}
-
-void ofApp::setupImage(string file, ofImage *img, ofTexture *tex, float *offset) {
-    img-&gt;loadImage(file);
-    *tex = img-&gt;getTextureReference();
-    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
-    *offset = ofRandom(1);
-}
-
-void ofApp::rotateScreen(float degrees) {
-    ofTranslate(halfWidth, halfHeight, 0);
-    ofRotate(degrees);
-    ofTranslate(-halfWidth, -halfHeight, 0);
-}</code>
-    </pre>
-</div>
-<p class=description>Sometimes, you just end up with... something.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-17.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

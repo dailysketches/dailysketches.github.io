@@ -1,0 +1,58 @@
+<ol class="description">
+  <li>Draw a shape system</li>
+  <li>Draw a partially transparent texture over the system</li>
+  <li>Transform the shapes and the texture independently</li>
+</ol>
+<div class="code">
+	{% include pattern-menu.html %}
+	<pre class="snippet">
+		<code class="cpp">ofxShapeSystem shapeSystem;
+ofxShape shape;
+vector&lt;ofxShape&gt; shapes;
+ofxTexturePlane plane;
+float increment, shapeSize, thickness;
+
+void ofApp::setup(){
+    //Create a grid of shapes
+    shapeSize = 100;
+    thickness = 100;
+    for(int i = 0; i &lt; ofGetWidth(); i += shapeSize) {
+        for(int j = 0; j &lt; ofGetHeight(); j += shapeSize) {
+            shape.setupHollowArc(30, thickness, shapeSize, 180);
+            shape.setColor(ofColor::fromHsb(ofRandom(255), 255, 255));
+            shape.setPosition(i + shapeSize * 0.5, j + shapeSize * 0.5);
+            shapes.push_back(shape);
+        }
+    }
+
+    //Add shapes to a system
+    shapeSystem.setup();
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapeSystem.add(shapes.at(i));
+    }
+
+    //Prepare a texture
+    increment = -0.005;
+    plane.setup("partially-transparent.png");
+}
+
+void ofApp::update(){
+    //Transform shapes
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        i % 2 == 0 ?
+          shapes.at(i).incrementRotateZ(1) :
+          shapes.at(i).incrementRotateZ(-1);
+    }
+
+    //Transform texture
+    plane.incrementTexturePositionY(increment);
+}
+
+void ofApp::draw(){
+    //Draw
+    ofBackground(ofColor::black);
+    shapeSystem.draw();
+    plane.draw();
+}</code>
+	</pre>
+</div>

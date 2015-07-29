@@ -1,10 +1,8 @@
 <ol class="description">
   <li>Draw a flat color</li>
   <li>Draw a partially transparent texture over the color</li>
-  <li>Transform the texture, optionally without clearing the buffer</li>
+  <li>Transform the texture</li>
 </ol>
-<p class="description">Note that if you don't clear the buffer, over time the texture may completely overwrite the flat color.</p>
-<p class="description">As the examples show, one option is to periodically clear the entire buffer. Another is to use a mask to delineate areas in your texture that will always be transparent.</p>
 <div class="code">
 	{% include pattern-menu.html %}
 	<pre class="snippet">
@@ -21,14 +19,8 @@ void ofApp::update(){
 }
 
 void ofApp::draw(){
-    gif.begin();
-    {
-        ofBackground(ofColor::red);
-        masker.draw();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
+    ofBackground(ofColor::red);
+    plane.draw();
 }</code>
 	</pre>
 </div>

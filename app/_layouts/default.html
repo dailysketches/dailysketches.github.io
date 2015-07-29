@@ -38,19 +38,22 @@
         </section>
         <nav role="navigation">
             <h1>Navigation</h1>
-            {% assign pageurl = page.url %}
+            {% if page.url == '/patterns/index.html' %}
+                {% assign page = 'patterns' %}
+            {% elsif page.url == '/selected/index.html' %}
+                {% assign page = 'selected' %}
+            {% else %}
+                {% assign page = 'all' %}
+            {% endif %}
             <ul>
                 <li>
-                    {% unless pageurl == '/index.html' %}<a href="/">{% endunless %}
-                    All sketches{% unless pageurl == '/index.html' %}</a>{% endunless %}
+                    {% if page == 'all' %}All sketches{% else %}<a href="/">All sketches</a>{% endif %}
                 </li>
                 <li>
-                    {% unless pageurl contains 'patterns' %}<a href="/patterns/">{% endunless %}
-                    Patterns{% unless pageurl contains 'patterns' %}</a>{% endunless %}
+                    {% if page == 'patterns' %}Patterns{% else %}<a href="/patterns/">Patterns</a>{% endif %}
                 </li>
                 <li>
-                    {% unless pageurl contains 'selected' %}<a href="/selected/">{% endunless %}
-                    Selected sketches{% unless pageurl contains 'selected' %}</a>{% endunless %}
+                    {% if page == 'selected' %}Selected sketches{% else %}<a href="/selected/">Selected sketches</a>{% endif %}
                 </li>
             </ul>
         </nav>

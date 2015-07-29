@@ -45,6 +45,10 @@
                     All sketches{% unless pageurl == '/index.html' %}</a>{% endunless %}
                 </li>
                 <li>
+                    {% unless pageurl contains 'patterns' %}<a href="/patterns/">{% endunless %}
+                    Patterns{% unless pageurl contains 'patterns' %}</a>{% endunless %}
+                </li>
+                <li>
                     {% unless pageurl contains 'selected' %}<a href="/selected/">{% endunless %}
                     Selected sketches{% unless pageurl contains 'selected' %}</a>{% endunless %}
                 </li>

@@ -49,6 +49,60 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-06-16</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-16-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-16>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    numImages = 50;
+    imageSpacing = height / numImages;
+    
+    image.setup("surface.png");
+    image.setTextureScale(0.4);
+    for(int i = 0; i &lt; numImages; i++) {
+        image.setTextureOffsetX(ofRandom(500));
+        images.push_back(image);
+        imgColors.push_back(ofColor(255, ofRandom(150), ofRandom(50), ofRandom(100)));
+    }
+    
+    offset = ofRandom(5000);
+}
+
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; images.size(); i++) {
+        noise = ofNoise(i, ofGetFrameNum() * 0.06 + offset);
+        images.at(i).setPlaneHeight(noise * imageSpacing * 24);
+        images.at(i).incrementTextureOffsetX(i % 2 == 0 ? 0.06 : -0.06);
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::black);
+    ofEnableAlphaBlending();
+    for(int i = 0; i &lt; images.size(); i++) {
+        ofSetColor(imgColors.at(i));
+        images.at(i).draw(0, halfImageSpacing + imageSpacing * i);
+    }
+    ofDisableAlphaBlending();
+    
+    if(ofGetFrameNum() == 100) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Scalable textures, resizables planes...</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-16.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-06-15</h1>
 	</header>
 	<div class=code>
@@ -631,49 +685,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>...off for...</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-10.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-06-09</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-09-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-09>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    fontSize = 64;
-    loadFonts();
-    quarterHeight = halfHeight * 0.5;
-}
-
-void ofApp::updateAnim(){
-    if(ofGetFrameNum() % 3 == 0) {
-        random_shuffle(fonts.begin(), fonts.end());
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(ofColor::black);
-    ofSetColor(ofColor::white);
-
-    ofSetRectMode(OF_RECTMODE_CENTER);
-    fonts.at(0).drawStringCentered("GOOD", halfWidth, quarterHeight);
-    fonts.at(1).drawStringCentered("BEHAVIOUR", halfWidth, halfHeight + quarterHeight);
-    ofSetRectMode(OF_RECTMODE_CORNER);
-
-    if(ofGetFrameNum() == 60) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>...good behaviour</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-09.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

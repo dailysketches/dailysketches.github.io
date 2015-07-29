@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html class=no-js>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>Sketch 2015-07-28</title>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+
+    <link rel=stylesheet href=/css/main.4e9c.css>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
+
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+    <script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+
+    <script src=/js/head-scripts.d41d.js></script>
+
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <section class="home posts">
+        <section class=explanation>
+            <h1>Daily Sketches</h1>
+            <p class=intro>Every day I make a sketch. Most are generated from code since my <a href="http://jahya.net/works/">primary medium</a> is computing technology. The code produces a graphic or a sound, which I render and upload.</p>
+        </section>
+        <nav role=navigation>
+            <h1>Navigation</h1>
+            
+                
+            
+            <ul>
+                <li>
+                    All sketches
+                </li>
+                <li>
+                    <a href="/patterns/">Patterns</a>
+                </li>
+                <li>
+                    <a href="/selected/">Selected sketches</a>
+                </li>
+            </ul>
+        </nav>
+        <h1>Daily Sketches</h1>
+<article class=post>
+	<header>
+		<h1>Sketch 2015-07-28</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-28-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-28>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    increment = 0.01;
+    numLayers = 3;
+    filename = &quot;leaf-transp2.png&quot;;
+
+    ofSetWindowShape(500, 500);
+    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 12, 60);
+
+    masker.setup(numLayers);
+    plane.setup(filename);
+    for(int i = 0; i &lt; numLayers; i++) {
+        layers.push_back(plane);
+        masks.push_back(plane);
+    }
+    reset();
+}
+
+void ofApp::reset() {
+    offsetIncrements.clear();
+    scaleIncrements.clear();
+
+    for(int i = 0; i &lt; numLayers; i++) {
+        layers.at(i).setTextureScale(ofRandom(0.1, 1.5));
+        layers.at(i).setTexturePosition(ofRandom(2), ofRandom(2));
+        masks.at(i).setTextureScale(ofRandom(0.1, 1.5));
+        masks.at(i).setTexturePosition(ofRandom(2), ofRandom(2));
+        offsetIncrements.push_back(ofVec2f(ofRandom(-increment, increment), ofRandom(-increment, increment)));
+        scaleIncrements.push_back(ofRandom(-increment*20, increment*20));
+    }
+}
+
+void ofApp::update(){
+    if(ofGetFrameNum() % 12 == 0) {
+        reset();
+    }
+    for(int i = 0; i &lt; numLayers; i++) {
+        masker.beginLayer(i);
+        {
+            if(ofGetFrameNum() % 3 == 0 &amp;&amp; i == 0) {
+                ofBackground(ofColor(ofColor::white, 64));
+            }
+            if(ofGetFrameNum() % 12 == 0) {
+                ofBackground(ofColor(ofColor::white, 128));
+            }
+            layers.at(i).incrementTextureOffset(offsetIncrements.at(i));
+            layers.at(i).incrementTextureScale(scaleIncrements.at(i));
+            layers.at(i).draw();
+        }
+        masker.endLayer(i);
+
+        masker.beginMask(i);
+        {
+            ofBackground(ofColor::white);
+            masks.at(i).incrementTextureOffset(-offsetIncrements.at(i));
+            masks.at(i).incrementTextureScale(-scaleIncrements.at(i));
+            masks.at(i).draw();
+        }
+        masker.endMask(i);
+    }
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        masker.draw();
+    }
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>Easing back and forth</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-28.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+<ul id=paging>
+	<li><a href="/">&lt; See all posts</a></li>
+</ul>
+    </section>
+    <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
+
+<script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
+<script src=/js/script.722e.js></script>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+  </body>
+</html>

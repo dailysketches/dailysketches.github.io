@@ -49,6 +49,99 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-05-19</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-19-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-19>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    ofSetLineWidth(4);
+    masker.setup(width, height);
+    
+    img1.loadImage("newyork.png");
+    img2.loadImage("flight.png");
+    
+    for(int i = 0; i &lt; 40; i++) {
+        ofxAnimatableFloat animHeight;
+        animHeight.reset(ofRandom(90));
+        heights.push_back(animHeight);
+        
+        ofxAnimatableFloat opacity;
+        opacity.reset(ofMap(i, 0, 300, 120, 255));
+        opacities.push_back(opacity);
+        
+        ofxAnimatableFloat target;
+        target.reset(ceil(ofRandom(-height, height * 2)));
+        targets.push_back(target);
+        
+        ofxAnimatableFloat position;
+        position.reset(createDistinct(target.val()));
+        position.setCurve(SWIFT_GOOGLE);
+        position.setRepeatType(LOOP_BACK_AND_FORTH);
+        position.setDuration(ceil(ofRandom(4)) * 0.5);
+        position.animateTo(targets.at(i).val());
+        positions.push_back(position);
+    }
+}
+
+float ofApp::createDistinct(float from) {
+    float candidate;
+    do candidate = ceil(ofRandom(-height, height * 2));
+    while(abs(candidate - from) &lt; 150);
+    return candidate;
+}
+
+void ofApp::updateAnim(){
+    ofEnableAlphaBlending();
+    
+    masker.beginBackground();
+    img1.draw(0, 0);
+    ofSetColor(ofColor(ofColor::black, 40));
+    ofRect(0, 0, width, height);
+    masker.endBackground();
+    
+    masker.beginMask();
+    ofBackground(ofColor::black);
+    for(int i = 0; i &lt; positions.size(); i++) {
+        positions.at(i).update(0.05);
+        ofSetColor(ofColor::white, opacities.at(i).val());
+        ofRect(0, positions.at(i).val(), width, heights.at(i).val());
+    }
+    masker.endMask();
+    
+    masker.beginForeground();
+    img2.draw(0, 0);
+    ofSetColor(ofColor(ofColor::black, 40));
+    ofRect(0, 0, width, height);
+    masker.endForeground();
+    
+    ofDisableAlphaBlending();
+}
+
+void ofApp::drawAnim() {
+    masker.draw();
+    bool allFinished = true;
+    for(int i = 0; i &lt; positions.size(); i++) {
+        if(positions.at(i).getPlayCount() &lt; 1) {
+            allFinished = false;
+        }
+    }
+    if(allFinished) renderGif();
+}</code>
+    </pre>
+</div>
+<p class=description>Leaving NYC for Miami. Plane delayed.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-19.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-05-18</h1>
 	</header>
 	<div class=code>
@@ -592,97 +685,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>Looking for simple interactions which work against the pixel grid</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-13.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-05-12</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-12-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-12>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    maskOpacity = 255;
-
-    for(int i = 0; i &lt; 50; i++) {
-        position.x = ofRandom(-width, width*2);
-        position.y = ofRandom(-height, height*2);
-        position.z = ofRandom(-400, 0);
-        size = ofRandom(20, 380);
-        thickness = size * 0.18;
-        
-        ofxShape square;
-        square.setupHollowSquare(thickness, size);
-        square.setPosition(position);
-        square.setBlur(2);
-        shapes.push_back(square);
-
-        ofxShape ring;
-        ring.setupHollowRing(60, thickness, size);
-        ring.setPosition(position);
-        ring.rotateY(90);
-        ring.setBlur(2);
-        shapes.push_back(ring);
-    }
-    
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        system.add(shapes.at(i));
-    }
-}
-
-void ofApp::updateAnim(){
-    float brightness = ofMap(sin(ofGetFrameNum() * 0.03), -1, 1, 0, 255);
-    ofColor color = ofColor(brightness, brightness, brightness, 100);
-
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapes.at(i).incrementRotateX(12);
-        shapes.at(i).incrementRotateY(0.8);
-        shapes.at(i).incrementRotateZ(-0.77);
-        shapes.at(i).incrementPositionX(4);
-        shapes.at(i).incrementPositionY(-6);
-        shapes.at(i).incrementPositionZ(12);
-        shapes.at(i).setColor(color);
-    }
-}
-
-void ofApp::drawAnim() {
-    ofEnableAlphaBlending();
-
-    //Swallow the trails
-    ofSetColor(0, 0, 0, 30);
-    ofRect(0, 0, width, height);
-
-    system.draw();
-
-    //Fade in
-    if(maskOpacity &gt; 0 &amp;&amp; ofGetFrameNum() &lt; 20) {
-        ofSetColor(0, 0, 0, maskOpacity);
-        ofRect(0, 0, width, height);
-        maskOpacity -= 25;
-    }
-
-    //Fade out
-    if(ofGetFrameNum() &gt; 20) {
-        ofSetColor(0, 0, 0, maskOpacity);
-        ofRect(0, 0, width, height);
-        maskOpacity += 25;
-    }
-
-    ofDisableAlphaBlending();
-
-    if(maskOpacity &gt; 255) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Going off the rails</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-12.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

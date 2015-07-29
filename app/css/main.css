@@ -206,6 +206,8 @@ img.no-frame {
 
 .pattern {
     margin-bottom: 3em;
+    border-top: 6px solid #eee;
+    padding-bottom: 1em;
 }
 
 .pattern>header {

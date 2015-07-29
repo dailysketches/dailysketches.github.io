@@ -5,7 +5,7 @@ title: Daily Sketches
 {% for t in site.tags %}
 	{% assign tag = t.[0] %}
 	{% if tag contains 'pattern-' %}
-		{% assign pattern = tag | remove_first: "pattern-" | replace: "-", " " | capitalize %}
+		{% assign pattern = tag | replace: "-dont-", "-don't-" | remove_first: "pattern-"  | replace: "-", " " | capitalize %}
 		{% assign pattern_file = tag | remove_first: "pattern-" | prepend: "patterns/" | append: ".html" %}
 		<section class="pattern">
 			<header>

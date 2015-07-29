@@ -1,0 +1,31 @@
+<ol class="description">
+  <li>Draw something partially transparent into a buffer</li>
+  <li>Don't clear the buffer (or only partially clear it) before the next frame</li>
+  <li>Optionally, periodically clear it, to provide a sense of rhythm, etc.</li>
+</ol>
+<div class="code">
+	{% include pattern-menu.html %}
+	<pre class="snippet">
+		<code class="cpp">float increment, resetFrequency;
+ofxTexturePlane plane;
+
+void ofApp::setup(){
+    increment = 0.0025;
+    resetFrequency = 8;
+    plane.setup("partially-transparent.png", 1.0, TEXTURE_OFFSET_TOP_LEFT);
+}
+
+void ofApp::update(){
+    ofGetFrameNum() % resetFrequency == 0 ?
+        plane.setTextureOffset(TEXTURE_OFFSET_TOP_LEFT) :
+        plane.incrementTextureOffsetY(increment);
+}
+
+void ofApp::draw(){
+    if(ofGetFrameNum() % resetFrequency == 0) {
+        ofBackground(ofColor::white);
+    }
+    plane.draw();
+}</code>
+	</pre>
+</div>

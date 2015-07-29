@@ -122,7 +122,7 @@ article h1 {
     margin: 1.2em 0;
 }
 
-p {
+p, ol, ul, div, span {
     font-size: 1.1em;
 }
 
@@ -223,12 +223,20 @@ img.no-frame {
 
 .description {
     max-width: 500px;
-    margin: 1.8em auto 1.7em auto
+    margin: 1.8em auto 1.7em auto;
+}
+
+ol.description, ul.description {
+    text-align: left;
+}
+
+ol.description li, ul.description li {
+    margin-bottom: 0.7em;
 }
 
 .intro {
     max-width: 600px;
-    margin: 1.8em auto 1.7em auto
+    margin: 1.8em auto 1.7em auto;
 }
 
 .code {

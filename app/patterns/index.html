@@ -2,18 +2,28 @@
 layout: default
 title: Daily Sketches
 ---
-{% for t in site.tags %}
-	{% assign tag = t.[0] %}
-	{% if tag contains 'pattern-' %}
-		{% assign pattern = tag | replace: "-dont-", "-don't-" | remove_first: "pattern-"  | replace: "-", " " | capitalize %}
-		{% assign pattern_file = tag | remove_first: "pattern-" | prepend: "patterns/" | append: ".html" %}
+{% for tag in site.tags %}
+	{% assign tag_name = tag.[0] %}
+	{% if tag_name contains 'pattern-' %}
+
+		{% assign pattern_human = tag_name %}
+		{% assign pattern_human = pattern_human | replace: "-", " "  %}
+		{% assign pattern_human = pattern_human | replace: " dont ", " don't " %}
+		{% assign pattern_human = pattern_human | replace: " retexturing ", " re-texturing " %}
+		{% assign pattern_human = pattern_human | remove_first: "pattern "  %}
+		{% assign pattern_human = pattern_human | capitalize %}
+
+		{% assign pattern_file = tag_name %}
+		{% assign pattern_file = pattern_file | remove_first: "pattern-" %}
+		{% assign pattern_file = pattern_file | prepend: "patterns/" %}
+		{% assign pattern_file = pattern_file | append: ".html" %}
 		<section class="pattern">
 			<header>
-				<h1>{{ pattern }}</h1>
+				<h1>{{ pattern_human }}</h1>
 				{% include {{ pattern_file }} %}
 			</header>
 			<div class="examples">
-				{% for post in site.tags[tag] %}
+				{% for post in site.tags[tag_name] %}
 				<article>
 					<header>
 						<h1>{{ post.title }}</h1>

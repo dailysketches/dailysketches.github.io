@@ -2,7 +2,8 @@
 layout: default
 title: Daily Sketches
 ---
-{% for tag in site.tags %}
+{% assign site_tags = (site.tags | sort: 0) %}
+{% for tag in site_tags %}
 	{% assign tag_name = tag.[0] %}
 	{% if tag_name contains 'pattern-' %}
 

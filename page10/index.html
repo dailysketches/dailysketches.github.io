@@ -9,7 +9,7 @@
 
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
-    <link rel=stylesheet href=/css/main.a250.css>
+    <link rel=stylesheet href=/css/main.4e9c.css>
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
 
@@ -32,18 +32,98 @@
         <nav role=navigation>
             <h1>Navigation</h1>
             
+                
+            
             <ul>
                 <li>
-                    <a href="/">
-                    All sketches</a>
+                    All sketches
                 </li>
                 <li>
-                    <a href="/selected/">
-                    Selected sketches</a>
+                    <a href="/patterns/">Patterns</a>
+                </li>
+                <li>
+                    <a href="/selected/">Selected sketches</a>
                 </li>
             </ul>
         </nav>
         
+<article>
+	<header>
+		<h1>Sketch 2015-05-25</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-25-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-25>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    
+    for(int i = 0; i &lt; width; i += 120) {
+        for(int j = 0; j &lt; height; j += 120) {
+            shape.setupHollowSquare(20, 80);
+            shape.setBlur(1);
+            shape.setPosition(ofVec3f(i + 5, j + 5, 0));
+            shape.rotateZ(ofRandom(360));
+            shapes.push_back(shape);
+        }
+    }
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapeSystem.add(shapes.at(i));
+    }
+}
+
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        i % 2 == 0 ?
+            shapes.at(i).incrementRotateZ(12) :
+            shapes.at(i).incrementRotateZ(-12);
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+
+    ofEnableAlphaBlending();
+
+    ofTranslate(-30, -30);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::white, 64));
+    }
+    shapeSystem.draw();
+
+    ofTranslate(10, 10);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::white, 128));
+    }
+    shapeSystem.draw();
+
+    ofTranslate(10, 10);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::white, 192));
+    }
+    shapeSystem.draw();
+
+    ofTranslate(10, 10);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::white, 255));
+    }
+    shapeSystem.draw();
+
+    ofDisableAlphaBlending();
+
+    if(ofGetFrameNum() == 30) renderGif();
+}</code>
+    </pre>
+</div>
+<p class=description>Fast sketches are meaningless.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-25.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
 <article>
 	<header>
 		<h1>Sketch 2015-05-24</h1>
@@ -52,7 +132,7 @@
     <ul>
 		<li><a href="/sketch-24-05-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-24>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -134,7 +214,7 @@ void ofApp::rotateScreen(float degrees) {
     <ul>
 		<li><a href="/sketch-23-05-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-23>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -204,7 +284,7 @@ void ofApp::drawAnim() {
     <ul>
 		<li><a href="/sketch-22-05-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-22>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -296,7 +376,7 @@ void ofApp::drawAnim() {
     <ul>
 		<li><a href="/sketch-21-05-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-21>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -398,7 +478,7 @@ void ofApp::drawAnim() {
     <ul>
 		<li><a href="/sketch-20-05-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-20>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -491,7 +571,7 @@ void ofApp::drawAnim() {
     <ul>
 		<li><a href="/sketch-19-05-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-19>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -576,103 +656,6 @@ void ofApp::drawAnim() {
 
 </article>
 
-<article>
-	<header>
-		<h1>Sketch 2015-05-18</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-18-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-18>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>ofxLayerMask masker;
-    vector&lt;ofxAnimatableFloat&gt; positions, targets, heights, opacities;
-
-    void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    ofSetLineWidth(4);
-    masker.setup(width, height);
-    
-    for(int i = 0; i &lt; 70; i++) {
-        ofxAnimatableFloat animHeight;
-        animHeight.reset(ofRandom(40));
-        heights.push_back(animHeight);
-        
-        ofxAnimatableFloat opacity;
-        opacity.reset(ofMap(i, 0, 300, 100, 255));
-        opacities.push_back(opacity);
-        
-        ofxAnimatableFloat target;
-        target.reset(ceil(ofRandom(-height, height * 2)));
-        targets.push_back(target);
-        
-        ofxAnimatableFloat position;
-        position.reset(createDistinct(target.val()));
-        position.setCurve(SWIFT_GOOGLE);
-        position.setRepeatType(LOOP_BACK_AND_FORTH);
-        position.setDuration(ceil(ofRandom(2)) * 2);
-        position.animateTo(targets.at(i).val());
-        positions.push_back(position);
-    }
-}
-
-float ofApp::createDistinct(float from) {
-    float candidate;
-    do candidate = ceil(ofRandom(-height, height * 2));
-    while(abs(candidate - from) &lt; 150);
-    return candidate;
-}
-
-void ofApp::updateAnim(){
-    ofEnableAlphaBlending();
-    
-    masker.beginBackground();
-    ofBackground(ofColor::black);
-    ofSetColor(ofColor::white, 200);
-    for(int i = -width; i &lt; width*2; i+=30) {
-        ofLine(i, height, i + width*0.5, 0);
-    };
-    masker.endBackground();
-    
-    masker.beginMask();
-    ofBackground(ofColor::black);
-    for(int i = 0; i &lt; positions.size(); i++) {
-        positions.at(i).update(0.05);
-        ofSetColor(ofColor::white, opacities.at(i).val());
-        ofRect(0, positions.at(i).val(), width, heights.at(i).val());
-    }
-    masker.endMask();
-    
-    masker.beginForeground();
-    ofBackground(ofColor::black);
-    ofSetColor(ofColor::white, 100);
-    for(int i = -width; i &lt; width*2; i+=15) {
-        ofLine(i + width*0.5, height, i, 0);
-    };
-    masker.endForeground();
-    
-    ofDisableAlphaBlending();
-}
-
-void ofApp::drawAnim() {
-    masker.draw();
-    bool allFinished = true;
-    for(int i = 0; i &lt; positions.size(); i++) {
-        if(positions.at(i).getPlayCount() &lt; 2) {
-            allFinished = false;
-        }
-    }
-    if(allFinished) renderGif();
-}</code>
-    </pre>
-</div>
-<p class=description>Transmission static.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-18.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
 
 <ul id=paging>
 	
@@ -688,7 +671,7 @@ void ofApp::drawAnim() {
     <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
 
 <script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
-<script src=/js/script.e6e4.js></script>
+<script src=/js/script.722e.js></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>

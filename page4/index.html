@@ -9,7 +9,7 @@
 
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
-    <link rel=stylesheet href=/css/main.a250.css>
+    <link rel=stylesheet href=/css/main.4e9c.css>
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
 
@@ -32,18 +32,91 @@
         <nav role=navigation>
             <h1>Navigation</h1>
             
+                
+            
             <ul>
                 <li>
-                    <a href="/">
-                    All sketches</a>
+                    All sketches
                 </li>
                 <li>
-                    <a href="/selected/">
-                    Selected sketches</a>
+                    <a href="/patterns/">Patterns</a>
+                </li>
+                <li>
+                    <a href="/selected/">Selected sketches</a>
                 </li>
             </ul>
         </nav>
         
+<article>
+	<header>
+		<h1>Sketch 2015-07-06</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-06-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-06>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 900);
+    bpm = 60;
+    playing = false;
+
+    utils.setup();
+    manager.setup();
+    manager.toggleDebugUI();
+    setupAudioUnits();
+    setupTimeline();
+}
+
+void ofApp::setupAudioUnits() {
+    manager.add(&amp;chain1, "tal-one", ofColor::blue);
+    chain1.link(&amp;noiseMaker1).toMixer();
+    manager.loadPresets(&amp;chain1);
+}
+
+void ofApp::setupTimeline() {
+    timeline.setup();
+    timeline.setLoopType(OF_LOOP_NORMAL);
+    timeline.setShowBPMGrid(true);
+    timeline.enableSnapToBPM(true);
+    timeline.setBPM(bpm);
+    timeline.setDurationInSeconds(36);
+    timeline.setOffset(ofVec2f(10, 480));
+    timeline.setWidth(ofGetWidth() - 400);
+    timeline.addCurves("lfo rate");
+    timeline.addCurves("delay wet");
+    timeline.addCurves("env amount");
+    timeline.addSwitches("midi events");
+    ofAddListener(timeline.events().switched, this, &amp;ofApp::switchFired);
+}
+
+void ofApp::update(){
+    noiseMaker1.set(TALNoiseMaker_lfo2rate, timeline.getValue("lfo rate"));
+    noiseMaker1.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
+    noiseMaker1.set(TALNoiseMaker_envelopeeditoramount, timeline.getValue("env amount"));
+}
+
+void ofApp::switchFired(ofxTLSwitchEventArgs &amp;args) {
+    string command = args.switchName + (args.on ? " ON" : " OFF");
+    cout &lt;&lt; endl &lt;&lt; ofGetTimestampString() &lt;&lt; endl;
+    cout &lt;&lt; "switch fired: " &lt;&lt; command &lt;&lt; endl;
+    utils.executeMidiCommand(command, chain1.midi());
+}</code>
+    </pre>
+</div>
+<p class=description>A denser sound</p>
+<p>
+    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-06.png?raw=true" alt="Sketch 2015-07-06">
+    <audio controls>
+        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-06.mp3?raw=true" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</p>
+
+</article>
+
 <article>
 	<header>
 		<h1>Sketch 2015-07-05</h1>
@@ -52,7 +125,7 @@
     <ul>
 		<li><a href="/sketch-05-07-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-05>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setup(){
@@ -120,7 +193,7 @@ void ofApp::switchFired(ofxTLSwitchEventArgs &amp;args) {
     <ul>
 		<li><a href="/sketch-04-07-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-04>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setup(){
@@ -188,7 +261,7 @@ void ofApp::bang(ofxTLBangEventArgs &amp;args) {
     <ul>
 		<li><a href="/sketch-03-07-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-03>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setup(){
@@ -261,7 +334,7 @@ void ofApp::interpretMidiFlag(string flag) {
     <ul>
 		<li><a href="/sketch-02-07-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-02>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setup(){
@@ -326,7 +399,7 @@ void ofApp::bang(ofxTLBangEventArgs &amp;args) {
     <ul>
 		<li><a href="/sketch-01-07-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-01>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setup(){
@@ -440,7 +513,7 @@ void ofApp::rotateScreen(float degrees) {
     <ul>
 		<li><a href="/sketch-30-06-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-30>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setup(){
@@ -542,107 +615,6 @@ void ofApp::rotateScreen(float degrees) {
 
 </article>
 
-<article>
-	<header>
-		<h1>Sketch 2015-06-29</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-29-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-29>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(500, 500);
-    gif.setupPaused(ofGetTimestampString("%Y-%m-%d"), 30, 59);
-
-    ofEnableSmoothing();
-    shapeSystem.setup();
-
-    image.setup("glass.png", 0.5);
-
-    shapeSize = 100;
-    thickness = 60;
-    halfShapeSize = shapeSize * 0.5;
-
-    for(int i = 0; i &lt; gif.width; i += shapeSize) {
-        for(int j = 0; j &lt; gif.height; j += shapeSize) {
-            shape.setupHollowArc(30, thickness, shapeSize, 180);
-            shape.setColor(ofColor::white);
-            shape.setBlur(25);
-            shape.setPosition(ofVec3f(i + halfShapeSize, j + halfShapeSize, 0));
-            shape.rotateZ(ofRandom(360));
-            shapes.push_back(shape);
-        }
-    }
-    
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapeSystem.add(shapes.at(i));
-    }
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        i % 2 == 0 ?
-        shapes.at(i).incrementRotateZ(12) :
-        shapes.at(i).incrementRotateZ(-12);
-    }
-
-    image.incrementTextureOffsetY(0.06666666666);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        if(ofGetFrameNum() == 0) ofBackground(0, 0, 0);
-        image.draw();
-        ofSetColor(ofColor::black, 16);
-        ofRect(0, 0, gif.width, gif.height);
-        
-        ofEnableAlphaBlending();
-        
-        for(int i = 0; i &lt; shapes.size(); i++) {
-            shapes.at(i).setColor(ofColor::white);
-        }
-        shapeSystem.draw();
-        
-        rotateScreen(90);
-        for(int i = 0; i &lt; shapes.size(); i++) {
-            shapes.at(i).setColor(ofColor(ofColor::black, 192));
-        }
-        shapeSystem.draw();
-        
-        rotateScreen(90);
-        for(int i = 0; i &lt; shapes.size(); i++) {
-            shapes.at(i).setColor(ofColor(ofColor::black, 164));
-        }
-        shapeSystem.draw();
-        
-        rotateScreen(90);
-        for(int i = 0; i &lt; shapes.size(); i++) {
-            shapes.at(i).setColor(ofColor(ofColor::black, 128));
-        }
-        shapeSystem.draw();
-        
-        ofDisableAlphaBlending();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-}
-
-void ofApp::rotateScreen(float degrees) {
-    ofTranslate(gif.halfWidth, gif.halfHeight, 0);
-    ofRotate(degrees);
-    ofTranslate(-gif.halfWidth, -gif.halfHeight, 0);
-}</code>
-    </pre>
-</div>
-<p class=description>We'll live as one family</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-29.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
 
 <ul id=paging>
 	
@@ -658,7 +630,7 @@ void ofApp::rotateScreen(float degrees) {
     <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
 
 <script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
-<script src=/js/script.e6e4.js></script>
+<script src=/js/script.722e.js></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>

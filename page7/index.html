@@ -9,7 +9,7 @@
 
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
-    <link rel=stylesheet href=/css/main.a250.css>
+    <link rel=stylesheet href=/css/main.4e9c.css>
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
 
@@ -32,18 +32,112 @@
         <nav role=navigation>
             <h1>Navigation</h1>
             
+                
+            
             <ul>
                 <li>
-                    <a href="/">
-                    All sketches</a>
+                    All sketches
                 </li>
                 <li>
-                    <a href="/selected/">
-                    Selected sketches</a>
+                    <a href="/patterns/">Patterns</a>
+                </li>
+                <li>
+                    <a href="/selected/">Selected sketches</a>
                 </li>
             </ul>
         </nav>
         
+<article>
+	<header>
+		<h1>Sketch 2015-06-15</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-15-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-15>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    masker.setup(width, height);
+    layer1 = masker.newLayer();
+    layer2 = masker.newLayer();
+    
+    image1.setup("foil.png");
+    image2.setup("foil.png");
+    
+    image1.setOffsetX(0);
+    image1.setOffsetY(0);
+    image2.setOffsetX(1);
+    image2.setOffsetY(1);
+    
+    pos = 0;
+    size = width * 0.2;
+}
+
+void ofApp::updateAnim(){
+    pos+=10;
+    if(pos &gt; height * 2) {
+        pos = 0;
+    }
+    
+    masker.beginLayer(layer1);
+    {
+        image1.incrementOffsetX(0.01);
+        image1.incrementOffsetY(0.01);
+        image1.draw();
+    }
+    masker.endLayer(layer1);
+    
+    masker.beginMask(layer1);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white);
+        for(int x = 0; x &lt; size; x++) {
+            if(x % 2 == 0) {
+                ofRect(x * size, height - pos, size, height);
+            }
+        }
+    }
+    masker.endMask(layer1);
+
+    masker.beginLayer(layer2);
+    {
+        image2.incrementOffsetX(-0.01);
+        image2.incrementOffsetY(-0.01);
+        image2.draw();
+    }
+    masker.endLayer(layer2);
+    
+    masker.beginMask(layer2);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white);
+        for(int x = 0; x &lt; size; x++) {
+            if(x % 2 != 0) {
+                ofRect(x * size, pos - height, size, height);
+            }
+        }
+    }
+    masker.endMask(layer2);
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::black);
+    masker.draw();
+    masker.drawOverlay();
+    
+    if(ofGetFrameNum() == 100) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Masking and texture planes are getting much easier</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-15.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
 <article>
 	<header>
 		<h1>Sketch 2015-06-14</h1>
@@ -52,7 +146,7 @@
     <ul>
 		<li><a href="/sketch-14-06-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-14>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -191,7 +285,7 @@ void ofApp::drawAnim() {
     <ul>
 		<li><a href="/sketch-13-06-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-13>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -326,7 +420,7 @@ void ofApp::drawAnim() {
     <ul>
 		<li><a href="/sketch-12-06-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-12>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -462,7 +556,7 @@ void ofApp::drawAnim() {
     <ul>
 		<li><a href="/sketch-11-06-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-11>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -505,7 +599,7 @@ void ofApp::drawAnim() {
     <ul>
 		<li><a href="/sketch-10-06-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-10>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -548,7 +642,7 @@ void ofApp::drawAnim() {
     <ul>
 		<li><a href="/sketch-09-06-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-09>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -583,125 +677,6 @@ void ofApp::drawAnim() {
 
 </article>
 
-<article>
-	<header>
-		<h1>Sketch 2015-06-08</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-08-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-08>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    shapeSystem.setup();
-    shape1.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
-    shape2.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
-    shape3.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
-    shape4.setupGradientSquare(halfWidth*0.15, halfWidth*0.85);
-
-    shape1.setPosition(halfWidth*0.5, halfHeight*0.5);
-    shapeSystem.add(shape1);
-    
-    shape2.setPosition(halfWidth*0.5+halfWidth, halfHeight*0.5);
-    shapeSystem.add(shape2);
-    
-    shape3.setPosition(halfWidth*0.5, halfHeight*0.5+halfHeight);
-    shapeSystem.add(shape3);
-    
-    shape4.setPosition(halfWidth*0.5+halfHeight, halfHeight*0.5+halfHeight);
-    shapeSystem.add(shape4);
-    
-    masker.setup(width, height);
-    layerId = masker.newLayer();
-    
-    ofDisableArbTex();
-    offset = ofRandom(3);
-    setupImage("foil.png", &amp;img, &amp;tex);
-
-    plane.set(width, height);
-    plane.setPosition(halfWidth, halfHeight, 0);
-    plane.setResolution(2, 2);
-}
-
-void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
-    img-&gt;loadImage(file);
-    *tex = img-&gt;getTextureReference();
-    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
-}
-
-void ofApp::drawLayer(ofTexture *tex) {
-    plane.mapTexCoords(tx0, ty0, tx1, ty1);
-    plane.mapTexCoords(tx1, ty1, tx0, ty0);
-    tex-&gt;bind();
-    plane.draw();
-    tex-&gt;unbind();
-}
-
-void ofApp::updateAnim(){
-    masker.beginLayer(layerId);
-    if(ofRandom(1) &gt; 0.4) ofBackground(ofColor::black);
-    ofSetColor(ofColor::red);
-    tx0 = -ofGetFrameNum() * 0.00006 + offset + ofRandom(-0.09, 0.09);
-    ty0 = ofGetFrameNum() * 0.005;
-    tx1 = tx0 - 1;
-    ty1 = ty0 - 0.25;
-    drawLayer(&amp;tex);
-    masker.endLayer(layerId);
-    
-    masker.beginMask(layerId);
-    ofBackground(ofColor::black);
-    if(ofGetFrameNum() == 0 || ofRandom(1) &gt; 0.2) {
-        ofSetColor(ofColor::white, 32);
-        for(int i = 0; i &lt; 30; i++) {
-            ofTriangle(ofRandom(-width, width*2), ofRandom(-height, height*2),
-                       ofRandom(-width, width*2), ofRandom(-height, height*2),
-                       ofRandom(-width, width*2), ofRandom(-height, height*2));
-        }
-    } else if(ofRandom(1) &gt; 0.15) {
-        offset = ofRandom(3);
-    }
-    masker.endMask(layerId);
-}
-
-void ofApp::drawAnim() {
-    if(ofRandom(1) &gt; 0.4) ofBackground(ofColor::black);
-    ofSetColor(ofColor::white);
-
-    tx0 = ofGetFrameNum() * 0.00006 + offset;
-    tx1 = tx0 - 1;
-    
-    ofTranslate(-halfWidth, -halfHeight, 0);
-    drawLayer(&amp;tex);
-    masker.draw();
-    
-    ofTranslate(width, 0, 0);
-    drawLayer(&amp;tex);
-    masker.draw();
-    
-    ofTranslate(0, height, 0);
-    drawLayer(&amp;tex);
-    masker.draw();
-    
-    ofTranslate(-width, 0, 0);
-    drawLayer(&amp;tex);
-    masker.draw();
-    
-    ofTranslate(halfWidth, -halfHeight, 0);
-    shapeSystem.draw();
-    
-    if(ofGetFrameNum() == 72) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>A continued exploration of texture</p>
-<p><img class=no-frame src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-08.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
 
 <ul id=paging>
 	
@@ -717,7 +692,7 @@ void ofApp::drawAnim() {
     <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
 
 <script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
-<script src=/js/script.e6e4.js></script>
+<script src=/js/script.722e.js></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>

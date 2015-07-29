@@ -9,7 +9,7 @@
 
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
-    <link rel=stylesheet href=/css/main.a250.css>
+    <link rel=stylesheet href=/css/main.4e9c.css>
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
 
@@ -32,18 +32,97 @@
         <nav role=navigation>
             <h1>Navigation</h1>
             
+                
+            
             <ul>
                 <li>
-                    <a href="/">
-                    All sketches</a>
+                    All sketches
                 </li>
                 <li>
-                    <a href="/selected/">
-                    Selected sketches</a>
+                    <a href="/patterns/">Patterns</a>
+                </li>
+                <li>
+                    <a href="/selected/">Selected sketches</a>
                 </li>
             </ul>
         </nav>
         
+<article>
+	<header>
+		<h1>Sketch 2015-04-27</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-27-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-27>code</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofDisableArbTex();
+    
+    img.loadImage("tissue.png");
+    texture = img.getTextureReference();
+    texture.setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+    
+    offset = ofRandom(1);
+    shift = false;
+    numShifts = 0;
+    
+    //Position the planes to take up the full screen
+    for(int i = 0; i &lt; 2; i++) {
+        planes.push_back(plane);
+        planes.at(i).set(ofGetHeight(), ofGetWidth());
+        planes.at(i).setPosition(ofGetWidth() * 0.5, ofGetHeight() * 0.5, 0);
+        planes.at(i).setResolution(2, 2);
+    }
+}
+
+void ofApp::updateAnim(){
+    if(!shift &amp;&amp; ofRandom(1) &lt; 0.15) {
+        numShifts++;
+        shift = true;
+        offset = getNewOffset();
+    }
+    
+    tx0 = 0 * offset * 0.1;
+    ty0 = offset + ofGetFrameNum() * 0.001;
+    tx1 = tx0 + 1;
+    ty1 = ty0 + 2;
+    
+    //Position the texture on the plane
+    planes.at(0).mapTexCoords(tx0, ty0, tx1, ty1);
+    planes.at(1).mapTexCoords(tx1, ty1, tx0, ty0);
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    
+    if(shift) {
+        if(ofRandom(1) &gt; 0.2) shift = false;
+    } else {
+        texture.bind();
+        for(int i = 0; i &lt; planes.size(); i++) {
+            planes.at(i).draw();
+        }
+        texture.unbind();
+    }
+}
+
+float ofApp::getNewOffset() {
+    do {
+        candidateOffset = ofRandom(1);
+    } while(abs(candidateOffset - offset) &lt; 0.2);
+    
+    return candidateOffset;
+}</code>
+    </pre>
+</div>
+<p class=description>Overlaid media with alpha transparency, glimmering when squished into 400 pixels and slowly translated.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-27.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
 <article>
 	<header>
 		<h1>Sketch 2015-04-26</h1>
@@ -52,7 +131,7 @@
     <ul>
         <li><a href="/sketch-26-04-2015/">permalink</a></li>
         <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-26>code</a></li>
-        <li><a href=# class=snippet-button>snippet</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
     </ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::drawGrid() {
@@ -99,7 +178,7 @@
     <ul>
         <li><a href="/sketch-25-04-2015/">permalink</a></li>
         <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-25>code</a></li>
-        <li><a href=# class=snippet-button>snippet</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
     </ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -136,7 +215,7 @@ void ofApp::drawAnim() {
     <ul>
         <li><a href="/sketch-24-04-2015/">permalink</a></li>
         <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-24>code</a></li>
-        <li><a href=# class=snippet-button>snippet</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
     </ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -185,7 +264,7 @@ void ofApp::drawAnim() {
     <ul>
         <li><a href="/sketch-23-04-2015/">permalink</a></li>
         <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-23>code</a></li>
-        <li><a href=# class=snippet-button>snippet</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
     </ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setupAnim() {
@@ -240,7 +319,7 @@ void ofApp::drawHorizontalLines(int y) {
 	<ul>
 		<li><a href="/sketch-22-04-2015/">permalink</a></li>
 		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-22>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
 	<pre class=snippet>
 		<code class=cpp>void ofApp::drawAnim() {
@@ -270,7 +349,7 @@ void ofApp::drawHorizontalLines(int y) {
     <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
 
 <script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
-<script src=/js/script.e6e4.js></script>
+<script src=/js/script.722e.js></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>

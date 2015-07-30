@@ -49,6 +49,61 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-04-23</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-23-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-23>code</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    increment = 10;
+    max = 400;
+    pos = 0;
+}
+
+void ofApp::updateAnim(){
+    pos += increment;
+    if(pos &gt; max * 2) {
+        pos = 0;
+        vertical = !vertical;
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    for(int i = 1; i &lt;= max; i++) {
+        if(vertical) drawVerticalLines(i);
+        else drawHorizontalLines(i);
+    }
+}
+
+void ofApp::drawVerticalLines(int x) {
+    if(x % 2 == 0) {
+        ofLine(x, pos - max, x, pos);
+    } else {
+        ofLine(x, height - pos, x, max * 2 - pos);
+    }
+}
+
+void ofApp::drawHorizontalLines(int y) {
+    if(y % 2 == 0) {
+        ofLine(pos - max, y, pos, y);
+    } else {
+        ofLine(height - pos, y, max * 2 - pos, y);
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Something feels beautiful about working with the simplicity of lines.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-23.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-04-22</h1>
 	</header>
 	<div class=code>

@@ -49,6 +49,108 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-05-21</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-21-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-21>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    ofSetLineWidth(4);
+    masker.setup(width, height);
+    
+    img1.loadImage("boat-ride.png");
+    img2.loadImage("maersk.png");
+    
+    for(int i = 0; i &lt; 10; i++) {
+        ofxAnimatableFloat animHeight;
+        animHeight.reset(ofRandom(90));
+        heights.push_back(animHeight);
+        
+        ofxAnimatableFloat opacity;
+        opacity.reset(ofMap(i, 0, 300, 120, 255));
+        opacities.push_back(opacity);
+        
+        ofxAnimatableFloat target;
+        target.reset(ceil(ofRandom(-height, height * 2)));
+        targets.push_back(target);
+        
+        ofxAnimatableFloat position;
+        position.reset(createDistinct(target.val()));
+        position.setCurve(SWIFT_GOOGLE);
+        position.setRepeatType(LOOP_BACK_AND_FORTH);
+        position.setDuration(ceil(ofRandom(4)) * 0.5);
+        position.animateTo(targets.at(i).val());
+        positions.push_back(position);
+    }
+}
+
+float ofApp::createDistinct(float from) {
+    float candidate;
+    do candidate = ceil(ofRandom(-height, height * 2));
+    while(abs(candidate - from) &lt; 150);
+    return candidate;
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight, 0);
+    ofRotate(degrees);
+    ofTranslate(-halfWidth, -halfHeight, 0);
+}
+
+void ofApp::updateAnim(){
+    ofEnableAlphaBlending();
+    
+    masker.beginBackground();
+    img1.draw(0, 0);
+    ofSetColor(ofColor(ofColor::black, 40));
+    ofRect(0, 0, width, height);
+    masker.endBackground();
+    
+    masker.beginMask();
+    ofBackground(ofColor::black);
+    for(int i = 0; i &lt; 4; i++) {
+        rotateScreen(90);
+        for(int i = 0; i &lt; positions.size(); i++) {
+            positions.at(i).update(0.05);
+            ofSetColor(ofColor::white, opacities.at(i).val());
+            ofRect(0, positions.at(i).val(), width, heights.at(i).val());
+        }
+    }
+    masker.endMask();
+    
+    masker.beginForeground();
+    img2.draw(0, 0);
+    ofSetColor(ofColor(ofColor::black, 40));
+    ofRect(0, 0, width, height);
+    masker.endForeground();
+    
+    ofDisableAlphaBlending();
+}
+
+void ofApp::drawAnim() {
+    masker.draw();
+    bool allFinished = true;
+    for(int i = 0; i &lt; positions.size(); i++) {
+        if(positions.at(i).getPlayCount() &lt; 1) {
+            allFinished = false;
+        }
+    }
+    if(allFinished) renderGif();
+}</code>
+    </pre>
+</div>
+<p class=description>Vacation Day 2</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-21.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-05-20</h1>
 	</header>
 	<div class=code>
@@ -630,95 +732,6 @@ void ofApp::drawLayer(ofTexture *tex) {
 </div>
 <p class=description>Tearing things apart.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-15.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-05-14</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-14-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-14>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    masker.setup(width, height);
-    fadeIn = true;
-    fadeOut = false;
-    alpha = 255;
-
-    ofDisableArbTex();
-    setupImage("tissue.png", &amp;img1, &amp;tex1, &amp;offset1);
-    setupImage("road.png", &amp;img2, &amp;tex2, &amp;offset2);
-
-    plane.set(width, height);
-    plane.setPosition(width * 0.5, height * 0.5, 0);
-    plane.setResolution(2, 2);
-}
-
-void ofApp::setupImage(string file, ofImage *img, ofTexture *tex, float *offset) {
-    img-&gt;loadImage(file);
-    *tex = img-&gt;getTextureReference();
-    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
-    *offset = ofRandom(1);
-}
-
-void ofApp::updateAnim(){
-    masker.beginBackground();
-    ofBackground(0, 0, 0, 255);
-    ofSetColor(ofColor::red);
-    tx0 = -0.5;
-    ty0 = -ofGetFrameNum() * 0.003 + offset1;
-    tx1 = tx0 + 1;
-    ty1 = ty0 + 0.5;
-    drawLayer(&amp;tex2);
-    masker.endBackground();
-    
-    masker.beginMask();
-    ofEnableAlphaBlending();
-    ofBackground(0, 0, 0, 255);
-    ofSetColor(ofColor::white);
-    tx0 = -0.35;
-    ty0 = ofGetFrameNum() * 0.01 + offset1;
-    tx1 = tx0 + 0.7;
-    ty1 = ty0 + 0.25;
-    drawLayer(&amp;tex1);
-    
-    ty0 = -ofGetFrameNum() * 0.02 + offset1;
-    ty1 = ty0 + 0.25;
-    drawLayer(&amp;tex1);
-    
-    ty0 = ofGetFrameNum() * 0.01 + offset2;
-    ty1 = ty0 + 0.25;
-    drawLayer(&amp;tex1);
-    
-    ty0 = -ofGetFrameNum() * 0.02 + offset2;
-    ty1 = ty0 + 0.25;
-    drawLayer(&amp;tex1);
-    
-    ofRect(0, 0, 70, height);
-    ofRect(width - 70, 0, 70, height);
-    ofDisableAlphaBlending();
-    masker.endMask();
-    
-    masker.beginForeground();
-    ofBackground(0, 0, 0, 255);
-    ofSetColor(ofColor::white);
-    tx0 = -0.5;
-    ty0 = -ofGetFrameNum() * 0.0012 + offset2;
-    tx1 = tx0 + 1;
-    ty1 = ty0 + 0.5;
-    drawLayer(&amp;tex2);
-    masker.endForeground();
-}</code>
-    </pre>
-</div>
-<p class=description>Blood pump.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-14.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

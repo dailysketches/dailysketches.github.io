@@ -49,6 +49,133 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-07-30</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-30-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-30>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 800);
+    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 160, 220, 500, 500, ISOLATE_DRAWING);
+    gif.fadeInOut(2, 4, ofColor::white, 4);
+    masker.setup(500, 500, 1, ISOLATE_LAYERS);
+    masker.toggleOverlay();
+    foil1.setup(&quot;foil.png&quot;, 500, 500, 2.0);
+    foil1.setTextureOffset(8);
+    foil2.setup(&quot;foil.png&quot;, 500, 500, 6.0);
+    foil2.setTextureOffset(TEXTURE_OFFSET_BOTTOM_RIGHT);
+    
+    glass.setup(&quot;glass.png&quot;, 0.1);
+    for(int i = 0; i &lt; 60; i++) {
+        glass.setTextureOffset(ofRandom(2), ofRandom(2));
+        glasses.push_back(glass);
+    }
+    shapeSystem.setup();
+    
+    shapeSize = gif.width / 3;
+    thickness = 90;
+    halfShapeSize = shapeSize * 0.5;
+    
+    for(int i = 0; i &lt; gif.width; i += shapeSize) {
+        for(int j = 0; j &lt; gif.height; j += shapeSize) {
+            shape.setupHollowArc(30, thickness, shapeSize, 180);
+            shape.setColor(ofColor::white);
+            shape.setBlur(25);
+            shape.setPosition(ofVec3f(i + halfShapeSize, j + halfShapeSize, 0));
+            shape.rotateZ(ofRandom(360));
+            shapes.push_back(shape);
+        }
+    }
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapeSystem.add(shapes.at(i));
+    }
+}
+
+void ofApp::update(){
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        i % 2 == 0 ?
+        shapes.at(i).incrementRotateZ(12) :
+        shapes.at(i).incrementRotateZ(-12);
+    }
+    
+    foil1.incrementTextureOffsetY(-0.01);
+    
+    masker.beginLayer(0);
+    {
+        ofSetColor(ofColor(ofColor::white, 255));
+        foil1.draw();
+        ofSetColor(ofColor(ofColor::white, 40));
+        for(int i = 0; i &lt; glasses.size(); i++) {
+            glasses.at(i).incrementTextureOffsetY(0.002 * (i + 1));
+            glasses.at(i).draw();
+        }
+    }
+    masker.endLayer(0);
+
+    masker.beginMask(0);
+    {
+        ofSetColor(ofColor::black, 16);
+        ofRect(0, 0, gif.width, gif.height);
+        
+        ofEnableAlphaBlending();
+        
+        for(int i = 0; i &lt; shapes.size(); i++) {
+            shapes.at(i).setColor(ofColor::white);
+        }
+        shapeSystem.draw();
+        
+        gif.rotateAroundCenter(90);
+        for(int i = 0; i &lt; shapes.size(); i++) {
+            shapes.at(i).setColor(ofColor(ofColor::black, 120));
+        }
+        shapeSystem.draw();
+        
+        gif.rotateAroundCenter(90);
+        for(int i = 0; i &lt; shapes.size(); i++) {
+            shapes.at(i).setColor(ofColor(ofColor::black, 90));
+        }
+        shapeSystem.draw();
+        
+        gif.rotateAroundCenter(90);
+        for(int i = 0; i &lt; shapes.size(); i++) {
+            shapes.at(i).setColor(ofColor(ofColor::black, 60));
+        }
+        shapeSystem.draw();
+        
+        ofDisableAlphaBlending();
+    }
+    masker.endMask(0);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofEnableAlphaBlending();
+        //ofBackground(ofColor::white);
+        ofSetColor(ofColor(ofColor::white, 40));
+        foil2.incrementTextureOffset(0.0025, 0.003);
+        foil2.draw();
+        masker.draw();
+        ofDisableAlphaBlending();
+    }
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>Ironworks</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-30.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-07-28</h1>
 	</header>
 	<div class=code>
@@ -593,81 +720,6 @@ void ofApp::draw(){
 </div>
 <p class=description>Floating</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-23.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-07-22</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-22-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-22>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 800);
-    numLayers = 6;
-    gif.setup(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 80, 500, 500, ISOLATE_DRAWING);
-    gif.fadeInOut(2, 4, 4);
-    masker.setup(500, 500, numLayers, ISOLATE_LAYERS);
-    masker.toggleOverlay();
-    glass.setup(&quot;glass3.png&quot;, 500, 500, 2.0);
-    wbw.setup(&quot;wbw.png&quot;, 500, 500, 0.5);
-    for(int i = 0; i &lt; numLayers; i++) {
-        wbw.setTextureOffset(i);
-        wbws.push_back(wbw);
-    }
-    bwb.setup(&quot;bwb.png&quot;, 500, 500, 0.25);
-    for(int i = 0; i &lt; numLayers; i++) {
-        bwb.setTextureOffset(8-i);
-        bwbs.push_back(bwb);
-    }
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; numLayers; i++) {
-        wbws.at(i).incrementTextureOffset(-0.01, i % 2 == 0 ? -0.01 : 0.01);
-        bwbs.at(i).incrementTextureOffset(i % 2 == 0 ? 0.01 : 0, i % 2 == 0 ? -0.01 : 0.01);
-        
-        masker.beginLayer(i);
-        {
-            if(i % 2 == 0) {
-                ofSetColor(ofColor:: red);
-                for(int y = i * 2; y &lt; gif.height; y+=10) {
-                    ofLine(0, y, gif.width, y);
-                }
-            } else {
-                wbws.at(i).draw();
-            }
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            bwbs.at(i).draw();
-        }
-        masker.endMask(i);
-    }
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        glass.incrementTextureOffsetY(0.01);
-        glass.draw();
-        masker.draw();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>An endless process</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-22.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

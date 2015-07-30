@@ -49,6 +49,114 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-05-06</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-06-05-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-06>code</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    paused = true;
+    
+    for(int i = 5; i &gt; 0; i--) {
+        vector&lt;ofxShape&gt; shapeLayer;
+        ofxAnimatableFloat positionZ;
+        animDuration = 4;
+        positionZ.reset(i * 8);
+        positionZ.animateToAfterDelay(-(i * 300), ofMap(i, 5, 1, 0, animDuration));
+        positionZ.setDuration(animDuration);
+        positionZ.setCurve(EASE_IN_EASE_OUT);
+        positionZ.setRepeatType(LOOP_BACK_AND_FORTH);
+        positionsZ.push_back(positionZ);
+        
+        ofxAnimatableFloat rotationZ;
+        animDuration = 2;
+        rotationZ.reset(0);
+        rotationZ.animateToAfterDelay(360, ofMap(i, 5, 1, 0, animDuration));
+        rotationZ.setDuration(animDuration);
+        rotationZ.setCurve(EASE_IN_EASE_OUT);
+        rotationZ.setRepeatType(LOOP);
+        rotationsZ.push_back(rotationZ);
+        
+        for(int j = 0; j &lt; i; j++) {
+            for(int k = 0; k &lt; i; k++) {
+                size = (width / i) * 0.38;
+                
+                ofxShape shape;
+                shape.setupFilledRing(60, size * 1.8);
+                shape.setBlur(20);
+                shape.positionX(((width / i) * j) + (width / i / 2));
+                shape.positionY(((height / i) * k) + (height / i / 2));
+                shape.setColor(ofColor::fromHsb(ofMap(i, 5, 1, 130, 170), 150, 60));
+                shapeLayer.push_back(shape);
+            }
+        }
+        
+        shapes.push_back(shapeLayer);
+    }
+
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        ofxShapeSystem shapeSystem;
+        
+        for(int j = 0; j &lt; shapes.at(i).size(); j++) {
+            shapeSystem.add(shapes.at(i).at(j));
+        }
+        
+        shapeSystems.push_back(shapeSystem);
+    }
+}
+
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; positionsZ.size(); i++) {
+        positionsZ.at(i).update(1.0f/framerate);
+    }
+    
+    for(int i = 0; i &lt; rotationsZ.size(); i++) {
+        rotationsZ.at(i).update(1.0f/framerate);
+    }
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        for(int j = 0; j &lt; shapes.at(i).size(); j++) {
+            shapes.at(i).at(j).positionZ(positionsZ.at(i).val());
+        }
+    }
+    
+    for(int i = 0; i &lt; shapeSystems.size(); i++) {
+        shapeSystems.at(i).update();
+    }
+}
+
+void ofApp::drawAnim() {
+    if(ofGetFrameNum() == 82) paused = false;
+    
+    ofBackground(0, 0, 0);
+    ofEnableBlendMode(OF_BLENDMODE_ADD);
+    for(int i = 0; i &lt; shapeSystems.size(); i++) {
+        ofPushMatrix();
+        ofTranslate(width * 0.5, height * 0.5);
+        ofRotateZ(rotationsZ.at(i).val());
+        ofTranslate(-(width * 0.5), -(height * 0.5));
+        shapeSystems.at(i).draw();
+        ofPopMatrix();
+    }
+    ofDisableBlendMode();
+    
+    if(ofGetFrameNum() == 164) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>A modification of yesterday's sketch. Multiple shape systems rotated separately from each other.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-06.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-05-05</h1>
 	</header>
 	<div class=code>
@@ -528,80 +636,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>The magic of transforms: translate, rotate, translate. The first translation kicks off your coordinate system.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-30.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-04-29</h1>
-	</header>
-	<div class=code>
-    <ul>
-        <li><a href="/sketch-29-04-2015/">permalink</a></li>
-        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-29>code</a></li>
-        <li><a href=# class=snippet-button>show snippet</a></li>
-    </ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    boundary = 25;
-    increment = 8;
-    for(int i = 0; i &lt;= 20; i++) {
-        line.addVertex(i * width * 0.05, ofRandom(-boundary, boundary));
-    }
-    lines.push_back(line);
-}
-
-void ofApp::updateAnim(){
-    if(ofGetFrameNum() &lt; 39) {
-        for(int i = 0; i &lt;= 20; i++) {
-            line[i].y = drunkWalk(line[i].y);
-        }
-        lines.push_back(line);
-    }
-    
-    if(ofGetFrameNum() &gt;= 40) {
-        if(lines.size() == 1) {
-            renderGif();
-        } else {
-            lines.pop_back();
-        }
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 255, 255);
-    alpha = 255;
-    
-    ofTranslate(0, boundary* 2);
-    
-    ofPushMatrix();
-    for(int i = 0; i &lt; lines.size() &amp;&amp; alpha &gt;= 0; i++) {
-        ofSetColor(1, 131, 185, alpha);
-        ofSetLineWidth(i * 0.8);
-        
-        ofTranslate(0, i);
-        lines.at(lines.size() - 1 - i).draw();
-        alpha -= 16;
-    }
-    ofPopMatrix();
-    
-    ofSetLineWidth(2);
-    ofSetColor(255, 255, 255, 200);
-    lines.at(lines.size() - 1).draw();
-}
-
-float ofApp::drunkWalk(float from) {
-    if(from &gt; boundary - increment) return from - increment;
-    if(from &lt; -boundary + increment) return from + increment;
-    return ofRandom(1) &gt; 0.5 ?
-            from + increment :
-            from - increment;
-}</code>
-    </pre>
-</div>
-<p class=description>A polyline on a drunken walk</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-29.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

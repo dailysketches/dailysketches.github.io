@@ -49,6 +49,94 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-07-24</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-24-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-24>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    increment = 0.02;
+    numLayers = 3;
+    filename = "condensation-transp2.png";
+
+    ofSetWindowShape(500, 500);
+    gif.setupPaused(ofGetTimestampString("out/%Y-%m-%d"), 240, 280);
+    gif.fadeInOut(8, 2, ofColor::white, 1);
+
+    masker.setup(3);
+    plane.setup(filename);
+    plane.setTexturePositionY(0.5);
+    for(int i = 0; i &lt; numLayers; i++) {
+        layers.push_back(plane);
+        masks.push_back(plane);
+    }
+}
+
+void ofApp::update(){
+    for(int i = 0; i &lt; numLayers; i++) {
+        masker.beginLayer(i);
+        {
+            if(i == 0) {
+                layers.at(i).incrementTextureOffsetY(-increment);
+                layers.at(i).incrementTextureScale(-increment);
+            }
+            if(i == 1) {
+                layers.at(i).incrementTextureOffsetY(increment);
+                layers.at(i).incrementTextureScale(increment);
+            }
+            if(i == 2) {
+                layers.at(i).incrementTextureOffsetX(increment);
+                layers.at(i).incrementTextureScale(-increment);
+            }
+            layers.at(i).draw();
+        }
+        masker.endLayer(i);
+
+        masker.beginMask(i);
+        {
+            ofBackground(ofColor::white);
+            ofSetColor(ofColor::white);
+            if(i == 0) {
+                masks.at(i).incrementTextureOffsetY(-increment);
+                masks.at(i).incrementTextureScale(-increment*0.5);
+            }
+            if(i == 1) {
+                masks.at(i).incrementTextureOffsetY(increment);
+                masks.at(i).incrementTextureScale(increment*0.5);
+            }
+            if(i == 2) {
+                masks.at(i).incrementTextureOffsetX(-increment);
+                masks.at(i).incrementTextureScale(increment*0.5);
+            }
+            masks.at(i).draw();
+        }
+        masker.endMask(i);
+    }
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofBackground(ofColor::white);
+        masker.draw();
+    }
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>Based on the same technique from <a href="/sketch-24-07-2013/">the 13th</a></p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-24.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-07-23</h1>
 	</header>
 	<div class=code>
@@ -558,110 +646,6 @@ void ofApp::draw(){
 </div>
 <p class=description>&quot;...a conscious, purposeful, and personal subject confronting an unconscious, purposeless, and impersonal universe...&quot; (<a href=http://www.gaiamind.com/Tarnas.html>Richard Tarnas</a>)</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-18.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-07-17</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-17-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-17>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 800);
-    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 50, 150, 500, 500);
-    masker.setup(500, 500, 5, ISOLATE_LAYERS);
-    masker.toggleOverlay();
-
-    face.setup(&quot;face.png&quot;, 500, 500, 1.0, TEXTURE_OFFSET_MIDDLE_CENTER);
-    wall.setup(&quot;foil4.png&quot;, 500, 500, 1.0);
-    wallMask.setup(&quot;card-invert-wall.png&quot;, 500, 500, 1.0);
-    for(int i = 0; i &lt; 4; i++) {
-        walls.push_back(wall);
-        wallMasks.push_back(wallMask);
-    }
-}
-
-void ofApp::update(){
-    float sine = sin(ofGetFrameNum() * 0.05);
-    alpha = ofMap(sine, -1, 1, 20, 220);
-    
-    for(int i = 0; i &lt; 4; i++) {
-        masker.beginLayer(i);
-        {
-            gif.rotateAroundCenter(i * 90);
-            walls.at(i).incrementTextureOffsetY(-0.02);
-            walls.at(i).setTextureScale(ofMap(sine, -1, 1, 1.0, 4.0));
-            ofSetColor(i % 2 == 0 ? ofColor(ofColor::red, alpha) : ofColor(ofColor::white, alpha));
-            walls.at(i).draw();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            ofSetColor(ofColor::white);
-            gif.rotateAroundCenter(i * 90);
-            wallMasks.at(i).setTextureScale(ofMap(sine, -1, 1, 0.5, 0.5));
-            wallMasks.at(i).incrementTextureOffsetY(-0.05);
-            wallMasks.at(i).draw();
-            if(i == 0) {
-                ofSetColor(ofColor::black);
-                ofRect(0, gif.halfHeight, gif.width, gif.halfHeight);
-            }
-        }
-        masker.endMask(i);
-    }
-    
-    masker.beginLayer(4);
-    {
-        ofSetColor(ofColor(ofColor::red, alpha));
-        walls.at(0).draw();
-    }
-    masker.endLayer(4);
-    
-    masker.beginMask(4);
-    {
-        wallMasks.at(0).draw();
-        ofSetColor(ofColor::black);
-        ofRect(0, 0, gif.width, gif.halfHeight);
-    }
-    masker.endMask(4);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    ofPushStyle();
-    {
-        ofEnableAlphaBlending();
-        if(ofGetFrameNum() == 0) {
-            ofBackground(ofColor::black);
-        }
-        if(ofRandom(1) &gt; ofMap(alpha, 0, 255, 0.7, 1)) {
-            ofSetColor(ofColor(ofColor::white, 255-alpha));
-            face.setTextureOffset(TEXTURE_OFFSET_MIDDLE_CENTER);
-            face.incrementTextureOffset(ofRandom(-0.05, 0.05), ofRandom(-0.5, 0.5));
-            face.draw();
-        } else {
-            ofSetColor(ofColor(ofColor::black, alpha));
-            ofRect(0, 0, gif.width, gif.height);
-        }
-        masker.draw();
-        ofDisableAlphaBlending();
-    }
-    ofPopStyle();
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>That weird illusion thing again with 'impossible' walls.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-17.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

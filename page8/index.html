@@ -49,6 +49,141 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-06-13</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-13-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-13>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    masker.setup(width, height);
+    layer1 = masker.newLayer();
+    layer2 = masker.newLayer();
+    
+    ofDisableArbTex();
+    offset = ofRandom(3);
+    setupImage("foil.png", &amp;img1, &amp;tex1);
+    setupImage("glass.png", &amp;img2, &amp;tex2);
+
+    plane.set(width, height);
+    plane.setPosition(halfWidth, halfHeight, 0);
+    plane.setResolution(2, 2);
+    
+    glitch = false;
+    alpha = 255;
+    fadeIn = true;
+    fadeOut = false;
+}
+
+void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
+    img-&gt;loadImage(file);
+    *tex = img-&gt;getTextureReference();
+    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+}
+
+void ofApp::drawLayer(ofTexture *tex) {
+    plane.mapTexCoords(tx0, ty0, tx1, ty1);
+    plane.mapTexCoords(tx1, ty1, tx0, ty0);
+    tex-&gt;bind();
+    plane.draw();
+    tex-&gt;unbind();
+}
+
+void ofApp::updateAnim(){
+    masker.beginLayer(layer1);
+    {
+        ofBackground(ofColor::white);
+        ofSetColor(ofColor::white);
+        tx0 = ofGetFrameNum() * 0.005;
+        ty0 = 0;
+        tx1 = tx0 - 0.015625;
+        ty1 = ty0 - 0.125;
+        drawLayer(&amp;tex1);
+    }
+    masker.endLayer(layer1);
+    
+    masker.beginMask(layer1);
+    {
+        ofBackground(ofColor::white);
+        ofSetColor(ofColor::black);
+        for(int x = 10; x &lt; width; x+=80) {
+            for(int y = 10; y &lt; height; y+=80) {
+                ofRect(x, y, 60, 60);
+            }
+        }
+    }
+    masker.endMask(layer1);
+
+    masker.beginLayer(layer2);
+    {
+        ofSetColor(ofColor::white);
+        tx0 = 0;
+        ty0 = ofGetFrameNum() * 0.01;
+        tx1 = tx0 - 2;
+        ty1 = ty0 - 0.5;
+        drawLayer(&amp;tex2);
+    }
+    masker.endLayer(layer2);
+    
+    masker.beginMask(layer2);
+    {
+        masker.drawLayer(layer1);
+        ofSetColor(ofColor::white);
+        for(int x = 10; x &lt; width; x+=80) {
+            for(int y = 10; y &lt; height; y+=80) {
+                ofRect(x, y, 60, 60);
+            }
+        }
+    }
+    masker.endMask(layer2);
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::black);
+    
+    if(glitch) {
+        masker.draw();
+        if(ofRandom(1) &gt; 0.4) {
+            glitch = !glitch;
+        }
+    } else {
+        masker.drawLayer(layer2);
+        if(ofRandom(1) &gt; 0.9) {
+            glitch = !glitch;
+        }
+    }
+    
+    if(fadeIn) {
+        alpha -= 40;
+        if(alpha &lt;= 0) fadeIn = false;
+    }
+    
+    if(fadeOut) {
+        alpha += 40;
+        if(alpha &gt;= 355) {
+            renderGif();
+        }
+    }
+    
+    ofSetColor(ofColor::black, alpha);
+    ofRect(0, 0, width, height);
+    
+    if(ofGetFrameNum() == 70) {
+        fadeOut = true;
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>What on earth is going on with these masks?</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-13.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-06-12</h1>
 	</header>
 	<div class=code>
@@ -477,97 +612,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>Running out of time.</p>
 <p><img class=no-frame src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-07.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-06-06</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-06-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-06>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofDisableArbTex();
-    setupImage("surface.png", &amp;img, &amp;tex);
-
-    plane.setResolution(2, 2);
-    
-    offset.set(1, 0.04);
-}
-
-void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
-    img-&gt;loadImage(file);
-    *tex = img-&gt;getTextureReference();
-    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
-}
-
-void ofApp::drawLayer(ofTexture *tex) {
-    tx0 = offset.x;
-    ty0 = offset.y;
-    tx1 = tx0 - 0.66666668;
-    ty1 = ty0 - 1;
-    plane.setPosition(halfWidth, halfHeight, 0);
-    plane.set(width, height);
-    plane.mapTexCoords(tx0, ty0, tx1, ty1);
-    plane.mapTexCoords(tx1, ty1, tx0, ty0);
-    tex-&gt;bind();
-    plane.draw();
-    tex-&gt;unbind();
-}
-
-void ofApp::drawLayer2(ofTexture *tex) {
-    tx0 = offset.x - (0.66666668 * 0.5);
-    ty0 = offset.y -0.5;
-    tx1 = tx0 - (0.66666668 * 0.5);
-    ty1 = ty0 - 0.5;
-    plane.setPosition(halfWidth*0.5, halfHeight*0.5, 0);
-    plane.set(halfWidth, halfHeight);
-    plane.mapTexCoords(tx0, ty0, tx1, ty1);
-    plane.mapTexCoords(tx1, ty1, tx0, ty0);
-    tex-&gt;bind();
-    plane.draw();
-    tex-&gt;unbind();
-}
-
-void ofApp::rotateScreen(float degrees, int amount) {
-    ofTranslate(amount, amount, 0);
-    ofRotate(degrees);
-    ofTranslate(-amount, -amount, 0);
-}
-
-void ofApp::updateAnim(){
-    offset.x += 0.02;
-}
-
-void ofApp::drawAnim() {
-    ofBackground(ofColor::black);
-    ofSetColor(ofColor::wheat);
-    
-    
-    offset.y = 0.02;
-    drawLayer(&amp;tex);
-    rotateScreen(90, halfWidth);
-    drawLayer(&amp;tex);
-    rotateScreen(90, halfHeight);
-    drawLayer(&amp;tex);
-    rotateScreen(90, halfWidth);
-    drawLayer(&amp;tex);
-    rotateScreen(90, halfHeight);
-    drawLayer2(&amp;tex); //cover up
-
-    if(ofGetFrameNum() == 100) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Folded like the top of a cardbaord box</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-06.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

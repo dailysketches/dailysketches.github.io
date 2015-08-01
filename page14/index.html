@@ -49,6 +49,75 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-05-02</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-02-05-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-02>code</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    ofEnableAntiAliasing();
+    
+    shapeSystem.setup();
+    camera.setDistance(120);
+    
+    for(int i = 0; i &lt; 20; i++) {
+        GradientShape ring;
+        rings.push_back(ring);
+    }
+    
+    for(int i = 0; i &lt; rings.size(); i++) {
+        if(i % 3 == 0) color.set(255, 0, 0, 80);
+        if(i % 3 == 1) color.set(0, 255, 0, 80);
+        if(i % 3 == 2) color.set(0, 0, 255, 80);
+        
+        rings.at(i).setupHollowRing(60, 3, i * 3); //Resolution, thickness, diameter
+        rings.at(i).setColor(color);
+        rings.at(i).setBlur(3);
+        shapeSystem.add(rings.at(i));
+    }
+    
+    circle.setupFilledRing(30, 30);
+    circle.setBlur(20);
+    circle.setColor(ofColor(255, 255, 255, 200));
+    circle.positionZ(20);
+    shapeSystem.add(circle);
+}
+
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; rings.size(); i++) {
+        if(i % 6 == 0) rings.at(i).rotateX(ofGetFrameNum() * 2);
+        if(i % 6 == 1) rings.at(i).rotateY(ofGetFrameNum() * 2);
+        if(i % 6 == 2) rings.at(i).rotateZ(ofGetFrameNum() * 2);
+        if(i % 6 == 3) rings.at(i).rotateX(-ofGetFrameNum() * 2);
+        if(i % 6 == 4) rings.at(i).rotateY(-ofGetFrameNum() * 2);
+        if(i % 6 == 5) rings.at(i).rotateZ(-ofGetFrameNum() * 2);
+    }
+    shapeSystem.update();
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    camera.begin();
+    shapeSystem.draw();
+    camera.end();
+    if(ofGetFrameNum() == 90) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>A much more user-freindly <a href=https://github.com/dailysketches/dailySketches/blob/master/sketches/2015-05-02/src/Shapes/GradientShape.cpp>shape system</a></p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-02.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-05-01</h1>
 	</header>
 	<div class=code>
@@ -494,43 +563,6 @@ float ofApp::getNewOffset() {
 </div>
 <p class=description>Perlin noise coupled with a little <a href=http://natureofcode.com/book/chapter-3-oscillation#35-polar-vs-cartesian-coordinates>polar to cartesian conversion</a>.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-26.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-04-25</h1>
-	</header>
-	<div class=code>
-    <ul>
-        <li><a href="/sketch-25-04-2015/">permalink</a></li>
-        <li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-25>code</a></li>
-        <li><a href=# class=snippet-button>show snippet</a></li>
-    </ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    current = 0;
-    max = 80;
-    for(int i = 0; i &lt; max; i++) {
-        glitches.push_back(templateGlitch);
-        glitches.at(glitches.size()-1).allocate(width, height);
-    }
-    ofSetColor(ofColor::white);
-}
-
-void ofApp::drawAnim() {
-    if(ofGetFrameNum() % 5 == 0) {
-        ofClear(255,255,255);
-    } else {
-        ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
-        glitches.at(ofGetFrameNum()%max).draw(0, 0);
-        ofDisableBlendMode();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Accessing chunks of memory that you're not supposed to access</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-25.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

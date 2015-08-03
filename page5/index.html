@@ -49,6 +49,74 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-07-05</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-05-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-05>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 900);
+    bpm = 60;
+    playing = false;
+
+    utils.setup();
+    manager.setup();
+    manager.toggleDebugUI();
+    setupAudioUnits();
+    setupTimeline();
+}
+
+void ofApp::setupAudioUnits() {
+    manager.add(&amp;chain1, "tal-one", ofColor::blue);
+    chain1.link(&amp;noiseMaker1).toMixer();
+    manager.loadPresets(&amp;chain1);
+}
+
+void ofApp::setupTimeline() {
+    timeline.setup();
+    timeline.setLoopType(OF_LOOP_NORMAL);
+    timeline.setShowBPMGrid(true);
+    timeline.enableSnapToBPM(true);
+    timeline.setBPM(bpm);
+    timeline.setDurationInSeconds(30);
+    timeline.setOffset(ofVec2f(10, 480));
+    timeline.setWidth(ofGetWidth() - 400);
+    timeline.addCurves("lfo rate");
+    timeline.addCurves("delay wet");
+    timeline.addSwitches("midi events");
+    ofAddListener(timeline.events().switched, this, &amp;ofApp::switchFired);
+}
+
+void ofApp::update(){
+    noiseMaker1.set(TALNoiseMaker_lfo2rate, timeline.getValue("lfo rate"));
+    noiseMaker1.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
+}
+
+void ofApp::switchFired(ofxTLSwitchEventArgs &amp;args) {
+    string command = args.switchName + (args.on ? " ON" : " OFF");
+    cout &lt;&lt; endl &lt;&lt; ofGetTimestampString() &lt;&lt; endl;
+    cout &lt;&lt; "switch fired: " &lt;&lt; command &lt;&lt; endl;
+    utils.executeMidiCommand(command, chain1.midi());
+}</code>
+    </pre>
+</div>
+<p class=description>Dubstep wobble with echo</p>
+<p>
+    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-05.png?raw=true" alt="Sketch 2015-07-05">
+    <audio controls>
+        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-05.mp3?raw=true" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-07-04</h1>
 	</header>
 	<div class=code>
@@ -575,80 +643,6 @@ void ofApp::rotateScreen(float degrees) {
 </div>
 <p class=description>We'll live as one family</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-29.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-06-28</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-28-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-06-28>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 1000);
-    manager.setup();
-    manager.toggleDebugUI();
-    setupAudioUnits();
-    setupTimeline();
-
-    playing = false;
-    note = 60;
-}
-
-void ofApp::setupAudioUnits() {
-    manager.add(&amp;chain, "tal-one", ofColor::blue);
-    chain.link(&amp;noiseMaker).toMixer();
-    manager.loadPresets(&amp;chain);
-}
-
-void ofApp::setupTimeline() {
-    timeline.setup();
-    timeline.setLoopType(OF_LOOP_NORMAL);
-    timeline.setDurationInSeconds(30);
-    timeline.setOffset(ofVec2f(10, 450));
-    timeline.setWidth(ofGetWidth() - 400);
-    timeline.addCurves("master osc 1 (pulse)", ofRange(0, 1));
-    timeline.addCurves("master osc 2 (triangle)", ofRange(0, 1));
-    timeline.addCurves("envelope amount (x8)", ofRange(0, 1));
-    timeline.addCurves("lfo 2 rate", ofRange(0, 1));
-    timeline.addBangs("midi events");
-    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
-}
-
-void ofApp::update(){
-    noiseMaker.set(TALNoiseMaker_osc1volume, timeline.getValue("master osc 1 (pulse)"));
-    noiseMaker.set(TALNoiseMaker_osc2volume, timeline.getValue("master osc 2 (triangle)"));
-    noiseMaker.set(TALNoiseMaker_envelopeeditoramount, timeline.getValue("envelope amount (x8)"));
-    noiseMaker.set(TALNoiseMaker_lfo2rate, timeline.getValue("lfo 2 rate"));
-}
-
-void ofApp::bang(ofxTLBangEventArgs &amp;args) {
-    if(args.flag == "") {
-        chain.midi()-&gt;sendNoteOn(1, note);
-    } else {
-        chain.midi()-&gt;sendNoteOn(1, ofToInt(args.flag));
-    }
-}
-
-void ofApp::draw(){
-    manager.draw();
-    timeline.draw();
-}</code>
-    </pre>
-</div>
-<p class=description>Mixing oscillators, filter envelopes and LFO rates</p>
-<p>
-    <img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-28.png?raw=true" alt="Sketch 2015-06-28">
-    <audio controls>
-        <source src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-06-28.mp3?raw=true" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-</p>
 
 </article>
 

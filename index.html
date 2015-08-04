@@ -49,6 +49,110 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-08-03</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-03-08-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-08-03>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 800);
+    gif.setup(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 80, 500, 500);
+    masker.setup(500, 500, 3);
+    masker.toggleOverlay();
+    foil.setup(&quot;foil1.png&quot;, 500, 500, 6.0, TEXTURE_OFFSET_MIDDLE_CENTER);
+    glass.setup(&quot;glass1-inverted.png&quot;, 500, 500, 4.0, TEXTURE_OFFSET_MIDDLE_CENTER);
+    numFramesSince = 0;
+}
+
+void ofApp::update(){
+    foil.incrementTextureOffsetY(0.05);
+    alpha = ofMap(sin(ofGetFrameNum() * 0.25), -1, 1, 128, 200);
+    
+    masker.beginLayer(0);
+    {
+        gif.rotateAroundCenter(90);
+        ofSetColor(ofColor(ofColor::white, ofGetFrameNum() % 3 == 0 ? alpha : 0));
+        foil.draw();
+    }
+    masker.endLayer(0);
+    
+    masker.beginMask(0);
+    {
+        ofBackground(ofColor::white);
+    }
+    masker.endMask(0);
+    
+    masker.beginLayer(1);
+    {
+        ofBackground(ofColor::red);
+    }
+    masker.endLayer(1);
+    
+    masker.beginMask(1);
+    {
+        gif.rotateAroundCenter(90);
+        if(ofRandom(1) &gt; 0.93 &amp;&amp; numFramesSince &gt; 8) {
+            ofSetColor(ofColor(ofColor::white, 255 - alpha));
+            glass.setTextureOffset(ofRandom(2), ofRandom(2));
+            glass.draw();
+            numFramesSince = 0;
+        } else {
+            numFramesSince++;
+            ofSetColor(ofColor(ofColor::black, 96));
+            ofRect(0, 0, gif.width, gif.height);
+        }
+        
+        gif.rotateAroundCenter(-90);
+        ofSetColor(ofColor(ofColor::black, 255));
+        ofRect(50, 200, 170, 90);
+    }
+    masker.endMask(1);
+
+    masker.beginLayer(2);
+    {
+        ofSetColor(ofColor(ofColor::white, 128));
+        ofRect(50, 200, 170, 90);
+        gif.rotateAroundCenter(180);
+        ofSetColor(ofColor(ofColor::white, alpha));
+        foil.draw();
+    }
+    masker.endLayer(2);
+    
+    masker.beginMask(2);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor(ofColor::white, 255));
+        ofRect(50, 200, 170, 90);
+    }
+    masker.endMask(2);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    ofPushStyle();
+    {
+        ofEnableAlphaBlending();
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white);
+        masker.draw();
+    }
+    ofPopStyle();
+    gif.endCaptureDraw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>You'll never have an answer.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-08-03.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-08-02</h1>
 	</header>
 	<div class=code>
@@ -742,110 +846,6 @@ void ofApp::draw(){
 </div>
 <p class=description>Easing back and forth</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-28.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-07-27</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-27-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-27>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    increment = 0.01;
-    ofSetWindowShape(500, 500);
-    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 116, 156);
-    gif.fadeInOut(8, 2, ofColor::white, 1);
-    masker.setup(3);
-    transp1.setup(&quot;foil-large-transp.png&quot;);
-    transp1.setTexturePositionY(0.5);
-    transp2.setup(&quot;road-transp.png&quot;);
-    transp2.setTexturePositionY(0.5);
-    transp3.setup(&quot;road-transp.png&quot;);
-    transp3.setTexturePositionY(0.5);
-    transp4.setup(&quot;foil-large-transp.png&quot;);
-    transp4.setTexturePositionY(0.5);
-    transp5.setup(&quot;foil-large-transp.png&quot;);
-    transp5.setTexturePositionY(0.5);
-    transp6.setup(&quot;road-transp.png&quot;);
-    transp6.setTexturePositionY(0.5);
-}
-
-void ofApp::update(){
-    masker.beginLayer(0);
-    {
-        transp1.incrementTextureOffsetY(-increment);
-        transp1.incrementTextureScale(-increment);
-        transp1.draw();
-    }
-    masker.endLayer(0);
-
-    masker.beginMask(0);
-    {
-        transp2.incrementTextureOffsetY(-increment);
-        transp2.incrementTextureScale(-increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp2.draw();
-    }
-    masker.endMask(0);
-    
-    masker.beginLayer(1);
-    {
-        transp3.incrementTextureOffsetY(increment);
-        transp3.incrementTextureScale(increment);
-        transp3.draw();
-    }
-    masker.endLayer(1);
-    
-    masker.beginMask(1);
-    {
-        transp4.incrementTextureOffsetY(increment);
-        transp4.incrementTextureScale(increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp4.draw();
-    }
-    masker.endMask(1);
-    
-    masker.beginLayer(2);
-    {
-        transp5.incrementTextureOffsetX(increment);
-        transp5.incrementTextureScale(-increment);
-        transp5.draw();
-    }
-    masker.endLayer(2);
-    
-    masker.beginMask(2);
-    {
-        transp6.incrementTextureOffsetX(-increment);
-        transp6.incrementTextureScale(increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp6.draw();
-    }
-    masker.endMask(2);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofBackground(ofColor::white);
-        masker.draw();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Texture explosion</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-27.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

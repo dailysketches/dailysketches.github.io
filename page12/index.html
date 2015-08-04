@@ -49,6 +49,103 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-05-18</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-18-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-18>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>ofxLayerMask masker;
+    vector&lt;ofxAnimatableFloat&gt; positions, targets, heights, opacities;
+
+    void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    ofSetLineWidth(4);
+    masker.setup(width, height);
+    
+    for(int i = 0; i &lt; 70; i++) {
+        ofxAnimatableFloat animHeight;
+        animHeight.reset(ofRandom(40));
+        heights.push_back(animHeight);
+        
+        ofxAnimatableFloat opacity;
+        opacity.reset(ofMap(i, 0, 300, 100, 255));
+        opacities.push_back(opacity);
+        
+        ofxAnimatableFloat target;
+        target.reset(ceil(ofRandom(-height, height * 2)));
+        targets.push_back(target);
+        
+        ofxAnimatableFloat position;
+        position.reset(createDistinct(target.val()));
+        position.setCurve(SWIFT_GOOGLE);
+        position.setRepeatType(LOOP_BACK_AND_FORTH);
+        position.setDuration(ceil(ofRandom(2)) * 2);
+        position.animateTo(targets.at(i).val());
+        positions.push_back(position);
+    }
+}
+
+float ofApp::createDistinct(float from) {
+    float candidate;
+    do candidate = ceil(ofRandom(-height, height * 2));
+    while(abs(candidate - from) &lt; 150);
+    return candidate;
+}
+
+void ofApp::updateAnim(){
+    ofEnableAlphaBlending();
+    
+    masker.beginBackground();
+    ofBackground(ofColor::black);
+    ofSetColor(ofColor::white, 200);
+    for(int i = -width; i &lt; width*2; i+=30) {
+        ofLine(i, height, i + width*0.5, 0);
+    };
+    masker.endBackground();
+    
+    masker.beginMask();
+    ofBackground(ofColor::black);
+    for(int i = 0; i &lt; positions.size(); i++) {
+        positions.at(i).update(0.05);
+        ofSetColor(ofColor::white, opacities.at(i).val());
+        ofRect(0, positions.at(i).val(), width, heights.at(i).val());
+    }
+    masker.endMask();
+    
+    masker.beginForeground();
+    ofBackground(ofColor::black);
+    ofSetColor(ofColor::white, 100);
+    for(int i = -width; i &lt; width*2; i+=15) {
+        ofLine(i + width*0.5, height, i, 0);
+    };
+    masker.endForeground();
+    
+    ofDisableAlphaBlending();
+}
+
+void ofApp::drawAnim() {
+    masker.draw();
+    bool allFinished = true;
+    for(int i = 0; i &lt; positions.size(); i++) {
+        if(positions.at(i).getPlayCount() &lt; 2) {
+            allFinished = false;
+        }
+    }
+    if(allFinished) renderGif();
+}</code>
+    </pre>
+</div>
+<p class=description>Transmission static.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-18.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-05-17</h1>
 	</header>
 	<div class=code>
@@ -586,119 +683,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>Going off the rails</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-12.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-05-11</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-11-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-11>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofSetWindowShape(width, height);
-    masker.setup(width, height);
-    
-    setupBackground();
-    setupMask();
-    setupForeground();
-}
-
-void ofApp::setupBackground(){
-    for(int i = 0; i &lt; width; i+=40) {
-        for(int j = 0; j &lt; height; j+=40) {
-            ofxShape shape;
-            shape.setupFilledSquare(26);
-            shape.positionX(i+10);
-            shape.positionY(j+10);
-            shape.setBlur(10);
-            backgroundShapes.push_back(shape);
-        }
-    }
-    
-    push(&amp;backgroundShapes, &amp;backgroundSystems);
-}
-
-void ofApp::setupMask(){
-    for(int i = -width; i &lt; width*2; i+=40) {
-        for(int j = -width; j &lt; height*2; j+=40) {
-            ofxShape shape;
-            shape.setupFilledSquare(26);
-            shape.positionX(i+10);
-            shape.positionY(j+10);
-            shape.setBlur(10);
-            maskShapes.push_back(shape);
-        }
-    }
-    
-    push(&amp;maskShapes, &amp;maskSystems);
-}
-
-void ofApp::setupForeground(){
-    for(int i = 0; i &lt; width; i+=40) {
-        for(int j = 0; j &lt; height; j+=40) {
-            ofxShape shape;
-            shape.setupFilledSquare(26);
-            shape.positionX(i+30);
-            shape.positionY(j+30);
-            shape.setBlur(10);
-            foregroundShapes.push_back(shape);
-        }
-    }
-    
-    push(&amp;foregroundShapes, &amp;foregroundSystems);
-}
-
-void ofApp::updateAnim(){
-    float scale = ofMap(sin(ofGetFrameNum() * 0.08), -1, 1, -54, 54);
-    for(int i = 0; i &lt; maskShapes.size(); i++){
-        maskShapes.at(i).positionZ(scale);
-    }
-}
-
-void ofApp::drawAnim() {
-    masker.beginBackground();
-    draw(&amp;backgroundSystems);
-    masker.endBackground();
-    
-    masker.beginMask();
-    draw(&amp;maskSystems);
-    masker.endMask();
-    
-    masker.beginForeground();
-    draw(&amp;foregroundSystems);
-    masker.endForeground();
-    
-    masker.draw();
-    
-    if(ofGetFrameNum() == 78) {
-        renderGif();
-    }
-}
-
-void ofApp::push(vector&lt;ofxShape&gt; *shapes, vector&lt;ofxShapeSystem&gt; *systems) {
-    ofxShapeSystem system;
-    for(int i = 0; i &lt; shapes-&gt;size(); i++) {
-        system.add(shapes-&gt;at(i));
-    }
-    systems-&gt;push_back(system);
-}
-
-void ofApp::draw(vector&lt;ofxShapeSystem&gt; *systems) {
-    ofClear(0, 0, 0, 255);
-    for(int i = 0; i &lt; systems-&gt;size(); i++) {
-        systems-&gt;at(i).draw();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Sometimes it's all about grids of squares</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-11.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

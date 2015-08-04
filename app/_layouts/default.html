@@ -38,12 +38,15 @@
         </section>
         <nav role="navigation">
             <h1>Navigation</h1>
-            {% if page.url == '/patterns/index.html' %}
-                {% assign page = 'patterns' %}
-            {% elsif page.url == '/selected/index.html' %}
-                {% assign page = 'selected' %}
-            {% else %}
+            {% assign page_elements = page.url | split: '/'  %}
+            {% assign page = page_elements[1] %}
+
+            {% if page == 'index.html' %}
                 {% assign page = 'all' %}
+            {% else %}
+                {% unless page == 'selected' or page == 'patterns' %}
+                    {% assign page = 'single' %}
+                {% endunless %}
             {% endif %}
             <ul>
                 <li>

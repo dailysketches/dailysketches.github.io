@@ -49,6 +49,116 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-08-04</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-04-08-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-08-04>code</a></li>
+		<li><a href=# class=snippet-button>snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 130, 180);
+    gif.fadeInOut(3, 6, ofColor::white);
+    gif.enableTextOverlay();
+    masker.setup(3);
+    numTissues = 16;
+    numRoads = 3;
+
+    tissue.setup(&quot;tissue.png&quot;, 2.0, TEXTURE_OFFSET_MIDDLE_CENTER);
+    tissue.incrementTextureOffsetX(-0.5);
+    for(int i = 0; i &lt; numTissues; i++) {
+        tissues.push_back(tissue);
+    }
+
+    road.setup(&quot;road.png&quot;, 0.5, TEXTURE_OFFSET_MIDDLE_CENTER);
+    road.incrementTextureOffsetX(0.5);
+    for(int i = 0; i &lt; numRoads; i++) {
+        roads.push_back(road);
+    }
+    roads.at(1).incrementTextureOffsetY(0.5);
+    roads.at(1).setTextureScale(0.75);
+}
+
+void ofApp::update(){
+    masker.beginLayer(0);
+    {
+        ofSetColor(ofColor(ofColor::white, 255));
+        roads.at(0).incrementTextureOffsetY(0.0048);
+        roads.at(0).draw();
+    }
+    masker.endLayer(0);
+    
+    masker.beginMask(0);
+    {
+        ofBackground(ofColor::black);
+        for(int i = 0; i &lt; tissues.size(); i++) {
+            tissues.at(i).incrementTextureOffsetY((i+1) * 0.001);
+            tissues.at(i).draw();
+        }
+        ofSetColor(ofColor(ofColor::black, 128));
+        ofRect(200, 0, 100, gif.height);
+    }
+    masker.endMask(0);
+    
+    masker.beginLayer(1);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white);
+        masker.drawMask(0);
+    }
+    masker.endLayer(1);
+    
+    masker.beginMask(1);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white);
+        ofRect(120, 0, 30, gif.height);
+        ofRect(350, 0, 30, gif.height);
+    }
+    masker.endMask(1);
+
+    masker.beginLayer(2);
+    {
+        ofSetColor(ofColor(ofColor::white, 255));
+        roads.at(2).incrementTextureOffsetY(-0.0012);
+        roads.at(2).draw();
+    }
+    masker.endLayer(2);
+    
+    masker.beginMask(2);
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::white);
+        ofRect(0, 0, 120, gif.height);
+        ofRect(380, 0, 120, gif.height);
+    }
+    masker.endMask(2);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor::red);
+        roads.at(1).incrementTextureOffsetY(-0.006);
+        roads.at(1).draw();
+        masker.draw();
+    }
+    gif.endCaptureDraw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>No such thing as <a href="/sketch-14-05-2015/">progress</a>.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-08-04.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-08-03</h1>
 	</header>
 	<div class=code>
@@ -758,94 +868,6 @@ void ofApp::draw(){
 </div>
 <p class=description>Layer wipes</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-29.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-07-28</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-28-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-28>code</a></li>
-		<li><a href=# class=snippet-button>snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    increment = 0.01;
-    numLayers = 3;
-    filename = &quot;leaf-transp2.png&quot;;
-
-    ofSetWindowShape(500, 500);
-    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 12, 60);
-
-    masker.setup(numLayers);
-    plane.setup(filename);
-    for(int i = 0; i &lt; numLayers; i++) {
-        layers.push_back(plane);
-        masks.push_back(plane);
-    }
-    reset();
-}
-
-void ofApp::reset() {
-    offsetIncrements.clear();
-    scaleIncrements.clear();
-
-    for(int i = 0; i &lt; numLayers; i++) {
-        layers.at(i).setTextureScale(ofRandom(0.1, 1.5));
-        layers.at(i).setTexturePosition(ofRandom(2), ofRandom(2));
-        masks.at(i).setTextureScale(ofRandom(0.1, 1.5));
-        masks.at(i).setTexturePosition(ofRandom(2), ofRandom(2));
-        offsetIncrements.push_back(ofVec2f(ofRandom(-increment, increment), ofRandom(-increment, increment)));
-        scaleIncrements.push_back(ofRandom(-increment*20, increment*20));
-    }
-}
-
-void ofApp::update(){
-    if(ofGetFrameNum() % 12 == 0) {
-        reset();
-    }
-    for(int i = 0; i &lt; numLayers; i++) {
-        masker.beginLayer(i);
-        {
-            if(ofGetFrameNum() % 3 == 0 &amp;&amp; i == 0) {
-                ofBackground(ofColor(ofColor::white, 64));
-            }
-            if(ofGetFrameNum() % 12 == 0) {
-                ofBackground(ofColor(ofColor::white, 128));
-            }
-            layers.at(i).incrementTextureOffset(offsetIncrements.at(i));
-            layers.at(i).incrementTextureScale(scaleIncrements.at(i));
-            layers.at(i).draw();
-        }
-        masker.endLayer(i);
-
-        masker.beginMask(i);
-        {
-            ofBackground(ofColor::white);
-            masks.at(i).incrementTextureOffset(-offsetIncrements.at(i));
-            masks.at(i).incrementTextureScale(-scaleIncrements.at(i));
-            masks.at(i).draw();
-        }
-        masker.endMask(i);
-    }
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        masker.draw();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Easing back and forth</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-28.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

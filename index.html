@@ -9,16 +9,10 @@
 
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
     <link rel=stylesheet href=/css/main.4e9c.css>
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
-
-    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
-    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
-    <script src=//code.jquery.com/jquery-2.1.3.min.js></script>
-
-    <script src=/js/head-scripts.d41d.js></script>
-
   </head>
   <body>
     <!--[if lt IE 8]>
@@ -50,6 +44,86 @@
             </ul>
         </nav>
         
+<article>
+	<header>
+		<h1>Sketch 2015-08-05</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-05-08-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-08-05>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>
+void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setupPaused(ofGetTimestampString("out/%Y-%m-%d"), 35, 85);
+    gif.fadeInOut(3, 6, ofColor::white);
+    gif.enableTextOverlay();
+    numTissues = 16;
+    numRoads = 4;
+    masker.setup(numRoads);
+
+    road.setup("road.png", 1.0, TEXTURE_OFFSET_MIDDLE_CENTER);
+    road.incrementTextureOffsetX(0.5);
+    for(int i = 0; i &lt; numRoads; i++) {
+        scale = ofMap(i, 0, numRoads-1, 2, 0.5);
+        road.setTextureScale(scale);
+        road.setTextureOffsetY(ofRandom(2));
+        roads.push_back(road);
+
+        tissuesLoader.clear();
+        scale = ofMap(i, 0, numRoads-1, 8, 0.5);
+        tissue.setup("tissue.png", scale, TEXTURE_OFFSET_MIDDLE_CENTER);
+        tissue.incrementTextureOffsetX(-0.5);
+        tissue.setTextureOffsetY(ofRandom(2));
+        for(int j = 0; j &lt; numTissues; j++) {
+            tissuesLoader.push_back(tissue);
+        }
+        tissues.push_back(tissuesLoader);
+    }
+}
+
+void ofApp::update(){
+    for(int i = 0; i &lt; numRoads; i++) {
+        masker.beginLayer(i);
+        {
+            ofSetColor(i % 2 == 0 ? ofColor::red : ofColor::white);
+            roads.at(i).incrementTextureOffsetY(ofMap(i, 0, numRoads-1, -0.002, 0.002));
+            roads.at(i).draw();
+        }
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        {
+            ofSetColor(ofColor::white);
+            ofBackground(ofColor::white);
+            for(int j = 0; j &lt; tissues.size(); j++) {
+                tissues.at(i).at(j).incrementTextureOffsetY((j+1) * 0.0006);
+                tissues.at(i).at(j).draw();
+            }
+        }
+        masker.endMask(i);
+    }
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        masker.draw();
+    }
+    gif.endCaptureDraw();
+    masker.drawOverlay();
+}
+</code>
+    </pre>
+</div>
+<p class=description>Layers.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-08-05.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
 <article>
 	<header>
 		<h1>Sketch 2015-08-04</h1>
@@ -712,168 +786,6 @@ void ofApp::draw(){
 
 </article>
 
-<article>
-	<header>
-		<h1>Sketch 2015-07-29</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-29-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-29>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    increment = 0.005;
-    ofSetWindowShape(500, 500);
-    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 210, 250);
-    gif.fadeInOut(8, 2, ofColor::white, 1);
-    masker.setup(6);
-    transp1.setup(&quot;foil-large-transp.png&quot;);
-    transp1.setTexturePositionY(0.5);
-    transp2.setup(&quot;road-transp.png&quot;);
-    transp2.setTexturePositionY(0.5);
-    transp3.setup(&quot;road-transp.png&quot;);
-    transp3.setTexturePositionY(0.5);
-    transp4.setup(&quot;foil-large-transp.png&quot;);
-    transp4.setTexturePositionY(0.5);
-    transp5.setup(&quot;foil-large-transp.png&quot;);
-    transp5.setTexturePositionY(0.5);
-    transp6.setup(&quot;road-transp.png&quot;);
-    transp6.setTexturePositionY(0.5);
-}
-
-void ofApp::update(){
-    masker.beginLayer(0);
-    {
-        ofSetColor(ofColor::red);
-        //transp1.incrementTextureOffsetY(-increment);
-        transp1.incrementTextureScale(-increment);
-        transp1.draw();
-    }
-    masker.endLayer(0);
-    
-    masker.beginMask(0);
-    {
-        //transp2.incrementTextureOffsetY(-increment);
-        transp2.incrementTextureScale(-increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp2.draw();
-    }
-    masker.endMask(0);
-    
-    masker.beginLayer(1);
-    {
-        ofSetColor(ofColor::green);
-        transp3.incrementTextureOffsetX(increment);
-        transp3.incrementTextureScale(increment);
-        transp3.draw();
-    }
-    masker.endLayer(1);
-    
-    masker.beginMask(1);
-    {
-        transp4.incrementTextureOffsetX(increment);
-        transp4.incrementTextureScale(increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp4.draw();
-    }
-    masker.endMask(1);
-    
-    masker.beginLayer(2);
-    {
-        transp5.incrementTextureOffset(increment * 8, increment);
-        transp5.incrementTextureScale(-increment);
-        transp5.draw();
-    }
-    masker.endLayer(2);
-    
-    masker.beginMask(2);
-    {
-        transp6.incrementTextureOffset(-increment * 8, -increment);
-        transp6.incrementTextureScale(increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp6.draw();
-    }
-    masker.endMask(2);
-    
-    masker.beginLayer(3);
-    {
-        ofSetColor(ofColor::red);
-        //transp1.incrementTextureOffsetY(-increment);
-        transp1.incrementTextureScale(-increment);
-        transp1.draw();
-    }
-    masker.endLayer(3);
-    
-    masker.beginMask(3);
-    {
-        //transp2.incrementTextureOffsetY(-increment);
-        transp2.incrementTextureScale(-increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp2.draw();
-    }
-    masker.endMask(3);
-    
-    masker.beginLayer(4);
-    {
-        ofSetColor(ofColor::green);
-        transp3.incrementTextureOffsetX(increment);
-        transp3.incrementTextureScale(increment);
-        transp3.draw();
-    }
-    masker.endLayer(4);
-    
-    masker.beginMask(4);
-    {
-        transp4.incrementTextureOffsetX(increment);
-        transp4.incrementTextureScale(increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp4.draw();
-    }
-    masker.endMask(4);
-    
-    masker.beginLayer(5);
-    {
-        transp5.incrementTextureOffset(increment * 8, increment);
-        transp5.incrementTextureScale(-increment);
-        transp5.draw();
-    }
-    masker.endLayer(5);
-    
-    masker.beginMask(5);
-    {
-        transp6.incrementTextureOffset(-increment * 8, -increment);
-        transp6.incrementTextureScale(increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp6.draw();
-    }
-    masker.endMask(5);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofBackground(ofColor::white);
-        masker.draw();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Layer wipes</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-29.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
 
 <ul id=paging>
 	
@@ -882,11 +794,13 @@ void ofApp::draw(){
 	
 </ul>
     </section>
-    <script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
-
-<script>window.jQuery || document.write('<script src="/_bower_components/jquery/jquery.min.js"><\/script>')</script>
-<script src=/js/script.722e.js></script>
-
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+<script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+<!--[if lt IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
+<![endif]-->
+<script src=/js/script.31e0.js></script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
   (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

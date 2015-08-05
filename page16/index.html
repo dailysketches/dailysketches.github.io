@@ -3,7 +3,7 @@
   <head>
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge">
-    <title>Sketch 2015-05-23</title>
+    <title>Daily Sketches</title>
     <meta name=description content="">
     <meta name=viewport content="width=device-width,initial-scale=1">
 
@@ -45,78 +45,40 @@
                 </li>
             </ul>
         </nav>
-        <h1>Daily Sketches</h1>
-<article class=post>
+        
+<article>
 	<header>
-		<h1>Sketch 2015-05-23</h1>
+		<h1>Sketch 2015-04-22</h1>
 	</header>
 	<div class=code>
-    <ul>
-		<li><a href="/sketch-23-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-05-23>code</a></li>
+	<ul>
+		<li><a href="/sketch-22-04-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-04-22>code</a></li>
 		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    masker.setup(width, height);
-    shapeSystem.setup();
-    
-    shape.setupGradientRing(8, 20, 160);
-    shape.setPosition(ofVec3f(halfWidth, halfHeight, 0));
-    for(int i = -10000; i &lt; 1000; i+=12) {
-        shape.positionZ(i);
-        shapes.push_back(shape);
+	<pre class=snippet>
+		<code class=cpp>void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    font.drawString("AN EMPTY\nGESTURE", 12, 85);
+    for(int i = 0; i &lt; 30; i++) {
+        ofLine(ofRandom(520), ofRandom(200), ofRandom(520), ofRandom(200));
     }
-    
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapeSystem.add(shapes.at(i));
-    }
-    
-    img1.loadImage("welcome.png");
-    img2.loadImage("unwelcome.png");
-    flip = false;
-}
-
-void ofApp::updateAnim(){
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        increment = (i % 2 == 0) ? 4 : -8;
-        shapes.at(i).incrementRotateX(increment);
-        shapes.at(i).incrementRotateY(increment);
-        shapes.at(i).incrementRotateZ(increment / 4);
-    }
-    
-    masker.beginMask();
-    ofBackground(ofColor::black);
-    shapeSystem.draw();
-    if(ofRandom(1) &lt;= 0.1) {
-        ofSetColor(ofColor::white, 255);
-        ofRect(0, 0, width, height);
-        flip = !flip;
-    }
-    masker.endMask();
-    
-    masker.beginBackground();
-    flip ? img2.draw(0, 0) : img1.draw(0, 0);
-    masker.endBackground();
-    
-    masker.beginForeground();
-    flip ? img1.draw(0, 0) : img2.draw(0, 0);
-    masker.endForeground();
-}
-
-void ofApp::drawAnim() {
-    masker.draw();
-    if(ofGetFrameNum() == 90) renderGif();
 }</code>
-    </pre>
+	</pre>
 </div>
-<p class=description>Sterility and warmth on the last day in Miami</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-05-23.gif?raw=true" alt="Daily sketch"></p>
+<p class=description>Sometimes you just need to start...</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-04-22.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
+
+
 <ul id=paging>
-	<li><a href="/">&lt; See all posts</a></li>
+	
+		
+			<li><a href="/page15/">&lt; Previous page</a></li>
+		
+	
+	
 </ul>
     </section>
     <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>

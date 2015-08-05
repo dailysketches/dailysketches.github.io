@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	function init() {
 		initHighlightJs();
+		skipModernizr();
 		enableViewToggle('.snippet-button', '.code', 'snippet');
 		enableViewToggle('.pseudocode-button', '.code', 'pseudocode');
 		enableViewToggle('.examples-button', '.pattern', 'examples');
@@ -10,6 +11,10 @@ $(document).ready(function() {
 		/* jshint ignore:start */
 		hljs.initHighlightingOnLoad();
 		/* jshint ignore:end */
+	}
+
+	function skipModernizr() {
+		$('html').removeClass('no-js').addClass('js');
 	}
 
 	function enableViewToggle(trigger, root, target) {

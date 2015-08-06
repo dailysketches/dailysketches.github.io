@@ -48,6 +48,81 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-07-23</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-23-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-23>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 800);
+    numLayers = 2;
+    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 100, 180, 500, 500, ISOLATE_DRAWING);
+    gif.fadeInOut(2, 4, 4);
+    masker.setup(500, 500, numLayers, ISOLATE_LAYERS);
+    masker.toggleOverlay();
+    foil.setup(&quot;foil.png&quot;, 500, 500, 6.0);
+    wbw.setup(&quot;wbw.png&quot;, 500, 500, 0.5);
+    for(int i = 0; i &lt; numLayers; i++) {
+        wbw.setTextureOffset(i);
+        wbws.push_back(wbw);
+    }
+    mask.setup(&quot;foil.png&quot;, 500, 500, 2.0);
+    for(int i = 0; i &lt; numLayers; i++) {
+        mask.setTextureOffset(8-i);
+        masks.push_back(mask);
+    }
+}
+
+void ofApp::update(){
+    for(int i = 0; i &lt; numLayers; i++) {
+        wbws.at(i).incrementTextureOffset(-0.01, i % 2 == 0 ? -0.01 : 0.01);
+        masks.at(i).incrementTextureOffset(i % 2 == 0 ? 0.005 : 0, i % 2 == 0 ? -0.005 : 0.01);
+        
+        masker.beginLayer(i);
+        {
+            if(i % 2 == 0) {
+                ofSetColor(ofColor::powderBlue);
+                for(int y = i * 2; y &lt; gif.height; y+=4) {
+                    ofLine(0, y, gif.width, y);
+                }
+            } else {
+                wbws.at(i).draw();
+            }
+        }
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        {
+            masks.at(i).draw();
+        }
+        masker.endMask(i);
+    }
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        foil.incrementTextureOffset(0.0015, 0.0015);
+        foil.draw();
+        masker.draw();
+    }
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>Floating</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-23.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-07-22</h1>
 	</header>
 	<div class=code>
@@ -586,69 +661,6 @@ void ofApp::draw(){
 </div>
 <p class=description>That weird illusion thing again with 'impossible' walls.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-17.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-07-16</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-16-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-16>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 800);
-    gif.setup(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 64, 500, 500);
-    masker.setup(500, 500, 1);
-    masker.toggleOverlay();
-    foil.setup(&quot;foil1.png&quot;, 500, 500, 2.0, TEXTURE_OFFSET_MIDDLE_CENTER);
-    glass.setup(&quot;glass1-inverted.png&quot;, 500, 500, 1.0, TEXTURE_OFFSET_MIDDLE_CENTER);
-}
-
-void ofApp::update(){
-    masker.beginLayer(0);
-    {
-        foil.setTexturePosition(ofRandom(2), ofRandom(2));
-        foil.setTextureScale(ofRandom(1.0, 6.0));
-        ofSetColor(ofColor::red);
-        foil.draw();
-    }
-    masker.endLayer(0);
-
-    masker.beginMask(0);
-    {
-        glass.setTexturePosition(ofRandom(2), ofRandom(2));
-        glass.setTextureScale(ofRandom(1.0, 6.0));
-        ofBackground(ofColor::white);
-        if(ofRandom(1) &gt; 0.25) {
-            ofSetColor(ofColor(ofColor::white, 120));
-            glass.draw();
-        }
-    }
-    masker.endMask(0);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    ofPushStyle();
-    {
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        masker.draw();
-    }
-    ofPopStyle();
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Forced to stay awake</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-16.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

@@ -46,6 +46,130 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-08-06</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-06-08-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-08-06>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>
+void ofApp::setup(){
+    ofSetWindowShape(1000, 1000);
+    gif.setupPaused(ofGetTimestampString("out/%Y-%m-%d"), 496, 576, 500, 500);
+    gif.fadeInOut(3, 6, ofColor::white);
+    gif.enableTextOverlay();
+
+    //Anim 1
+    numTissues = 16;
+    numRoads = 4;
+    masker1.setup(gif.size(), numRoads, ISOLATE_LAYERS);
+    road.setup("road.png", gif.size(), 1.0, TEXTURE_OFFSET_MIDDLE_CENTER);
+    road.incrementTextureOffsetX(0.5);
+    for(int i = 0; i &lt; numRoads; i++) {
+        scale = ofMap(i, 0, numRoads-1, 2, 0.5);
+        road.setTextureScale(scale);
+        road.setTextureOffsetY(ofRandom(2));
+        roads.push_back(road);
+
+        tissuesLoader.clear();
+        scale = ofMap(i, 0, numRoads-1, 8, 0.5);
+        tissue.setup("tissue.png", gif.size(), scale, TEXTURE_OFFSET_MIDDLE_CENTER);
+        tissue.incrementTextureOffsetX(-0.5);
+        tissue.setTextureOffsetY(ofRandom(2));
+        for(int j = 0; j &lt; numTissues; j++) {
+            tissuesLoader.push_back(tissue);
+        }
+        tissues.push_back(tissuesLoader);
+    }
+
+    //Anim 2
+    numLayers = 6;
+    masker2.setup(gif.size(), numLayers, ISOLATE_LAYERS);
+    masker2.toggleOverlay();
+    wbw.setup("wbw.png", gif.size(), 1.0);
+    for(int i = 0; i &lt; numLayers; i++) {
+        wbw.setTextureOffset(i);
+        wbws.push_back(wbw);
+    }
+    bwb.setup("bwb.png", gif.size(), 2.0);
+    for(int i = 0; i &lt; numLayers; i++) {
+        bwb.setTextureOffset(8-i);
+        bwbs.push_back(bwb);
+    }
+}
+
+void ofApp::update(){
+    //Anim 1
+    for(int i = 0; i &lt; numRoads; i++) {
+        masker1.beginLayer(i);
+        {
+            ofSetColor(i % 2 == 0 ? ofColor::red : ofColor::white);
+            roads.at(i).incrementTextureOffsetY(ofMap(i, 0, numRoads-1, -0.002, 0.002));
+            roads.at(i).draw();
+        }
+        masker1.endLayer(i);
+        
+        masker1.beginMask(i);
+        {
+            ofSetColor(ofColor::white);
+            ofBackground(ofColor::white);
+            for(int j = 0; j &lt; tissues.size(); j++) {
+                tissues.at(i).at(j).incrementTextureOffsetY((j+1) * 0.0006);
+                tissues.at(i).at(j).draw();
+            }
+        }
+        masker1.endMask(i);
+    }
+    
+    //Anim 2
+    for(int i = 0; i &lt; numLayers; i++) {
+        wbws.at(i).incrementTextureOffset(-0.01, i % 2 == 0 ? -0.01 : 0.01);
+        bwbs.at(i).incrementTextureOffset(i % 2 == 0 ? 0.01 : 0, i % 2 == 0 ? -0.01 : 0.01);
+        
+        masker2.beginLayer(i);
+        {
+            if(i % 2 == 0) {
+                ofSetColor(ofColor:: red);
+                for(int y = i * 2; y &lt; gif.height; y+=10) {
+                    ofLine(0, y, gif.width, y);
+                }
+            } else {
+                wbws.at(i).draw();
+            }
+        }
+        masker2.endLayer(i);
+        
+        masker2.beginMask(i);
+        {
+            bwbs.at(i).draw();
+        }
+        masker2.endMask(i);
+    }
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        masker1.draw();
+        masker2.draw();
+    }
+    gif.endCaptureDraw();
+    masker1.drawOverlay();
+    masker2.drawOverlay();
+}
+</code>
+    </pre>
+</div>
+<p class=description>More of a <a href="/sketch-22-07-2015/">remix</a>.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-08-06.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-08-05</h1>
 	</header>
 	<div class=code>
@@ -656,133 +780,6 @@ void ofApp::draw(){
 </div>
 <p class=description>Pretty much an <a href="/sketch-26-07-2015/">inverse</a> reaction</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-31.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-07-30</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-30-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/dailySketches/tree/master/sketches/2015-07-30>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 800);
-    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 160, 220, 500, 500, ISOLATE_DRAWING);
-    gif.fadeInOut(2, 4, ofColor::white, 4);
-    masker.setup(500, 500, 1, ISOLATE_LAYERS);
-    masker.toggleOverlay();
-    foil1.setup(&quot;foil.png&quot;, 500, 500, 2.0);
-    foil1.setTextureOffset(8);
-    foil2.setup(&quot;foil.png&quot;, 500, 500, 6.0);
-    foil2.setTextureOffset(TEXTURE_OFFSET_BOTTOM_RIGHT);
-    
-    glass.setup(&quot;glass.png&quot;, 0.1);
-    for(int i = 0; i &lt; 60; i++) {
-        glass.setTextureOffset(ofRandom(2), ofRandom(2));
-        glasses.push_back(glass);
-    }
-    shapeSystem.setup();
-    
-    shapeSize = gif.width / 3;
-    thickness = 90;
-    halfShapeSize = shapeSize * 0.5;
-    
-    for(int i = 0; i &lt; gif.width; i += shapeSize) {
-        for(int j = 0; j &lt; gif.height; j += shapeSize) {
-            shape.setupHollowArc(30, thickness, shapeSize, 180);
-            shape.setColor(ofColor::white);
-            shape.setBlur(25);
-            shape.setPosition(ofVec3f(i + halfShapeSize, j + halfShapeSize, 0));
-            shape.rotateZ(ofRandom(360));
-            shapes.push_back(shape);
-        }
-    }
-    
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapeSystem.add(shapes.at(i));
-    }
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        i % 2 == 0 ?
-        shapes.at(i).incrementRotateZ(12) :
-        shapes.at(i).incrementRotateZ(-12);
-    }
-    
-    foil1.incrementTextureOffsetY(-0.01);
-    
-    masker.beginLayer(0);
-    {
-        ofSetColor(ofColor(ofColor::white, 255));
-        foil1.draw();
-        ofSetColor(ofColor(ofColor::white, 40));
-        for(int i = 0; i &lt; glasses.size(); i++) {
-            glasses.at(i).incrementTextureOffsetY(0.002 * (i + 1));
-            glasses.at(i).draw();
-        }
-    }
-    masker.endLayer(0);
-
-    masker.beginMask(0);
-    {
-        ofSetColor(ofColor::black, 16);
-        ofRect(0, 0, gif.width, gif.height);
-        
-        ofEnableAlphaBlending();
-        
-        for(int i = 0; i &lt; shapes.size(); i++) {
-            shapes.at(i).setColor(ofColor::white);
-        }
-        shapeSystem.draw();
-        
-        gif.rotateAroundCenter(90);
-        for(int i = 0; i &lt; shapes.size(); i++) {
-            shapes.at(i).setColor(ofColor(ofColor::black, 120));
-        }
-        shapeSystem.draw();
-        
-        gif.rotateAroundCenter(90);
-        for(int i = 0; i &lt; shapes.size(); i++) {
-            shapes.at(i).setColor(ofColor(ofColor::black, 90));
-        }
-        shapeSystem.draw();
-        
-        gif.rotateAroundCenter(90);
-        for(int i = 0; i &lt; shapes.size(); i++) {
-            shapes.at(i).setColor(ofColor(ofColor::black, 60));
-        }
-        shapeSystem.draw();
-        
-        ofDisableAlphaBlending();
-    }
-    masker.endMask(0);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofEnableAlphaBlending();
-        //ofBackground(ofColor::white);
-        ofSetColor(ofColor(ofColor::white, 40));
-        foil2.incrementTextureOffset(0.0025, 0.003);
-        foil2.draw();
-        masker.draw();
-        ofDisableAlphaBlending();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Ironworks</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-04-22/blob/master/openFrameworks/2015-07-30.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

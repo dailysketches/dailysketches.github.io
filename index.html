@@ -46,6 +46,99 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-08-10</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-10-08-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-10>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 50, 100);
+    gif.fadeInOut(3, 6, ofColor::white);
+    gif.enableTextOverlay();
+    numRoads = 2;
+    numRects = gif.width * 0.5;
+    masker.setup(numRoads + 1);
+    
+    road.setup(&quot;road.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__RIGHT_TO_CENTER);
+    for(int i = 0; i &lt; numRoads; i++) {
+        scale = ofMap(i, 0, numRoads-1, -3, 16);
+        road.setTextureScale(scale);
+        road.setTextureOffsetY(ofRandom(2));
+        road1s.push_back(road);
+    }
+    
+    road.setup(&quot;road.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER);
+    for(int i = 0; i &lt; numRoads; i++) {
+        scale = ofMap(i, 0, numRoads-1, 2, 1);
+        road.setTextureScale(scale);
+        road.setTextureOffsetY(ofRandom(2));
+        road2s.push_back(road);
+    }
+
+    for(int i = 0; i &lt; numRects; i++) {
+        rectAlphaMultipliers.push_back(ofRandom(0.1, 0.5));
+    }
+    rectWidth = gif.width / numRects;
+}
+
+void ofApp::update(){
+    for(int i = 0; i &lt; numRoads; i++) {
+        masker.beginLayer(i);
+        {
+            road1s.at(i).incrementTextureOffsetY(ofMap(i, 0, numRoads-1, -0.002, 0.002));
+            road1s.at(i).draw();
+        }
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        {
+            road2s.at(i).incrementTextureOffsetY(ofMap(i, 0, numRoads-1, -0.002, 0.002));
+            road2s.at(i).draw();
+        }
+        masker.endMask(i);
+    }
+
+    masker.beginLayer(numRoads);
+    {
+        masker.drawLayers(0, numRoads-1);
+    }
+    masker.endLayer(numRoads);
+
+    masker.beginMask(numRoads);
+    {
+        ofBackground(ofColor::black);
+        for(int i = 0; i &lt; numRects; i++) {
+            float alpha = sin(ofGetFrameNum() * rectAlphaMultipliers.at(i));
+            alpha = ofMap(alpha, -1, 1, 0, 255);
+            ofSetColor(ofColor(ofColor::white, alpha));
+            ofRect(i * rectWidth, 0, rectWidth, gif.height);
+        }
+    }
+    masker.endMask(numRoads);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        masker.drawLayer(numRoads);
+    }
+    gif.endCaptureDraw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>Line drawings.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-10/bin/data/out/2015-08-10.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-08-09</h1>
 	</header>
 	<div class=code>
@@ -586,110 +679,6 @@ void ofApp::draw(){
 </div>
 <p class=description>No such thing as <a href="/sketch-14-05-2015/">progress</a>.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-04/bin/data/out/2015-08-04.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-08-03</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-03-08-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-03>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 800);
-    gif.setup(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 80, 500, 500);
-    masker.setup(500, 500, 3);
-    masker.toggleOverlay();
-    foil.setup(&quot;foil1.png&quot;, 500, 500, 6.0, TEXTURE_OFFSET_MIDDLE_CENTER);
-    glass.setup(&quot;glass1-inverted.png&quot;, 500, 500, 4.0, TEXTURE_OFFSET_MIDDLE_CENTER);
-    numFramesSince = 0;
-}
-
-void ofApp::update(){
-    foil.incrementTextureOffsetY(0.05);
-    alpha = ofMap(sin(ofGetFrameNum() * 0.25), -1, 1, 128, 200);
-    
-    masker.beginLayer(0);
-    {
-        gif.rotateAroundCenter(90);
-        ofSetColor(ofColor(ofColor::white, ofGetFrameNum() % 3 == 0 ? alpha : 0));
-        foil.draw();
-    }
-    masker.endLayer(0);
-    
-    masker.beginMask(0);
-    {
-        ofBackground(ofColor::white);
-    }
-    masker.endMask(0);
-    
-    masker.beginLayer(1);
-    {
-        ofBackground(ofColor::red);
-    }
-    masker.endLayer(1);
-    
-    masker.beginMask(1);
-    {
-        gif.rotateAroundCenter(90);
-        if(ofRandom(1) &gt; 0.93 &amp;&amp; numFramesSince &gt; 8) {
-            ofSetColor(ofColor(ofColor::white, 255 - alpha));
-            glass.setTextureOffset(ofRandom(2), ofRandom(2));
-            glass.draw();
-            numFramesSince = 0;
-        } else {
-            numFramesSince++;
-            ofSetColor(ofColor(ofColor::black, 96));
-            ofRect(0, 0, gif.width, gif.height);
-        }
-        
-        gif.rotateAroundCenter(-90);
-        ofSetColor(ofColor(ofColor::black, 255));
-        ofRect(50, 200, 170, 90);
-    }
-    masker.endMask(1);
-
-    masker.beginLayer(2);
-    {
-        ofSetColor(ofColor(ofColor::white, 128));
-        ofRect(50, 200, 170, 90);
-        gif.rotateAroundCenter(180);
-        ofSetColor(ofColor(ofColor::white, alpha));
-        foil.draw();
-    }
-    masker.endLayer(2);
-    
-    masker.beginMask(2);
-    {
-        ofBackground(ofColor::black);
-        ofSetColor(ofColor(ofColor::white, 255));
-        ofRect(50, 200, 170, 90);
-    }
-    masker.endMask(2);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    ofPushStyle();
-    {
-        ofEnableAlphaBlending();
-        ofBackground(ofColor::black);
-        ofSetColor(ofColor::white);
-        masker.draw();
-    }
-    ofPopStyle();
-    gif.endCaptureDraw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Gifs can't handle color complexity.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-03/bin/data/out/2015-08-03.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

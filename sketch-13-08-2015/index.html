@@ -3,7 +3,7 @@
   <head>
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge">
-    <title>Daily Sketches</title>
+    <title>Sketch 2015-08-13</title>
     <meta name=description content="">
     <meta name=viewport content="width=device-width,initial-scale=1">
 
@@ -45,95 +45,87 @@
                 </li>
             </ul>
         </nav>
-        
-<article>
+        <h1>Daily Sketches</h1>
+<article class=post>
 	<header>
-		<h1>Sketch 2015-04-23</h1>
+		<h1>Sketch 2015-08-13</h1>
 	</header>
 	<div class=code>
     <ul>
-        <li><a href="/sketch-23-04-2015/">permalink</a></li>
-        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-23>code</a></li>
-        <li><a href=# class=snippet-button>show snippet</a></li>
-    </ul>
+		<li><a href="/sketch-13-08-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-13>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
     <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    increment = 10;
-    max = 400;
-    pos = 0;
-}
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 30, 80);
+    gif.fadeInOut(3, 6, ofColor::white);
+    gif.enableTextOverlay();
+    numTissues = 16;
+    numRoads = 4;
+    masker.setup(numRoads);
 
-void ofApp::updateAnim(){
-    pos += increment;
-    if(pos &gt; max * 2) {
-        pos = 0;
-        vertical = !vertical;
+    road.setup(&quot;tissue.png&quot;);
+    for(int i = 0; i &lt; numRoads; i++) {
+        scale = ofMap(i, 0, numRoads-1, 4, 2.5);
+        road.setTextureScale(scale);
+        road.setTextureOffset(TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER);
+        road.setTextureOffsetY(ofRandom(2));
+        roads.push_back(road);
+
+        tissuesLoader.clear();
+        scale = ofMap(i, 0, numRoads-1, 64, 1.5);
+        tissue.setup(&quot;glass3.png&quot;, scale, i % 2 == 0 ? TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER : TEXTURE_OFFSET__MIDDLE__RIGHT_TO_CENTER);
+        for(int j = 0; j &lt; numTissues; j++) {
+            tissue.setTextureOffsetY(ofRandom(2));
+            tissuesLoader.push_back(tissue);
+        }
+        tissues.push_back(tissuesLoader);
     }
 }
 
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    for(int i = 1; i &lt;= max; i++) {
-        if(vertical) drawVerticalLines(i);
-        else drawHorizontalLines(i);
+void ofApp::update(){
+    for(int i = 0; i &lt; numRoads; i++) {
+        masker.beginLayer(i);
+        {
+            float others = ofMap(i, 0, numRoads-1, 100, 255);
+            ofSetColor(ofColor(others, others, others, others));
+            roads.at(i).incrementTextureOffsetY(ofMap(i, 0, numRoads-1, -0.001, 0.001));
+            roads.at(i).draw();
+        }
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        {
+            ofSetColor(ofColor::white);
+            ofBackground(ofColor::white);
+            for(int j = 0; j &lt; tissues.size(); j++) {
+                tissues.at(i).at(j).incrementTextureOffsetY((j+1) * ofMap(i, 0, numRoads-1, 0.0002, -0.0002));
+                tissues.at(i).at(j).draw();
+            }
+        }
+        masker.endMask(i);
     }
 }
 
-void ofApp::drawVerticalLines(int x) {
-    if(x % 2 == 0) {
-        ofLine(x, pos - max, x, pos);
-    } else {
-        ofLine(x, height - pos, x, max * 2 - pos);
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofBackground(ofColor::white);
+        masker.draw();
     }
-}
-
-void ofApp::drawHorizontalLines(int y) {
-    if(y % 2 == 0) {
-        ofLine(pos - max, y, pos, y);
-    } else {
-        ofLine(height - pos, y, max * 2 - pos, y);
-    }
+    gif.endCaptureDraw();
+    masker.drawOverlay();
 }</code>
     </pre>
 </div>
-<p class=description>Something feels beautiful about working with the simplicity of lines.</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-23.gif?raw=true" alt="Daily sketch"></p>
+<p class=description>Writing your own history.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-13/bin/data/out/2015-08-13.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-04-22</h1>
-	</header>
-	<div class=code>
-	<ul>
-		<li><a href="/sketch-22-04-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-22>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-	<pre class=snippet>
-		<code class=cpp>void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    font.drawString("AN EMPTY\nGESTURE", 12, 85);
-    for(int i = 0; i &lt; 30; i++) {
-        ofLine(ofRandom(520), ofRandom(200), ofRandom(520), ofRandom(200));
-    }
-}</code>
-	</pre>
-</div>
-<p class=description>Sometimes you just need to start...</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-22.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-
 <ul id=paging>
-	
-		
-			<li><a href="/page16/">&lt; Previous page</a></li>
-		
-	
-	
+	<li><a href="/">&lt; See all posts</a></li>
 </ul>
     </section>
     <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>

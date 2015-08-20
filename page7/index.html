@@ -48,6 +48,79 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-07-03</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-03-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-07-03>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 800);
+    manager.setup();
+    manager.toggleDebugUI();
+    setupAudioUnits();
+    setupTimeline();
+
+    playing = false;
+    note = 60;
+}
+
+void ofApp::setupAudioUnits() {
+    manager.add(&amp;chain, "tal-one", ofColor::blue);
+    chain.link(&amp;noiseMaker).toMixer();
+    manager.loadPresets(&amp;chain);
+}
+
+void ofApp::setupTimeline() {
+    timeline.setup();
+    timeline.setLoopType(OF_LOOP_NORMAL);
+    timeline.setDurationInSeconds(30);
+    timeline.setOffset(ofVec2f(10, 480));
+    timeline.setWidth(ofGetWidth() - 400);
+    timeline.addFlags("midi events");
+    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
+}
+
+void ofApp::update(){
+    
+}
+
+void ofApp::bang(ofxTLBangEventArgs &amp;args) {
+    if(args.flag == "") {
+        chain.midi()-&gt;sendNoteOn(1, note);
+    } else {
+        interpretMidiFlag(args.flag);
+    }
+}
+
+void ofApp::interpretMidiFlag(string flag) {
+    vector&lt;string&gt; args = ofSplitString(flag, " ");
+    int note = ofToInt(args.at(0));
+    bool onCommand = args.at(1) == "ON";
+    if(onCommand) {
+        chain.midi()-&gt;sendNoteOn(1, note);
+    } else {
+        chain.midi()-&gt;sendNoteOff(1, note);
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Time for MIDI event interpretation in the timeline</p>
+<p>
+    <img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-03.png?raw=true" alt="Sketch 2015-07-03">
+    <audio controls>
+        <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-03.mp3?raw=true" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-07-02</h1>
 	</header>
 	<div class=code>
@@ -576,71 +649,6 @@ void ofApp::draw(){
     <img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-27.png?raw=true" alt="Sketch 2015-06-27">
     <audio controls>
         <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-27.mp3?raw=true" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-</p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-06-26</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-26-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-26>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 1000);
-    manager.setup();
-    manager.toggleDebugUI();
-    setupAudioUnits();
-    setupTimeline();
-
-    playing = false;
-    note = 60;
-}
-
-void ofApp::setupAudioUnits() {
-    manager.add(&amp;chain, "tal-one", ofColor::blue);
-    chain.link(&amp;noiseMaker).toMixer();
-    manager.loadPresets(&amp;chain);
-}
-
-void ofApp::setupTimeline() {
-    timeline.setup();
-    timeline.setLoopType(OF_LOOP_NONE);
-    timeline.setDurationInSeconds(10);
-    timeline.setOffset(ofVec2f(10, 450));
-    timeline.setWidth(ofGetWidth() - 400);
-    timeline.addBangs("midi");
-    timeline.addCurves("lfo rate", ofRange(0.03, 0.2));
-    timeline.addCurves("filter cutoff", ofRange(0, 1));
-    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
-}
-
-void ofApp::update(){
-    noiseMaker.set(TALNoiseMaker_lfo2rate, timeline.getValue("lfo rate"));
-    noiseMaker.set(TALNoiseMaker_cutoff, timeline.getValue("filter cutoff"));
-}
-
-void ofApp::bang(ofxTLBangEventArgs &amp;args) {
-    if(args.flag == "") {
-        chain.midi()-&gt;sendNoteOn(1, note);
-    } else {
-        chain.midi()-&gt;sendNoteOn(1, ofToInt(args.flag));
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Modulating filter cutoff and LFO rate</p>
-<p>
-    <img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-26.png?raw=true" alt="Sketch 2015-06-26">
-    <audio controls>
-        <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-26.mp3?raw=true" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 </p>

@@ -48,6 +48,110 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-07-19</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-19-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-07-19>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 800);
+    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 60, 140, 500, 500, ISOLATE_DRAWING);
+    masker.setup(500, 500, 2, ISOLATE_LAYERS);
+    masker.toggleOverlay();
+    
+    leaf1.setup(&quot;leaf1-desaturated.png&quot;, 500, 500, 2.0);
+    leaf2.setup(&quot;leaf2-desaturated.png&quot;, 500, 500, 2.0);
+    glass1.setup(&quot;glass1.png&quot;, 500, 500);
+    glass2.setup(&quot;glass2.png&quot;, 500, 500);
+    direction = 0;
+}
+
+void ofApp::update(){
+    leaf2.incrementTextureOffsetX(-0.1);
+    if(ofGetFrameNum() == 0 || ofGetFrameNum() % 2 == 0) {
+        glass1.setTexturePosition(ofRandom(2), ofRandom(2));
+        glass1.setTextureScale(ofRandom(6, 10));
+    }
+    if(ofGetFrameNum() == 0 || ofGetFrameNum() % 2 == 1) {
+        glass2.setTexturePosition(ofRandom(2), ofRandom(2));
+        glass2.setTextureScale(ofRandom(0.5, 2));
+    }
+
+    masker.beginLayer(0);
+    {
+        ofSetColor(ofColor::red);
+        leaf2.draw();
+    }
+    masker.endLayer(0);
+    
+    masker.beginMask(0);
+    {
+        glass1.draw();
+    }
+    masker.endMask(0);
+    
+    masker.beginLayer(1);
+    {
+        masker.drawLayer(0);
+    }
+    masker.endLayer(1);
+    
+    masker.beginMask(1);
+    {
+        glass2.draw();
+    }
+    masker.endMask(1);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        if(ofGetFrameNum() % 20 == 0) {
+            leaf1.setTexturePosition(ofRandom(2), ofRandom(2));
+            ofSetColor(ofColor(ofColor::white, 255));
+            framesSinceLastAppearance = 0;
+            direction++;
+            if(direction &gt; 1) {
+                direction = 0;
+            }
+        } else {
+            float alpha;
+            if(framesSinceLastAppearance &lt; 3) {
+                alpha = 255;
+            } else {
+                alpha = 255 - framesSinceLastAppearance * 60;
+            }
+            if(alpha &lt; 0) alpha = 0;
+            if(direction == 0) {
+                leaf1.incrementTextureOffsetX(0.06);
+            }
+            if(direction == 1) {
+                leaf1.incrementTextureOffsetY(-0.03);
+            }
+
+            ofSetColor(ofColor(ofColor::white, alpha));
+            framesSinceLastAppearance++;
+        }
+        leaf1.draw();
+        masker.drawLayer(1);
+    }
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>There's blood on your hands</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-19.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-07-18</h1>
 	</header>
 	<div class=code>
@@ -668,64 +772,6 @@ void ofApp::draw(){
 </div>
 <p class=description>Textures set loose to emerge</p>
 <p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-13.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-07-12</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-12-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-07-12>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    increment = 0.02;
-    ofSetWindowShape(500, 500);
-    gif.setupPaused(ofGetTimestampString("out/%Y-%m-%d"), 105, 140);
-    gif.fadeInOut(17, 4, ofColor::red, 1);
-    masker.setup(1);
-    transp1.setup("road-transp.png");
-    transp1.setTexturePositionY(0.5);
-    transp2.setup("road-transp.png");
-    transp2.setTexturePositionY(0.5);
-}
-
-void ofApp::update(){
-    masker.beginLayer(0);
-    {
-        transp1.incrementTextureScale(-increment);
-        transp1.draw();
-    }
-    masker.endLayer(0);
-
-    masker.beginMask(0);
-    {
-        transp2.incrementTextureScale(-increment*0.5);
-        ofBackground(ofColor::white);
-        ofSetColor(ofColor::white);
-        transp2.draw();
-    }
-    masker.endMask(0);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofBackground(ofColor::red);
-        masker.draw();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Transparencies masking transparencies (against a red background)</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-12.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

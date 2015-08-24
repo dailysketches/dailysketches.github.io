@@ -48,6 +48,53 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-04-26</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-26-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-26>code</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::drawGrid() {
+    for(int i = 0; i &lt; width * 0.1 + 10; i++) {
+        for(int j = 0; j &lt; height * 0.1 + 10; j++) {
+            
+            noise.x = noiseOffset.x + i * scaleX;
+            noise.y = noiseOffset.y + j * scaleY;
+            noise.z = noiseOffset.z + sineOfTheTime;
+            noiseValue = ofNoise(noise.x, noise.y, noise.z);
+            
+            //http://natureofcode.com/book/chapter-3-oscillation#35-polar-vs-cartesian-coordinates
+            theta = noiseValue * 2 * PI;
+            x = r * cos(theta);
+            y = r * sin(theta);
+            
+            ofPushMatrix();
+            ofTranslate(i * 10, j * 10);
+            ofEnableBlendMode(OF_BLENDMODE_ADD);
+            if(j % 2 == 0){
+                ofSetColor(180, 231, 248, 150);
+                ofRect(0, 0, x, y);
+            } else {
+                ofSetColor(255, 180, 180, 128);
+                ofLine(0, 0, x, y);
+            }
+            ofDisableBlendMode();
+            ofPopMatrix();
+        }
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Perlin noise coupled with a little <a href=http://natureofcode.com/book/chapter-3-oscillation#35-polar-vs-cartesian-coordinates>polar to cartesian conversion</a>.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-26.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-04-25</h1>
 	</header>
 	<div class=code>

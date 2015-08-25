@@ -46,6 +46,94 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-08-17</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-17-08-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-17>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setup(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 50);
+    gif.fadeInOut(2, 1, ofColor::red);
+    gif.enableTextOverlay();
+
+    layerIncrement = 0.01;
+    maskIncrement = 0.0005;
+
+    numLayers = 4;
+    numMasksPerLayer = 1;
+    masker.setup(numLayers);
+
+    layer.setup(&quot;rust-tall2.png&quot;);
+    for(int i = 0; i &lt; numLayers; i++) {
+        scale = ofMap(i, 0, numLayers-1, 2, 1);
+        layer.setTextureScale(scale);
+        layer.setTextureOffset(i % 2 == 0 ? TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER : TEXTURE_OFFSET__MIDDLE__RIGHT_TO_CENTER);
+        layer.setTextureOffsetY(ofRandom(2));
+        layers.push_back(layer);
+
+        maskLoader.clear();
+        scale = ofMap(i, 0, numLayers-1, 3, 0.33);
+        mask.setup(&quot;rust-tall4.png&quot;, scale, TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER);
+        for(int j = 0; j &lt; numMasksPerLayer; j++) {
+            mask.setTextureOffsetY(ofRandom(2));
+            maskLoader.push_back(mask);
+        }
+        masks.push_back(maskLoader);
+    }
+
+    ofSetWindowShape(1000, 1200);
+    masker.toggleOverlay();
+}
+
+void ofApp::update(){
+    for(int i = 0; i &lt; numLayers; i++) {
+        masker.beginLayer(i);
+        {
+            ofSetColor(ofColor(ofColor::red));
+            increment = ofMap(i, 0, numLayers-1, layerIncrement, -layerIncrement);
+            layers.at(i).incrementTextureOffsetY(increment);
+            layers.at(i).draw();
+        }
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        {
+            ofSetColor(ofColor::white);
+            ofBackground(ofColor::white);
+            for(int j = 0; j &lt; numMasksPerLayer; j++) {
+                increment = (j+1) * ofMap(i, 0, numLayers-1, maskIncrement, -maskIncrement);
+                masks.at(i).at(j).incrementTextureOffsetY(increment);
+                masks.at(i).at(j).draw();
+            }
+        }
+        masker.endMask(i);
+    }
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofSetColor(ofColor(ofColor::red));
+        layers.at(0).draw();
+        masker.draw();
+    }
+    gif.endCaptureDraw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>Two perspectives.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-17/bin/data/out/2015-08-17.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-08-16</h1>
 	</header>
 	<div class=code>
@@ -513,99 +601,6 @@ void ofApp::draw(){
 </div>
 <p class=description>Consumption.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-11/bin/data/out/2015-08-11.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-08-10</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-10-08-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-10>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(500, 500);
-    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 50, 100);
-    gif.fadeInOut(3, 6, ofColor::white);
-    gif.enableTextOverlay();
-    numRoads = 2;
-    numRects = gif.width * 0.5;
-    masker.setup(numRoads + 1);
-    
-    road.setup(&quot;road.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__RIGHT_TO_CENTER);
-    for(int i = 0; i &lt; numRoads; i++) {
-        scale = ofMap(i, 0, numRoads-1, -3, 16);
-        road.setTextureScale(scale);
-        road.setTextureOffsetY(ofRandom(2));
-        road1s.push_back(road);
-    }
-    
-    road.setup(&quot;road.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER);
-    for(int i = 0; i &lt; numRoads; i++) {
-        scale = ofMap(i, 0, numRoads-1, 2, 1);
-        road.setTextureScale(scale);
-        road.setTextureOffsetY(ofRandom(2));
-        road2s.push_back(road);
-    }
-
-    for(int i = 0; i &lt; numRects; i++) {
-        rectAlphaMultipliers.push_back(ofRandom(0.1, 0.5));
-    }
-    rectWidth = gif.width / numRects;
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; numRoads; i++) {
-        masker.beginLayer(i);
-        {
-            road1s.at(i).incrementTextureOffsetY(ofMap(i, 0, numRoads-1, -0.002, 0.002));
-            road1s.at(i).draw();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            road2s.at(i).incrementTextureOffsetY(ofMap(i, 0, numRoads-1, -0.002, 0.002));
-            road2s.at(i).draw();
-        }
-        masker.endMask(i);
-    }
-
-    masker.beginLayer(numRoads);
-    {
-        masker.drawLayers(0, numRoads-1);
-    }
-    masker.endLayer(numRoads);
-
-    masker.beginMask(numRoads);
-    {
-        ofBackground(ofColor::black);
-        for(int i = 0; i &lt; numRects; i++) {
-            float alpha = sin(ofGetFrameNum() * rectAlphaMultipliers.at(i));
-            alpha = ofMap(alpha, -1, 1, 0, 255);
-            ofSetColor(ofColor(ofColor::white, alpha));
-            ofRect(i * rectWidth, 0, rectWidth, gif.height);
-        }
-    }
-    masker.endMask(numRoads);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        masker.drawLayer(numRoads);
-    }
-    gif.endCaptureDraw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Line drawings.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-10/bin/data/out/2015-08-10.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class=no-js>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>Sketch 2015-08-18</title>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
+    <link rel=stylesheet href=/css/main.4e9c.css>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <section class="home posts">
+        <section class=explanation>
+            <h1>Daily Sketches</h1>
+            <p class=intro>Every day I make a sketch. Most are generated from code since my <a href="http://jahya.net/works/">primary medium</a> is computing technology. The code produces a graphic or a sound, which I render and upload.</p>
+        </section>
+        <nav role=navigation>
+            <h1>Navigation</h1>
+            
+            
+
+            
+                
+                    
+                
+            
+            <ul>
+                <li>
+                    <a href="/">All sketches</a>
+                </li>
+                <li>
+                    <a href="/patterns/">Patterns</a>
+                </li>
+                <li>
+                    <a href="/selected/">Selected sketches</a>
+                </li>
+            </ul>
+        </nav>
+        <h1>Daily Sketches</h1>
+<article class=post>
+	<header>
+		<h1>Sketch 2015-08-18</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-18-08-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-18>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setup(50);
+    gif.fadeInOut(2, 1, ofColor::red);
+    gif.enableTextOverlay();
+
+    layerIncrement = 0.01;
+    maskIncrement = 0.0005;
+
+    numLayers = 20;
+    numMasksPerLayer = 1;
+    masker.setup(numLayers);
+
+    layer.setup(&quot;rust-tall2.png&quot;);
+    for(int i = 0; i &lt; numLayers; i++) {
+        scale = ofMap(i, 0, numLayers-1, 0.25, 1);
+        layer.setTextureScale(scale);
+        layer.setTextureOffset(i % 2 == 0 ? TEXTURE_OFFSET_TOP_LEFT : TEXTURE_OFFSET_TOP_RIGHT);
+        layer.setTextureOffsetY(ofRandom(2));
+        layers.push_back(layer);
+
+        maskLoader.clear();
+        scale = ofMap(i, 0, numLayers-1, 0.5, 1.3);
+        mask.setup(&quot;circle-feather.png&quot;, scale, TEXTURE_OFFSET_MIDDLE_CENTER);
+        for(int j = 0; j &lt; numMasksPerLayer; j++) {
+            mask.setTextureOffsetY(ofRandom(2));
+            maskLoader.push_back(mask);
+        }
+        masks.push_back(maskLoader);
+    }
+
+    ofSetWindowShape(1000, 1200);
+    masker.toggleOverlay();
+}
+
+void ofApp::update(){
+    for(int i = 0; i &lt; numLayers; i++) {
+        masker.beginLayer(i);
+        {
+            gif.rotateAroundCenter(i * 90);
+            ofSetColor(ofColor(ofColor::red));
+            increment = ofMap(i, 0, numLayers-1, layerIncrement, -layerIncrement);
+            layers.at(i).incrementTextureScale(i % 2 == 0 ? increment : -increment * 8 );
+            layers.at(i).incrementTextureOffsetX((i % 2 == 0 ? increment : -increment) * ofRandom(-2, 27));
+            layers.at(i).incrementTextureOffsetY((i % 2 == 0 ? -increment : increment) * ofRandom(-2, 27));
+            layers.at(i).draw();
+        }
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        {
+            ofSetColor(ofColor::white);
+            ofBackground(ofColor::white);
+            for(int j = 0; j &lt; numMasksPerLayer; j++) {
+                increment = (j+1) * ofMap(i, 0, numLayers-1, maskIncrement, -maskIncrement);
+                masks.at(i).at(j).incrementTextureOffsetY(increment);
+                i % 2 == 0 ? masks.at(i).at(j).draw() : masker.drawLayer(i - 1, false);
+            }
+        }
+        masker.endMask(i);
+    }
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        gif.rotateAroundCenter(45);
+        layers.at(0).draw();
+        masker.drawLayer(13);
+        masker.drawLayer(16);
+    }
+    gif.endCaptureDraw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>Uncertain agenda.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-18/bin/data/out/2015-08-18.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+<ul id=paging>
+	<li><a href="/">&lt; See all posts</a></li>
+</ul>
+    </section>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+<script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+<!--[if lt IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
+<![endif]-->
+<script src=/js/script.31e0.js></script>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+  </body>
+</html>

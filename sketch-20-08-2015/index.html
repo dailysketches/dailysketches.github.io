@@ -3,7 +3,7 @@
   <head>
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge">
-    <title>Daily Sketches</title>
+    <title>Sketch 2015-08-20</title>
     <meta name=description content="">
     <meta name=viewport content="width=device-width,initial-scale=1">
 
@@ -45,95 +45,115 @@
                 </li>
             </ul>
         </nav>
-        
-<article>
+        <h1>Daily Sketches</h1>
+<article class=post>
 	<header>
-		<h1>Sketch 2015-04-23</h1>
+		<h1>Sketch 2015-08-20</h1>
 	</header>
 	<div class=code>
     <ul>
-        <li><a href="/sketch-23-04-2015/">permalink</a></li>
-        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-23>code</a></li>
-        <li><a href=# class=snippet-button>show snippet</a></li>
-    </ul>
+		<li><a href="/sketch-20-08-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-20>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
     <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    increment = 10;
-    max = 400;
-    pos = 0;
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setup(70);
+    gif.fadeInOut(3, 2);
+
+    numLayers = 1;
+    masker.setup(numLayers, ISOLATE_LAYERS);
+    masker.toggleOverlay();
+    
+    img1.setup(&quot;glass3.png&quot;, 2.0);
+    img2.setup(&quot;pcb-bw.png&quot;, 2.0);
+    
+    horizontalMasks.setup(200, gif.height);
+    verticalMasks.setup(200, gif.width);
+    
+    ofSetWindowShape(1200, 1200);
 }
 
-void ofApp::updateAnim(){
-    pos += increment;
-    if(pos &gt; max * 2) {
-        pos = 0;
-        vertical = !vertical;
+void ofApp::update(){
+    masker.beginLayer(0);
+    {
+        ofBackground(ofColor::black);
+        img1.incrementTextureOffsetY(-0.2);
+        img1.draw();
+    }
+    masker.endLayer(0);
+    
+    masker.beginMask(0);
+    {
+        ofBackground(ofColor::black);
+        horizontalMasks.draw();
+        gif.rotateAroundCenter(90);
+        verticalMasks.draw();
+    }
+    masker.endMask(0);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofEnableAlphaBlending();
+        img2.incrementTextureOffsetY(0.02);
+        img2.draw();
+        masker.draw();
+    }
+    gif.endCaptureDraw();
+    masker.drawOverlay();
+}
+
+void MaskArray::setup(int _number, float _size) {
+    number = _number;
+    size = _size;
+    unitSize = size / number;
+    
+    for(int i = 0; i &lt; size; i++) {
+        alphas.push_back(ofRandom(255));
+        speeds.push_back(ceil(ofRandom(6)) * 30);
+        directions.push_back(ofRandom(1) &gt; 0.5 ? 1 : -1);
     }
 }
 
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    for(int i = 1; i &lt;= max; i++) {
-        if(vertical) drawVerticalLines(i);
-        else drawHorizontalLines(i);
+void MaskArray::draw() {
+    for(int i = 0; i &lt; number; i++) {
+        alphas.at(i) += speeds.at(i) * directions.at(i);
+        bounce(i);
+        ofSetColor(ofColor(ofColor::white, alphas.at(i)));
+        ofRect(0, unitSize * i, size, unitSize);
     }
 }
 
-void ofApp::drawVerticalLines(int x) {
-    if(x % 2 == 0) {
-        ofLine(x, pos - max, x, pos);
-    } else {
-        ofLine(x, height - pos, x, max * 2 - pos);
+void MaskArray::bounce(int i) {
+    if(alphas.at(i) &lt; 0) {
+        alphas.at(i) = 0;
+        directions.at(i) = 1;
+    }
+
+    if(alphas.at(i) &gt; 255) {
+        alphas.at(i) = 255;
+        directions.at(i) = -1;
     }
 }
 
-void ofApp::drawHorizontalLines(int y) {
-    if(y % 2 == 0) {
-        ofLine(pos - max, y, pos, y);
-    } else {
-        ofLine(height - pos, y, max * 2 - pos, y);
+void MaskArray::debug() {
+    for(int i = 0; i &lt; number; i++) {
+        cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; alphas.at(i) &lt;&lt; endl;
     }
+    
+    cout &lt;&lt; &quot;=======&quot; &lt;&lt; endl &lt;&lt; endl &lt;&lt; endl;
 }</code>
     </pre>
 </div>
-<p class=description>Something feels beautiful about working with the simplicity of lines.</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-23.gif?raw=true" alt="Daily sketch"></p>
+<p class=description>Adaptation.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-20/bin/data/out/2015-08-20.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-04-22</h1>
-	</header>
-	<div class=code>
-	<ul>
-		<li><a href="/sketch-22-04-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-22>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-	<pre class=snippet>
-		<code class=cpp>void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    font.drawString("AN EMPTY\nGESTURE", 12, 85);
-    for(int i = 0; i &lt; 30; i++) {
-        ofLine(ofRandom(520), ofRandom(200), ofRandom(520), ofRandom(200));
-    }
-}</code>
-	</pre>
-</div>
-<p class=description>Sometimes you just need to start...</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-22.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-
 <ul id=paging>
-	
-		
-			<li><a href="/page17/">&lt; Previous page</a></li>
-		
-	
-	
+	<li><a href="/">&lt; See all posts</a></li>
 </ul>
     </section>
     <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>

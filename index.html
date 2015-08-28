@@ -46,6 +46,113 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-08-20</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-20-08-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-20>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setup(70);
+    gif.fadeInOut(3, 2);
+
+    numLayers = 1;
+    masker.setup(numLayers, ISOLATE_LAYERS);
+    masker.toggleOverlay();
+    
+    img1.setup(&quot;glass3.png&quot;, 2.0);
+    img2.setup(&quot;pcb-bw.png&quot;, 2.0);
+    
+    horizontalMasks.setup(200, gif.height);
+    verticalMasks.setup(200, gif.width);
+    
+    ofSetWindowShape(1200, 1200);
+}
+
+void ofApp::update(){
+    masker.beginLayer(0);
+    {
+        ofBackground(ofColor::black);
+        img1.incrementTextureOffsetY(-0.2);
+        img1.draw();
+    }
+    masker.endLayer(0);
+    
+    masker.beginMask(0);
+    {
+        ofBackground(ofColor::black);
+        horizontalMasks.draw();
+        gif.rotateAroundCenter(90);
+        verticalMasks.draw();
+    }
+    masker.endMask(0);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofEnableAlphaBlending();
+        img2.incrementTextureOffsetY(0.02);
+        img2.draw();
+        masker.draw();
+    }
+    gif.endCaptureDraw();
+    masker.drawOverlay();
+}
+
+void MaskArray::setup(int _number, float _size) {
+    number = _number;
+    size = _size;
+    unitSize = size / number;
+    
+    for(int i = 0; i &lt; size; i++) {
+        alphas.push_back(ofRandom(255));
+        speeds.push_back(ceil(ofRandom(6)) * 30);
+        directions.push_back(ofRandom(1) &gt; 0.5 ? 1 : -1);
+    }
+}
+
+void MaskArray::draw() {
+    for(int i = 0; i &lt; number; i++) {
+        alphas.at(i) += speeds.at(i) * directions.at(i);
+        bounce(i);
+        ofSetColor(ofColor(ofColor::white, alphas.at(i)));
+        ofRect(0, unitSize * i, size, unitSize);
+    }
+}
+
+void MaskArray::bounce(int i) {
+    if(alphas.at(i) &lt; 0) {
+        alphas.at(i) = 0;
+        directions.at(i) = 1;
+    }
+
+    if(alphas.at(i) &gt; 255) {
+        alphas.at(i) = 255;
+        directions.at(i) = -1;
+    }
+}
+
+void MaskArray::debug() {
+    for(int i = 0; i &lt; number; i++) {
+        cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; alphas.at(i) &lt;&lt; endl;
+    }
+    
+    cout &lt;&lt; &quot;=======&quot; &lt;&lt; endl &lt;&lt; endl &lt;&lt; endl;
+}</code>
+    </pre>
+</div>
+<p class=description>Adaptation.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-20/bin/data/out/2015-08-20.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-08-19</h1>
 	</header>
 	<div class=code>
@@ -551,85 +658,6 @@ void ofApp::draw(){
 </div>
 <p class=description>Cutting to the core.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-14/bin/data/out/2015-08-14.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-08-13</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-13-08-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-13>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(500, 500);
-    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 30, 80);
-    gif.fadeInOut(3, 6, ofColor::white);
-    gif.enableTextOverlay();
-    numTissues = 16;
-    numRoads = 4;
-    masker.setup(numRoads);
-
-    road.setup(&quot;tissue.png&quot;);
-    for(int i = 0; i &lt; numRoads; i++) {
-        scale = ofMap(i, 0, numRoads-1, 4, 2.5);
-        road.setTextureScale(scale);
-        road.setTextureOffset(TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER);
-        road.setTextureOffsetY(ofRandom(2));
-        roads.push_back(road);
-
-        tissuesLoader.clear();
-        scale = ofMap(i, 0, numRoads-1, 64, 1.5);
-        tissue.setup(&quot;glass3.png&quot;, scale, i % 2 == 0 ? TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER : TEXTURE_OFFSET__MIDDLE__RIGHT_TO_CENTER);
-        for(int j = 0; j &lt; numTissues; j++) {
-            tissue.setTextureOffsetY(ofRandom(2));
-            tissuesLoader.push_back(tissue);
-        }
-        tissues.push_back(tissuesLoader);
-    }
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; numRoads; i++) {
-        masker.beginLayer(i);
-        {
-            float others = ofMap(i, 0, numRoads-1, 100, 255);
-            ofSetColor(ofColor(others, others, others, others));
-            roads.at(i).incrementTextureOffsetY(ofMap(i, 0, numRoads-1, -0.001, 0.001));
-            roads.at(i).draw();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            ofSetColor(ofColor::white);
-            ofBackground(ofColor::white);
-            for(int j = 0; j &lt; tissues.size(); j++) {
-                tissues.at(i).at(j).incrementTextureOffsetY((j+1) * ofMap(i, 0, numRoads-1, 0.0002, -0.0002));
-                tissues.at(i).at(j).draw();
-            }
-        }
-        masker.endMask(i);
-    }
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofBackground(ofColor::white);
-        masker.draw();
-    }
-    gif.endCaptureDraw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Writing your own history.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-13/bin/data/out/2015-08-13.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

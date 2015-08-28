@@ -48,6 +48,127 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-06-24</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-24-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-24>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    paused = true;
+    numLayers = 6;
+    topLayer1 = numLayers - 2;
+    topLayer2 = numLayers - 1;
+    spacing = 100;
+    offset = offset2 = 0;
+    increment = 20;
+    masker.setup(numLayers);
+    
+    image.setup("surface.png", width, height, 1, TEXTURE_OFFSET_BOTTOM_LEFT);
+    image.incrementTextureOffsetY(0.5);
+}
+
+void ofApp::updateAnim(){
+    incrementOffset();
+    
+    for(int i = 0; i &lt; numLayers - 2; i++) {
+        masker.beginLayer(i);
+        {
+            ofBackground(ofColor(ofColor::black, 0));
+            hue = ofMap(i, 0, numLayers, 20, 140);
+            ofSetColor(ofColor::fromHsb(hue, 255, 255, 240));
+            thickness = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 10, 50);
+            ofTranslate(0, i * 10);
+            drawLines(offset, spacing, thickness);
+        }
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        {
+            ofBackground(ofColor::black);
+            ofSetColor(ofColor::white);
+            thickness = ofMap(sin(ofGetFrameNum() * 0.1), -1, 1, 10, 70);
+            ofTranslate(0, i * 10);
+            drawLines(offset2, spacing, thickness);
+        }
+        masker.endMask(i);
+    }
+    
+    masker.beginLayer(topLayer1);
+    image.draw();
+    masker.endLayer(topLayer1);
+    
+    masker.beginLayer(topLayer2);
+    rotateScreen(90);
+    image.draw();
+    masker.endLayer(topLayer2);
+}
+
+void ofApp::drawAnim() {
+    ofPushMatrix();
+    {
+        ofSetColor(ofColor::black, 20);
+        ofRect(0, 0, width, height);
+        masker.drawLayers(0, 4);
+        ofScale(0.5, 0.5);
+        rotateScreen(90);
+        
+        masker.drawLayer(2);
+        
+        masker.draw();
+        ofScale(0.5, 0.5);
+        rotateScreen(90);
+        
+        masker.drawLayer(1);
+    }
+    ofPopMatrix();
+    masker.drawLayer(5);
+    masker.drawOverlay();
+    
+    if(ofGetFrameNum() == 92) {
+        paused = false;
+    }
+    
+    if(ofGetFrameNum() == 162) {
+        renderGif();
+    }
+}
+
+void ofApp::incrementOffset() {
+    offset+=increment;
+    if(offset &gt;= spacing) {
+        offset = 0;
+    }
+    
+    offset2-=increment;
+    if(offset2 &lt;= -spacing) {
+        offset2 = 0;
+    }
+}
+
+void ofApp::drawLines(float _offset, float _spacing, float _thickness) {
+    for(int y = -height; y &lt; doubleHeight; y += _spacing) {
+        ofRect(-width, y + _offset, tripleWidth, _thickness);
+    }
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight);
+    ofRotateZ(degrees);
+    ofTranslate(-halfWidth, -halfHeight);
+}</code>
+    </pre>
+</div>
+<p class=description>It's a glitch.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-24.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-06-23</h1>
 	</header>
 	<div class=code>
@@ -532,81 +653,6 @@ float ofApp::animateAlpha(int fromFrame, int toFrame, float &amp;alpha) {
 </div>
 <p class=description>Developing the texture planing toolkit...</p>
 <p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-18.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-06-17</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-17-06-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-17>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    numImages = 8;
-    highestIndex = numImages - 1;
-    image.setup("surface.png");
-    for(int i = 0; i &lt; numImages; i++) {
-        image.setTextureOffsetX(ofRandom(500));
-        image.setTextureScale(ofMap(i, 0, highestIndex, 2, 0.35));
-        image.setPlaneHeight(ofMap(i, 0, highestIndex, 500, 200));
-        image.setPlanePosition(0, ofMap(i, 0, highestIndex, -50, 300));
-        images.push_back(image);
-        imgColors.push_back(ofColor(ofMap(i, 0, highestIndex, 100, 255), ofMap(i, 0, highestIndex, 100, 0), 0, ofMap(i, 0, highestIndex, 0, 255)));
-    }
-
-    system.setup();
-    shape.setupGradientSquare(70, height * 2);
-    shape.positionX(-halfWidth - 35);
-    shape.positionY(40);
-    shape.setColor(ofColor(ofColor::white, 96));
-    system.add(shape);
-}
-
-void ofApp::updateAnim(){
-    for(int i = 0; i &lt; numImages; i++) {
-        images.at(i).incrementTextureOffsetX(i % 2 == 0 ? 0.03 : -0.03);
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(ofColor::black);
-    
-    ofEnableAlphaBlending();
-    for(int i = 0; i &lt; numImages; i++) {
-        ofSetColor(imgColors.at(i));
-        rotateScreen(90);
-        images.at(i).draw();
-        rotateScreen(180);
-        images.at(i).draw();
-        rotateScreen(90);
-    }
-    
-    rotateScreen(180);
-    system.draw();
-    rotateScreen(180);
-    system.draw();
-    
-    ofDisableAlphaBlending();
-    
-    if(ofGetFrameNum() == 67) {
-        renderGif();
-    }
-}
-
-void ofApp::rotateScreen(float degrees) {
-    ofTranslate(halfWidth, halfHeight);
-    ofRotateZ(degrees);
-    ofTranslate(-halfWidth, -halfHeight);
-}</code>
-    </pre>
-</div>
-<p class=description>Vanishing point</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-17.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

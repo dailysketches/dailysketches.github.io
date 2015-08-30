@@ -48,6 +48,97 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-06-06</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-06-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-06>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofDisableArbTex();
+    setupImage("surface.png", &amp;img, &amp;tex);
+
+    plane.setResolution(2, 2);
+    
+    offset.set(1, 0.04);
+}
+
+void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
+    img-&gt;loadImage(file);
+    *tex = img-&gt;getTextureReference();
+    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+}
+
+void ofApp::drawLayer(ofTexture *tex) {
+    tx0 = offset.x;
+    ty0 = offset.y;
+    tx1 = tx0 - 0.66666668;
+    ty1 = ty0 - 1;
+    plane.setPosition(halfWidth, halfHeight, 0);
+    plane.set(width, height);
+    plane.mapTexCoords(tx0, ty0, tx1, ty1);
+    plane.mapTexCoords(tx1, ty1, tx0, ty0);
+    tex-&gt;bind();
+    plane.draw();
+    tex-&gt;unbind();
+}
+
+void ofApp::drawLayer2(ofTexture *tex) {
+    tx0 = offset.x - (0.66666668 * 0.5);
+    ty0 = offset.y -0.5;
+    tx1 = tx0 - (0.66666668 * 0.5);
+    ty1 = ty0 - 0.5;
+    plane.setPosition(halfWidth*0.5, halfHeight*0.5, 0);
+    plane.set(halfWidth, halfHeight);
+    plane.mapTexCoords(tx0, ty0, tx1, ty1);
+    plane.mapTexCoords(tx1, ty1, tx0, ty0);
+    tex-&gt;bind();
+    plane.draw();
+    tex-&gt;unbind();
+}
+
+void ofApp::rotateScreen(float degrees, int amount) {
+    ofTranslate(amount, amount, 0);
+    ofRotate(degrees);
+    ofTranslate(-amount, -amount, 0);
+}
+
+void ofApp::updateAnim(){
+    offset.x += 0.02;
+}
+
+void ofApp::drawAnim() {
+    ofBackground(ofColor::black);
+    ofSetColor(ofColor::wheat);
+    
+    
+    offset.y = 0.02;
+    drawLayer(&amp;tex);
+    rotateScreen(90, halfWidth);
+    drawLayer(&amp;tex);
+    rotateScreen(90, halfHeight);
+    drawLayer(&amp;tex);
+    rotateScreen(90, halfWidth);
+    drawLayer(&amp;tex);
+    rotateScreen(90, halfHeight);
+    drawLayer2(&amp;tex); //cover up
+
+    if(ofGetFrameNum() == 100) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Folded like the top of a cardbaord box</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-06.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-06-05</h1>
 	</header>
 	<div class=code>
@@ -508,76 +599,6 @@ void ofApp::update(){
 <p class=description>A simple adjustment, oscillating between two synths</p>
 <audio controls>
     <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-31.mp3?raw=true" type="audio/mpeg">
-    Your browser does not support the audio element.
-</audio>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-05-30</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-30-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-30>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>ofxAudioUnitManager manager;
-TALNoiseMakerChain talChain;
-ofxBpm bpm;
-
-void ofApp::setup(){
-    manager.setup();
-    manager.toggleDebugUI();
-    manager.add(&amp;talChain, "tal-one", ofColor::blue);
-
-    playing = false;
-    note = 60;
-    
-    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
-    bpm.start();
-    talChain.getFilter()-&gt;getUnit()-&gt;printParameterList();
-}
-
-void ofApp::play(void){
-    if(playing) {
-        talChain.midi()-&gt;sendNoteOn(1, note);
-    }
-}
-
-void ofApp::togglePlaying() {
-    playing = !playing;
-    if(!playing) {
-        talChain.midi()-&gt;sendNoteOff(1, note);
-    }
-}
-
-void ofApp::update(){
-    manager.update();
-
-    val = ofMap(sin(ofGetFrameNum() * 0.03), -1, 1, 0.4, 0.6);
-    talChain.getSynth()-&gt;set(TALNoiseMaker_lfo2rate, val);
-
-    val = ofMap(sin(ofGetFrameNum() * 0.06), -1, 1, 0.3, 0.8);
-    talChain.getSynth()-&gt;set(TALNoiseMaker_envelopeeditoramount, val);
-
-    val = ofMap(sin(ofGetFrameNum() * 0.45), -1, 1, 6900, 4000);
-    talChain.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
-
-    val = ofMap(sin(ofGetFrameNum() * 0.2), -1, 1, 10, 26);
-    talChain.getFilter()-&gt;set(kLowPassParam_Resonance, val);
-}
-
-void ofApp::draw(){
-    manager.draw();
-}</code>
-    </pre>
-</div>
-<p class=description>First sound sketch. The result of a long journey <a href=https://github.com/microcosm/ofxAudioUnitManager>finishing my own tools</a>.</p>
-<audio controls>
-    <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-30.mp3?raw=true" type="audio/mpeg">
     Your browser does not support the audio element.
 </audio>
 

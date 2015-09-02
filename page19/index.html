@@ -10,7 +10,7 @@
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
     <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
-    <link rel=stylesheet href=/css/main.4e9c.css>
+    <link rel=stylesheet href=/css/main.adb3.css>
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
   </head>
@@ -46,6 +46,106 @@
             </ul>
         </nav>
         
+<article>
+	<header>
+		<h1>Sketch 2015-04-28</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-28-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-28>code</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::updateAnim(){
+    for(int i = 0; i &lt; 12; i++) {
+        createMover();
+    }
+    
+    if(ofGetFrameNum() == 40) {
+        trails = true;
+    }
+    
+    if(ofGetFrameNum() == 80) {
+        running = false;
+        stopping = true;
+    }
+    
+    if(ofGetFrameNum() == 94) {
+        stopping = false;
+        trails = false;
+    }
+    
+    if(ofGetFrameNum() == 98 || ofGetFrameNum() == 108) {
+        resetting = !resetting;
+    }
+    
+    if(ofGetFrameNum() == 110) {
+        save = true;
+    }
+    
+    for(int i = 0; i &lt; movers.size(); i++) {
+        movers.at(i).applyForce(gravity);
+        movers.at(i).update();
+    }
+}
+
+void ofApp::drawAnim() {
+    if(!trails) {
+        ofSetHexColor(0x100643);
+        ofRect(0, 0, width, height);
+    }
+    
+    if(running) {
+        for(int i = 0; i &lt; movers.size(); i++) {
+            movers.at(i).draw();
+        }
+    }
+    
+    if(stopping) {
+        ofSetColor(ofColor::white);
+        font.drawString("STOP", 70, 120);
+    }
+    
+    if(resetting) {
+        ofSetColor(ofColor::white);
+        font.drawString("RESET", 64, 120);
+    }
+    
+    if(save) {
+        renderGif();
+        movers.clear();
+        save = !save;
+    }
+}
+
+void ofApp::createMover() {
+    minX = width * 0.4;
+    maxX = width * 0.6;
+    x = ofRandom(minX, maxX);
+    
+    minY = height * 0.1;
+    maxY = height * 0.7;
+    y = ofRandom(minY, maxY);
+    
+    color.setHsb(ofMap(y, minY, maxY, 0, 50), 255, 128);
+    initial = ofVec2f(ofMap(x, minX, maxX, -3, 3), 0);
+    
+    PatternMover mover;
+    mover.setup();
+    mover.setColor(color);
+    mover.setSize(3);
+    mover.applyForce(initial);
+    mover.setLocation(x, y);
+    movers.push_back(mover);
+}</code>
+    </pre>
+</div>
+<p class=description>Toying with simple forces</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-28.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
 <article>
 	<header>
 		<h1>Sketch 2015-04-27</h1>

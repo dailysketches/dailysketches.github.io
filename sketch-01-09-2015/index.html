@@ -3,7 +3,7 @@
   <head>
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge">
-    <title>Sketch 2015-08-15</title>
+    <title>Sketch 2015-09-01</title>
     <meta name=description content="">
     <meta name=viewport content="width=device-width,initial-scale=1">
 
@@ -48,28 +48,53 @@
         <h1>Daily Sketches</h1>
 <article class=post>
 	<header>
-		<h1>Sketch 2015-08-15</h1>
+		<h1>Sketch 2015-09-01</h1>
 	</header>
 	<div class=code>
     <ul>
-		<li><a href="/sketch-15-08-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-15>code</a></li>
+		<li><a href="/sketch-01-09-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-09/tree/master/2015-09-01>code</a></li>
 		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
     <pre class=snippet>
         <code class=cpp>void ofApp::setup(){
     ofSetWindowShape(500, 500);
-    gif.setup(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 50);
-    gif.fadeInOut(2, 1, ofColor::red);
+    gif.setupPaused(16, 54);
+    gif.fadeInOut(2, 1, ofColor::white);
     gif.enableTextOverlay();
+    
+    pattern1.setup(&amp;gif);
+    pattern2.setup(&amp;gif);
 
-    layerIncrement = 0.005;
-    maskIncrement = 0.0002;
+    ofSetWindowShape(1000, 1200);
+    pattern1.masker.toggleOverlay();
+}
 
+void ofApp::update(){
+    pattern1.update();
+    pattern2.update();
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofEnableAlphaBlending();
+        pattern1.draw();
+        pattern2.draw();
+    }
+    gif.endCaptureDraw();
+    pattern1.masker.drawOverlay();
+}
+
+void Pattern1::setup(ofxGifEncoderTemplate *_gif) {
+    gif = _gif;
+    layerIncrement = 0.01;
+    maskIncrement = 0.0004;
+    
     numLayers = 32;
     numMasksPerLayer = 6;
     masker.setup(numLayers);
-
+    
     layer.setup(&quot;glass3.png&quot;);
     for(int i = 0; i &lt; numLayers; i++) {
         scale = ofMap(i, 0, numLayers-1, 4, 2.5);
@@ -77,7 +102,7 @@
         layer.setTextureOffset(i % 2 == 0 ? TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER : TEXTURE_OFFSET__MIDDLE__RIGHT_TO_CENTER);
         layer.setTextureOffsetY(ofRandom(2));
         layers.push_back(layer);
-
+        
         maskLoader.clear();
         scale = ofMap(i, 0, numLayers-1, 6, 0.33);
         mask.setup(&quot;tissue.png&quot;, scale, TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER);
@@ -87,12 +112,9 @@
         }
         masks.push_back(maskLoader);
     }
-
-    ofSetWindowShape(1000, 1200);
-    masker.toggleOverlay();
 }
 
-void ofApp::update(){
+void Pattern1::update() {
     for(int i = 0; i &lt; numLayers; i++) {
         masker.beginLayer(i);
         {
@@ -117,20 +139,59 @@ void ofApp::update(){
     }
 }
 
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofSetColor(ofColor(ofColor::red));
-        layers.at(0).draw();
-        masker.draw();
+void Pattern1::draw() {
+    ofSetColor(ofColor(ofColor::red));
+    layers.at(0).draw();
+    masker.draw();
+}
+
+void Pattern2::setup(ofxGifEncoderTemplate *_gif) {
+    gif = _gif;
+    numRects = 7;
+    numLayers = 1;
+    masker.setup(numLayers, ISOLATE_LAYERS);
+    masker.toggleOverlay();
+    
+    img1.setup(&quot;pcb2.png&quot;, 1.0, TEXTURE_OFFSET__TOP_TO_MIDDLE__RIGHT_TO_CENTER);
+    
+    for(int i = 0; i &lt; numRects; i++) {
+        rectAlphaMultipliers.push_back(ofRandom(0.05, 0.3));
     }
-    gif.endCaptureDraw();
-    masker.drawOverlay();
+    rectWidth = (gif-&gt;width / numRects) + 1;
+}
+
+void Pattern2::update() {
+    masker.beginLayer(0);
+    {
+        ofBackground(ofColor::black);
+        img1.incrementTextureOffsetY(0.04);
+        img1.draw(0, gif-&gt;halfHeight);
+        img1.draw(0, -gif-&gt;halfHeight, TEXTURE_FLIP_HORIZONTAL);
+    }
+    masker.endLayer(0);
+    
+    masker.beginMask(0);
+    {
+        ofBackground(ofColor::black);
+        for(int i = 0; i &lt; numRects; i++) {
+            alpha = sin(ofGetFrameNum() * rectAlphaMultipliers.at(i));
+            alpha = ofMap(alpha, -1, 1, -100, 255);
+            if(alpha &lt; 0) alpha = 0;
+            ofSetColor(ofColor(ofColor::white, alpha));
+            ofRect(i * rectWidth, 0, rectWidth, gif-&gt;height);
+        }
+    }
+    masker.endMask(0);
+}
+
+void Pattern2::draw() {
+    ofEnableAlphaBlending();
+    masker.draw();
 }</code>
     </pre>
 </div>
-<p class=description>Blood work.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-15/bin/data/out/2015-08-15.gif?raw=true" alt="Daily sketch"></p>
+<p class=description>Mixing 2015-08-25 with 2015-08-15</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-09/blob/master/2015-09-01/bin/data/out/2015-09-01.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 <ul id=paging>

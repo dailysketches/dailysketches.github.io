@@ -274,7 +274,7 @@ ol.description li, ul.description li {
     content: "|";
     display: inline-block;
     font-size: 100%;
-    margin: 0 0 0 .5em;
+    margin: 0 0 0 .3em;
 }
 
 .code ul li:last-child:after {

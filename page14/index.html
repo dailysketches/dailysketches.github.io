@@ -48,6 +48,89 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-06-05</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-05-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-05>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    masker.setup(width, height);
+    layerId = masker.newLayer();
+    
+    ofDisableArbTex();
+    offset.x = ofRandom(30);
+    offset.y = ofRandom(30);
+    movingLeft = true;
+    setupImage("surface.png", &amp;img, &amp;tex);
+
+    plane.set(width, height);
+    plane.setPosition(halfWidth, halfHeight, 0);
+    plane.setResolution(2, 2);
+}
+
+void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
+    img-&gt;loadImage(file);
+    *tex = img-&gt;getTextureReference();
+    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+}
+
+void ofApp::drawLayer(ofTexture *tex) {
+    plane.mapTexCoords(tx0, ty0, tx1, ty1);
+    plane.mapTexCoords(tx1, ty1, tx0, ty0);
+    tex-&gt;bind();
+    plane.draw();
+    tex-&gt;unbind();
+}
+
+void ofApp::updateAnim(){
+    masker.beginLayer(layerId);
+    ofBackground(ofColor::black);
+    ofSetColor(ofColor::red);
+    tx0 = offset.x + (movingLeft ? ofGetFrameNum() : -ofGetFrameNum()) * 0.0005;
+    ty0 = offset.y;
+    tx1 = tx0 - 0.16666667;
+    ty1 = ty0 - 1;
+    drawLayer(&amp;tex);
+    masker.endLayer(layerId);
+    
+    masker.beginMask(layerId);
+    ofBackground(ofColor::black);
+    for(int i = 0; i &lt; 8; i++) {
+        ofSetColor(ofColor::white, ofRandom(32));
+        ofRotateZ(ofRandom(360));
+        ofRect(-width*2, ofRandom(height), width*4, ofRandom(halfHeight, height));
+    }
+    masker.endMask(layerId);
+
+    if(ofRandom(1) &gt; 0.5) {
+        offset.x = ofRandom(30);
+        offset.y = ofRandom(30);
+        movingLeft = !movingLeft;
+    }
+}
+
+void ofApp::drawAnim() {
+    if(ofGetFrameNum() == 0) ofBackground(ofColor::black);
+    ofSetColor(ofColor::white, 40);
+    drawLayer(&amp;tex);
+    masker.draw();
+    if(ofGetFrameNum() == 72) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>It's dark and murky</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-05.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-06-04</h1>
 	</header>
 	<div class=code>
@@ -497,63 +580,6 @@ void ofApp::draw(){
     <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-30.mp3?raw=true" type="audio/mpeg">
     Your browser does not support the audio element.
 </audio>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-05-29</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-29-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-29>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    maskOpacity = 0;
-    paused = false;
-    maskOpacity = 30;
-}
-
-void ofApp::drawAnim() {
-    ofEnableAlphaBlending();
-    if(ofGetFrameNum() == 0) ofBackground(ofColor::black);
-    ofSetColor(0, 0, 0, maskOpacity);
-    ofRect(0, 0, width, height);
-    
-    ofSetColor(ofColor::red);
-    for(int i = 0; i &lt; 360; i+=10) {
-        for(int j = 0; j &lt; 4; j++) {
-            x = ofRandom(0, width);
-            y = ofMap(sin(ofGetFrameNum() * 0.06), -1, 1, -20, halfWidth);
-            ofLine(x, y, x, y + 50);
-        }
-        rotateScreen(i);
-    }
-    
-    ofDisableAlphaBlending();
-    
-    if(ofGetFrameNum() &gt; 96) {
-        maskOpacity += 40;
-    }
-    
-    if(maskOpacity &gt; 255) {
-        renderGif();
-    }
-}
-
-void ofApp::rotateScreen(float degrees) {
-    ofTranslate(halfWidth, halfHeight, 0);
-    ofRotate(degrees);
-    ofTranslate(-halfWidth, -halfHeight, 0);
-}</code>
-    </pre>
-</div>
-<p class=description>A little patience.</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-29.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

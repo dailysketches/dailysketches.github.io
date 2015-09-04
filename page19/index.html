@@ -48,6 +48,80 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-04-29</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-29-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-29>code</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    boundary = 25;
+    increment = 8;
+    for(int i = 0; i &lt;= 20; i++) {
+        line.addVertex(i * width * 0.05, ofRandom(-boundary, boundary));
+    }
+    lines.push_back(line);
+}
+
+void ofApp::updateAnim(){
+    if(ofGetFrameNum() &lt; 39) {
+        for(int i = 0; i &lt;= 20; i++) {
+            line[i].y = drunkWalk(line[i].y);
+        }
+        lines.push_back(line);
+    }
+    
+    if(ofGetFrameNum() &gt;= 40) {
+        if(lines.size() == 1) {
+            renderGif();
+        } else {
+            lines.pop_back();
+        }
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 255, 255);
+    alpha = 255;
+    
+    ofTranslate(0, boundary* 2);
+    
+    ofPushMatrix();
+    for(int i = 0; i &lt; lines.size() &amp;&amp; alpha &gt;= 0; i++) {
+        ofSetColor(1, 131, 185, alpha);
+        ofSetLineWidth(i * 0.8);
+        
+        ofTranslate(0, i);
+        lines.at(lines.size() - 1 - i).draw();
+        alpha -= 16;
+    }
+    ofPopMatrix();
+    
+    ofSetLineWidth(2);
+    ofSetColor(255, 255, 255, 200);
+    lines.at(lines.size() - 1).draw();
+}
+
+float ofApp::drunkWalk(float from) {
+    if(from &gt; boundary - increment) return from - increment;
+    if(from &lt; -boundary + increment) return from + increment;
+    return ofRandom(1) &gt; 0.5 ?
+            from + increment :
+            from - increment;
+}</code>
+    </pre>
+</div>
+<p class=description>A polyline on a drunken walk</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-29.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-04-28</h1>
 	</header>
 	<div class=code>
@@ -410,31 +484,6 @@ void ofApp::drawHorizontalLines(int y) {
 
 </article>
 
-<article>
-	<header>
-		<h1>Sketch 2015-04-22</h1>
-	</header>
-	<div class=code>
-	<ul>
-		<li><a href="/sketch-22-04-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-22>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-	<pre class=snippet>
-		<code class=cpp>void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    font.drawString("AN EMPTY\nGESTURE", 12, 85);
-    for(int i = 0; i &lt; 30; i++) {
-        ofLine(ofRandom(520), ofRandom(200), ofRandom(520), ofRandom(200));
-    }
-}</code>
-	</pre>
-</div>
-<p class=description>Sometimes you just need to start...</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-22.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
 
 <ul id=paging>
 	
@@ -442,6 +491,8 @@ void ofApp::drawHorizontalLines(int y) {
 			<li><a href="/page18/">&lt; Previous page</a></li>
 		
 	
+	
+		<li><a href="/page20/">Next page &gt;</a></li>
 	
 </ul>
     </section>

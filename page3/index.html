@@ -48,6 +48,108 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-08-25</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-25-08-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-25>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setup(40);
+
+    numLayers = 1;
+    masker.setup(numLayers, ISOLATE_LAYERS);
+    masker.toggleOverlay();
+    
+    img1.setup(&quot;pcb2.png&quot;);
+    
+    horizontalMasks.setup(6, gif.height);
+    
+    ofSetWindowShape(1200, 1200);
+}
+
+void ofApp::update(){
+    masker.beginLayer(0);
+    {
+        ofBackground(ofColor::black);
+        img1.incrementTextureOffsetY(-0.05);
+        img1.draw(0, gif.halfHeight);
+        img1.draw(0, -gif.halfHeight, TEXTURE_FLIP_HORIZONTAL);
+    }
+    masker.endLayer(0);
+    
+    masker.beginMask(0);
+    {
+        ofBackground(ofColor::black);
+        horizontalMasks.draw();
+    }
+    masker.endMask(0);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofEnableAlphaBlending();
+        ofBackground(ofColor::black);
+        masker.draw();
+    }
+    gif.endCaptureDraw();
+    masker.drawOverlay();
+}
+
+void MaskArray::setup(int _number, float _size) {
+    number = _number;
+    size = _size;
+    unitSize = size / number;
+    
+    for(int i = 0; i &lt; size; i++) {
+        alphas.push_back(ofRandom(255));
+        speeds.push_back(ceil(ofRandom(6)) * 30);
+        directions.push_back(ofRandom(1) &gt; 0.5 ? 1 : -1);
+    }
+}
+
+void MaskArray::draw() {
+    for(int i = 0; i &lt; number; i++) {
+        alphas.at(i) += speeds.at(i) * directions.at(i);
+        bounce(i);
+        ofSetColor(ofColor(ofColor::white, alphas.at(i)));
+        ofRect(0, unitSize * i, size, unitSize);
+    }
+}
+
+void MaskArray::bounce(int i) {
+    if(alphas.at(i) &lt; 0) {
+        alphas.at(i) = 0;
+        directions.at(i) = 1;
+    }
+
+    if(alphas.at(i) &gt; 255) {
+        alphas.at(i) = 255;
+        directions.at(i) = -1;
+    }
+}
+
+void MaskArray::debug() {
+    for(int i = 0; i &lt; number; i++) {
+        cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; alphas.at(i) &lt;&lt; endl;
+    }
+    
+    cout &lt;&lt; &quot;=======&quot; &lt;&lt; endl &lt;&lt; endl &lt;&lt; endl;
+}</code>
+    </pre>
+</div>
+<p class=description>s950tx16wasr10</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-25/bin/data/out/2015-08-25.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-08-24</h1>
 	</header>
 	<div class=code>
@@ -743,98 +845,6 @@ void MaskArray::bounce(int i) {
 </div>
 <p class=description>Schottkey 7th Path</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-19/bin/data/out/2015-08-19.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-08-18</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-18-08-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-18>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(500, 500);
-    gif.setup(50);
-    gif.fadeInOut(2, 1, ofColor::red);
-    gif.enableTextOverlay();
-
-    layerIncrement = 0.01;
-    maskIncrement = 0.0005;
-
-    numLayers = 20;
-    numMasksPerLayer = 1;
-    masker.setup(numLayers);
-
-    layer.setup(&quot;rust-tall2.png&quot;);
-    for(int i = 0; i &lt; numLayers; i++) {
-        scale = ofMap(i, 0, numLayers-1, 0.25, 1);
-        layer.setTextureScale(scale);
-        layer.setTextureOffset(i % 2 == 0 ? TEXTURE_OFFSET_TOP_LEFT : TEXTURE_OFFSET_TOP_RIGHT);
-        layer.setTextureOffsetY(ofRandom(2));
-        layers.push_back(layer);
-
-        maskLoader.clear();
-        scale = ofMap(i, 0, numLayers-1, 0.5, 1.3);
-        mask.setup(&quot;circle-feather.png&quot;, scale, TEXTURE_OFFSET_MIDDLE_CENTER);
-        for(int j = 0; j &lt; numMasksPerLayer; j++) {
-            mask.setTextureOffsetY(ofRandom(2));
-            maskLoader.push_back(mask);
-        }
-        masks.push_back(maskLoader);
-    }
-
-    ofSetWindowShape(1000, 1200);
-    masker.toggleOverlay();
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; numLayers; i++) {
-        masker.beginLayer(i);
-        {
-            gif.rotateAroundCenter(i * 90);
-            ofSetColor(ofColor(ofColor::red));
-            increment = ofMap(i, 0, numLayers-1, layerIncrement, -layerIncrement);
-            layers.at(i).incrementTextureScale(i % 2 == 0 ? increment : -increment * 8 );
-            layers.at(i).incrementTextureOffsetX((i % 2 == 0 ? increment : -increment) * ofRandom(-2, 27));
-            layers.at(i).incrementTextureOffsetY((i % 2 == 0 ? -increment : increment) * ofRandom(-2, 27));
-            layers.at(i).draw();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            ofSetColor(ofColor::white);
-            ofBackground(ofColor::white);
-            for(int j = 0; j &lt; numMasksPerLayer; j++) {
-                increment = (j+1) * ofMap(i, 0, numLayers-1, maskIncrement, -maskIncrement);
-                masks.at(i).at(j).incrementTextureOffsetY(increment);
-                i % 2 == 0 ? masks.at(i).at(j).draw() : masker.drawLayer(i - 1, false);
-            }
-        }
-        masker.endMask(i);
-    }
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        gif.rotateAroundCenter(45);
-        layers.at(0).draw();
-        masker.drawLayer(13);
-        masker.drawLayer(16);
-    }
-    gif.endCaptureDraw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Uncertain agenda.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-18/bin/data/out/2015-08-18.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

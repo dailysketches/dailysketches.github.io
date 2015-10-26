@@ -3,7 +3,7 @@
   <head>
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge">
-    <title>Daily Sketches</title>
+    <title>Sketch 2015-10-25a</title>
     <meta name=description content="">
     <meta name=viewport content="width=device-width,initial-scale=1">
 
@@ -45,95 +45,50 @@
                 </li>
             </ul>
         </nav>
-        
-<article>
+        <h1>Daily Sketches</h1>
+<article class=post>
 	<header>
-		<h1>Sketch 2015-04-23</h1>
+		<h1>Sketch 2015-10-25a</h1>
 	</header>
 	<div class=code>
     <ul>
-        <li><a href="/sketch-23-04-2015/">permalink</a></li>
-        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-23>code</a></li>
-        <li><a href=# class=snippet-button>show snippet</a></li>
-    </ul>
+		<li><a href="/sketch-a-25-10-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-10/tree/master/2015-10-25a>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
     <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    increment = 10;
-    max = 400;
-    pos = 0;
+        <code class=cpp>void ofApp::setup(){
+    _template.setup(10, 60);
+    manager = _template.getAudioUnitManager();
+    synth.setup(&quot;Synth 1&quot;, AUDIOUNIT_MASSIVE);
+    manager-&gt;createChain(&amp;chain)
+          .link(&amp;synth)
+          .toMixer();
+    timeline = _template.getTimeline();
 }
 
-void ofApp::updateAnim(){
-    pos += increment;
-    if(pos &gt; max * 2) {
-        pos = 0;
-        vertical = !vertical;
-    }
+void ofApp::update(){
+
 }
 
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    for(int i = 1; i &lt;= max; i++) {
-        if(vertical) drawVerticalLines(i);
-        else drawHorizontalLines(i);
-    }
-}
-
-void ofApp::drawVerticalLines(int x) {
-    if(x % 2 == 0) {
-        ofLine(x, pos - max, x, pos);
-    } else {
-        ofLine(x, height - pos, x, max * 2 - pos);
-    }
-}
-
-void ofApp::drawHorizontalLines(int y) {
-    if(y % 2 == 0) {
-        ofLine(pos - max, y, pos, y);
-    } else {
-        ofLine(height - pos, y, max * 2 - pos, y);
-    }
+void ofApp::draw(){
+    
 }</code>
     </pre>
 </div>
-<p class=description>Something feels beautiful about working with the simplicity of lines.</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-23.gif?raw=true" alt="Daily sketch"></p>
+<p class=description>Setting a step sequencer as multiple modulation sources</p>
+<p>
+	<img src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-25a/bin/data/out/2015-10-25a.png?raw=true" alt="Sketch 2015-10-25a">
+	<audio controls>
+		<source src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-25a/bin/data/out/2015-10-25a.mp3?raw=true" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+</p>
+
 
 </article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-04-22</h1>
-	</header>
-	<div class=code>
-	<ul>
-		<li><a href="/sketch-22-04-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-22>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-	<pre class=snippet>
-		<code class=cpp>void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    font.drawString("AN EMPTY\nGESTURE", 12, 85);
-    for(int i = 0; i &lt; 30; i++) {
-        ofLine(ofRandom(520), ofRandom(200), ofRandom(520), ofRandom(200));
-    }
-}</code>
-	</pre>
-</div>
-<p class=description>Sometimes you just need to start...</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-22.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-
 <ul id=paging>
-	
-		
-			<li><a href="/page21/">&lt; Previous page</a></li>
-		
-	
-	
+	<li><a href="/">&lt; See all posts</a></li>
 </ul>
     </section>
     <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>

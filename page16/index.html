@@ -48,6 +48,119 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-06-04</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-04-06-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-04>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>
+//Pattern based on http://www.openprocessing.org/sketch/157035
+
+ofxLayerMask masker;
+int layerId;
+
+float tx0, ty0, tx1, ty1;
+float offset;
+ofImage img;
+ofTexture tex;
+ofPlanePrimitive plane;
+
+float x, y, radians;
+
+void ofApp::setupAnim() {
+    masker.setup(width, height);
+    layerId = masker.newLayer();
+    
+    ofDisableArbTex();
+    offset = ofRandom(3);
+    setupImage("face.png", &amp;img, &amp;tex);
+
+    plane.set(width, height);
+    plane.setPosition(halfWidth, halfHeight, 0);
+    plane.setResolution(2, 2);
+}
+
+void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
+    img-&gt;loadImage(file);
+    *tex = img-&gt;getTextureReference();
+    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+}
+
+void ofApp::drawLayer(ofTexture *tex) {
+    plane.mapTexCoords(tx0, ty0, tx1, ty1);
+    plane.mapTexCoords(tx1, ty1, tx0, ty0);
+    tex-&gt;bind();
+    plane.draw();
+    tex-&gt;unbind();
+}
+
+void ofApp::updateAnim(){
+    masker.beginLayer(layerId);
+    ofBackground(ofColor::black);
+    ofSetColor(ofColor::white);
+    tx0 = 1;
+    ty0 = ofGetFrameNum() * 0.0012 + offset;
+    tx1 = tx0 - 1;
+    ty1 = ty0 - 0.2;
+    drawLayer(&amp;tex);
+    masker.endLayer(layerId);
+    
+    masker.beginMask(layerId);
+    ofBackground(ofColor::black);
+    if(ofGetFrameNum() == 0 || ofRandom(1) &gt; 0.6) {
+        ofTriangle(ofRandom(-width, width*2), ofRandom(-height, height*2),
+                   ofRandom(-width, width*2), ofRandom(-height, height*2),
+                   ofRandom(-width, width*2), ofRandom(-height, height*2));
+    } else if(ofRandom(1) &gt; 0.3) {
+        offset = ofRandom(3);
+    }
+    masker.endMask(layerId);
+}
+
+void ofApp::drawAnim() {
+    if(ofGetFrameNum() == 0) ofBackground(ofColor::black);
+    ofSetColor(ofColor::white, 40);
+    drawLayer(&amp;tex);
+
+    ofSetColor(ofColor::white, 15);
+    ofTranslate(halfWidth, halfHeight);
+    for (int i = 0; i &lt; 360; i+=6) {
+        for (int q = 0; q &lt; 360; q+=360) {
+            radians = ofDegToRad(q + i + ofGetFrameNum() * 5);
+            
+            x = ofMap(sin(radians) * i, -600, -10, i, 0);
+            y = ofMap(cos(radians) * i, -600, -10, 0, i);
+            ofCircle(x, y, 2);
+            ofCircle(y, x, 2);
+            ofCircle(-x, -y, 2);
+            ofCircle(-y, -x, 2);
+            
+            x = ofMap(sin(radians) * i, -600, -10, -i, 0);
+            ofCircle(x, y, 2);
+            ofCircle(y, x, 2);
+            ofCircle(-x, -y, 2);
+            ofCircle(-y, -x, 2);
+        }
+    }
+    ofTranslate(-halfWidth, -halfHeight);
+    masker.draw();
+    if(ofGetFrameNum() == 72) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Frustration can be bitter sweet</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-04.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-06-03</h1>
 	</header>
 	<div class=code>
@@ -441,63 +554,6 @@ void ofApp::rotateScreen(float degrees) {
 </div>
 <p class=description>A little patience.</p>
 <p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-29.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-05-28</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-28-05-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-28>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    maskOpacity = 0;
-}
-
-void ofApp::drawAnim() {
-    ofEnableAlphaBlending();
-    
-    ofSetColor(0, 0, 0, 30);
-    ofRect(0, 0, width, height);
-    
-    ofSetColor(ofColor::red);
-    for(int i = 0; i &lt; 8; i++) {
-        for(int j = 0; j &lt; 10; j++) {
-            x = ofRandom(0, width);
-            y = ofRandom(-40, -20);
-            ofLine(x, y, x, y + halfWidth + 50);
-        }
-        rotateScreen(45);
-    }
-    
-    if(ofGetFrameNum() &gt; 12) {
-        ofSetColor(ofColor(ofColor::white, maskOpacity));
-        ofRect(0, 0, width, height);
-        maskOpacity += 20;
-    }
-    
-    ofDisableAlphaBlending();
-    
-    if(maskOpacity &gt; 255) {
-        renderGif();
-    }
-}
-
-void ofApp::rotateScreen(float degrees) {
-    ofTranslate(halfWidth, halfHeight, 0);
-    ofRotate(degrees);
-    ofTranslate(-halfWidth, -halfHeight, 0);
-}</code>
-    </pre>
-</div>
-<p class=description>Constraints.</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-28.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

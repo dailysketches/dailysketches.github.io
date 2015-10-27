@@ -46,6 +46,48 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-10-26a</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-a-26-10-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-10/tree/master/2015-10-26a>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    _template.setup(46 , 120);
+    manager = _template.getAudioUnitManager();
+    synth.setup(&quot;Synth 1&quot;, AUDIOUNIT_MASSIVE);
+    manager-&gt;createChain(&amp;chain)
+          .link(&amp;synth)
+          .toMixer();
+    timeline = _template.getTimeline();
+}
+
+void ofApp::update(){
+
+}
+
+void ofApp::draw(){
+    
+}</code>
+    </pre>
+</div>
+<p class=description>Discovering the performer modulator</p>
+<p>
+	<img src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-26a/bin/data/out/2015-10-26a.png?raw=true" alt="Sketch 2015-10-26a">
+	<audio controls>
+		<source src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-26a/bin/data/out/2015-10-26a.mp3?raw=true" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+</p>
+
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-10-25a</h1>
 	</header>
 	<div class=code>
@@ -490,106 +532,6 @@ void ofApp::draw(){
 </div>
 <p class=description>X-ray.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-09/blob/master/2015-09-12/bin/data/out/2015-09-12.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-09-11</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-11-09-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-09/tree/master/2015-09-11>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(500, 500);
-    gif.setup(50);
-    gif.fadeInOut(2, 3, ofColor::darkGray);
-    gif.enableTextOverlay();
-    numLayers = 8;
-    masker.setup(numLayers + 1);
-    rectSize = 200;
-    rectThickness = 2;
-    speed = 0.1;
-    
-    img.setup(&quot;pcb2.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER);
-    for(int i = 0; i &lt; numLayers; i++) {
-        scale = ofMap(i, 0, numLayers-1, 0.25, 0.7);
-        img.setTextureScale(scale);
-        img.setTextureOffsetY(ofRandom(2));
-        textures.push_back(img);
-    }
-    
-    img.setup(&quot;road.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__RIGHT_TO_CENTER);
-    for(int i = 0; i &lt; numLayers; i++) {
-        scale = ofMap(i, 0, numLayers-1, 1.4, 0.75);
-        img.setTextureScale(scale);
-        img.setTextureOffsetY(ofRandom(2));
-        masks.push_back(img);
-    }
-
-    ofSetWindowShape(1200, 1200);
-    masker.toggleOverlay();
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; numLayers; i++) {
-        masker.beginLayer(i);
-        {
-            textures.at(i).incrementTextureOffsetY(ofMap(i, 0, numLayers-1, -speed, speed));
-            textures.at(i).draw();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            masks.at(i).incrementTextureOffsetY(ofMap(i, 0, numLayers-1, speed * 0.125, -speed * 0.125));
-            masks.at(i).draw();
-        }
-        masker.endMask(i);
-    }
-
-    masker.beginLayer(numLayers);
-    {
-        ofBackground(ofColor::white);
-        masker.drawLayers(0, numLayers-1);
-    }
-    masker.endLayer(numLayers);
-
-    masker.beginMask(numLayers);
-    {
-        ofBackground(ofColor::black);
-        ofSetRectMode(OF_RECTMODE_CENTER);
-        ofSetColor(ofColor::white);
-        ofRect(gif.halfWidth, gif.halfHeight, rectSize, rectSize);
-        ofSetRectMode(OF_RECTMODE_CORNER);
-    }
-    masker.endMask(numLayers);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofSetColor(ofColor::red);
-        ofRect(0, 0, gif.width, gif.height);
-        masker.drawLayer(2);
-        ofSetRectMode(OF_RECTMODE_CENTER);
-        ofSetColor(ofColor::black);
-        ofRect(gif.halfWidth, gif.halfHeight, rectSize, rectSize);
-        ofSetRectMode(OF_RECTMODE_CORNER);
-        ofSetColor(ofColor::white);
-        masker.drawLayer(numLayers);
-    }
-    gif.endCaptureDraw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Unspirited.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-09/blob/master/2015-09-11/bin/data/out/2015-09-11.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

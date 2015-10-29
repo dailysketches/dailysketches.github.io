@@ -48,6 +48,95 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-09-05</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-05-09-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-09/tree/master/2015-09-05>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setup(45);
+    masker.setup(2);
+    img1.setup(&quot;pcb-bw.png&quot;, 2.0);
+    img2.setup(&quot;glass3.png&quot;, 1.0);
+    img3.setup(&quot;foil1.png&quot;, 2.0);
+    img4.setup(&quot;glass1-inverted.png&quot;, 1.0);
+
+    masker.toggleOverlay();
+    ofSetWindowShape(1200, 1200);
+}
+
+void ofApp::update(){
+    if(ofGetFrameNum() % 9 == 0) {
+        img1.setTextureOffset(ofRandom(2), ofRandom(2));
+        img1.setTextureScale(ofRandom(0.5, 1.5));
+        img2.setTextureOffset(ofRandom(2), ofRandom(2));
+        img2.setTextureScale(ofRandom(0.5, 1.5));
+    }
+    if(ofGetFrameNum() % 3 == 0) {
+        masker.beginLayer(0);
+        {
+            img3.setTexturePosition(ofRandom(2), ofRandom(2));
+            img3.setTextureScale(ofRandom(1.0, 6.0));
+            ofSetColor(ofColor::red);
+            img3.draw();
+        }
+        masker.endLayer(0);
+        
+        masker.beginMask(0);
+        {
+            img4.setTexturePosition(ofRandom(2), ofRandom(2));
+            img4.setTextureScale(ofRandom(1.0, 6.0));
+            ofBackground(ofColor::white);
+            if(ofRandom(1) &gt; 0.25) {
+                ofSetColor(ofColor(ofColor::white, 120));
+                img4.draw();
+            }
+        }
+        masker.endMask(0);
+    } else {
+        img1.incrementTextureScale(0.06);
+        masker.beginLayer(1);
+        {
+            img1.draw();
+        }
+        masker.endLayer(1);
+        
+        masker.beginMask(1);
+        {
+            img1.draw();
+        }
+        masker.endMask(1);
+    }
+}
+
+void ofApp::draw(){
+    gif.begin();
+    ofPushStyle();
+    {
+        img2.incrementTextureScale(-0.048);
+        img2.draw();
+        ofSetColor(ofColor::white);
+        masker.draw();
+    }
+    ofPopStyle();
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>This doesn't make any sense.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-09/blob/master/2015-09-05/bin/data/out/2015-09-05.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-09-04</h1>
 	</header>
 	<div class=code>
@@ -877,189 +966,6 @@ void ofApp::draw(){
 </div>
 <p class=description>Mask yourself.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-30/bin/data/out/2015-08-30.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-08-29</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-29-08-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-29>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(500, 500);
-    gif.setup(50);
-    gif.fadeInOut(3, 6, ofColor::white);
-    gif.enableTextOverlay();
-    pattern1.setup(&amp;gif);
-    pattern2.setup(&amp;gif);
-    masker.setupSingleLayer();
-    masker.toggleOverlay();
-    ofSetWindowShape(1200, 1200);
-}
-
-void ofApp::update(){
-    pattern1.update();
-    pattern2.update();
-
-    masker.beginLayer();
-    {
-        pattern2.draw();
-    }
-    masker.endLayer();
-
-    masker.beginMask();
-    {
-        gif.rotateAroundCenter(180);
-        pattern1.draw();
-    }
-    masker.endMask();
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofBackground(ofColor::white);
-        masker.draw();
-    }
-    gif.endCaptureDraw();
-    masker.drawOverlay();
-}
-
-void Pattern1::setup(ofxGifEncoderTemplate *_gif) {
-    gif = _gif;
-    numLayers = 5;
-    numRects = gif-&gt;width * 0.5;
-    masker.setup(numLayers + 1);
-    
-    img.setup(&quot;road.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__RIGHT_TO_CENTER);
-    for(int i = 0; i &lt; numLayers; i++) {
-        scale = ofMap(i, 0, numLayers-1, 16, -3);
-        img.setTextureScale(scale);
-        img.setTextureOffsetY(ofRandom(2));
-        textures.push_back(img);
-    }
-    
-    img.setup(&quot;pcb2.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER);
-    for(int i = 0; i &lt; numLayers; i++) {
-        scale = ofMap(i, 0, numLayers-1, 2, 1);
-        img.setTextureScale(scale);
-        img.setTextureOffsetY(ofRandom(2));
-        masks.push_back(img);
-    }
-    
-    for(int i = 0; i &lt; numRects; i++) {
-        rectAlphaMultipliers.push_back(ofRandom(0.1, 0.5));
-    }
-    rectWidth = gif-&gt;width / numRects;
-}
-
-void Pattern1::update() {
-    for(int i = 0; i &lt; numLayers; i++) {
-        masker.beginLayer(i);
-        {
-            textures.at(i).incrementTextureOffsetY(ofMap(i, 0, numLayers-1, -0.001, 0.002));
-            textures.at(i).draw();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            masks.at(i).incrementTextureOffsetY(ofMap(i, 0, numLayers-1, -0.001, 0.009));
-            masks.at(i).draw();
-        }
-        masker.endMask(i);
-    }
-    
-    masker.beginLayer(numLayers);
-    {
-        masker.drawLayers(0, numLayers-1);
-    }
-    masker.endLayer(numLayers);
-    
-    masker.beginMask(numLayers);
-    {
-        ofBackground(ofColor::black);
-        for(int i = 0; i &lt; numRects; i++) {
-            float alpha = sin(ofGetFrameNum() * rectAlphaMultipliers.at(i));
-            alpha = ofMap(alpha, -1, 1, 0, 255);
-            ofSetColor(ofColor(ofColor::white, alpha));
-            ofRect(i * rectWidth, 0, rectWidth, gif-&gt;height);
-        }
-    }
-    masker.endMask(numLayers);
-}
-
-void Pattern1::draw() {
-    ofBackground(ofColor::white);
-    masker.draw();
-    for(int i = 0; i &lt; 3; i++) {
-        masker.drawLayer(numLayers);
-    }
-    masker.drawOverlay();
-}
-
-void Pattern2::setup(ofxGifEncoderTemplate *_gif) {
-    gif = _gif;
-    numLayers = 3;
-    numRects = gif-&gt;width * 0.5;
-    masker.setup(numLayers);
-    
-    img.setup(&quot;pcb2.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER);
-    for(int i = 0; i &lt; numLayers; i++) {
-        scale = ofMap(i, 0, numLayers-1, 16, 5);
-        img.setTextureScale(scale);
-        img.setTextureOffsetY(ofRandom(2));
-        textures.push_back(img);
-    }
-    
-    img.setup(&quot;road.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__RIGHT_TO_CENTER);
-    for(int i = 0; i &lt; numLayers; i++) {
-        scale = ofMap(i, 0, numLayers-1, 4, 1);
-        img.setTextureScale(scale);
-        img.setTextureOffsetY(ofRandom(2));
-        masks.push_back(img);
-    }
-    
-    for(int i = 0; i &lt; numRects; i++) {
-        rectAlphaMultipliers.push_back(ofRandom(0.1, 0.5));
-    }
-    rectWidth = gif-&gt;width / numRects;
-}
-
-void Pattern2::update() {
-    for(int i = 0; i &lt; numLayers; i++) {
-        masker.beginLayer(i);
-        {
-            ofSetColor(ofColor::white);
-            textures.at(i).incrementTextureOffsetY(ofMap(i, 0, numLayers-1, -0.002, 0.002));
-            textures.at(i).draw();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            ofSetColor(ofColor::white);
-            masks.at(i).incrementTextureOffsetY(ofMap(i, 0, numLayers-1, -0.002, 0.002));
-            masks.at(i).draw();
-        }
-        masker.endMask(i);
-    }
-}
-
-void Pattern2::draw() {
-    ofBackground(ofColor::white);
-    masker.draw();
-}</code>
-    </pre>
-</div>
-<p class=description>Masking 2015-08-27 with 2015-08-28</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-29/bin/data/out/2015-08-29.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

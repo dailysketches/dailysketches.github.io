@@ -48,6 +48,88 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-07-25</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-25-07-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-07-25>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    increment = 0.0025;
+    numLayers = 3;
+    filename = &quot;foil-large-transp.png&quot;;
+
+    ofSetWindowShape(500, 500);
+    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 8, 56);
+
+    masker.setup(numLayers);
+    plane.setup(filename);
+    for(int i = 0; i &lt; numLayers; i++) {
+        layers.push_back(plane);
+        masks.push_back(plane);
+    }
+    reset();
+}
+
+void ofApp::reset() {
+    offsetIncrements.clear();
+    scaleIncrements.clear();
+
+    for(int i = 0; i &lt; numLayers; i++) {
+        layers.at(i).setTextureScale(ofRandom(4.5, 5.5));
+        layers.at(i).setTexturePosition(ofRandom(2), ofRandom(2));
+        masks.at(i).setTextureScale(ofRandom(4.5, 5.5));
+        masks.at(i).setTexturePosition(ofRandom(2), ofRandom(2));
+        offsetIncrements.push_back(ofVec2f(ofRandom(-increment, increment), ofRandom(-increment, increment)));
+        scaleIncrements.push_back(ofRandom(-increment*6, increment*6));
+    }
+}
+
+void ofApp::update(){
+    if(ofGetFrameNum() % 8 == 0) {
+        reset();
+    }
+    for(int i = 0; i &lt; numLayers; i++) {
+        masker.beginLayer(i);
+        {
+            layers.at(i).incrementTextureOffset(offsetIncrements.at(i));
+            layers.at(i).incrementTextureScale(scaleIncrements.at(i));
+            layers.at(i).draw();
+        }
+        masker.endLayer(i);
+
+        masker.beginMask(i);
+        {
+            ofBackground(ofColor::white);
+            masks.at(i).incrementTextureOffset(-offsetIncrements.at(i));
+            masks.at(i).incrementTextureScale(-scaleIncrements.at(i));
+            masks.at(i).draw();
+        }
+        masker.endMask(i);
+    }
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        masker.draw();
+    }
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>Revealing a metallic surface</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-25.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-07-24</h1>
 	</header>
 	<div class=code>
@@ -573,78 +655,6 @@ void ofApp::draw(){
 </div>
 <p class=description>There's blood on your hands</p>
 <p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-19.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-07-18</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-18-07-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-07-18>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 800);
-    gif.setupPaused(ofGetTimestampString(&quot;out/%Y-%m-%d&quot;), 30, 75, 500, 500, ISOLATE_DRAWING);
-    masker.setup(500, 500, 1, ISOLATE_LAYERS);
-    masker.toggleOverlay();
-
-    glass1.setup(&quot;glass.png&quot;, 500, 500, 2.0);
-    glass2.setup(&quot;glass.png&quot;, 500, 500, 2.0);
-    framesBeforeRefresh = 15;
-}
-
-void ofApp::update(){
-    if(ofGetFrameNum() % framesBeforeRefresh == 0) {
-        refresh = true;
-        int offsetIndex = floor(ofGetFrameNum() / framesBeforeRefresh);
-        offsetIndex = ((offsetIndex % 3) + 0) * 2;
-        glass1.setTextureOffset(offsetIndex);
-        glass2.setTextureOffset(offsetIndex);
-        glass1.setTextureScale(3.0);
-        glass2.setTextureScale(3.0);
-    } else {
-        refresh = false;
-        glass1.incrementTextureScale(-0.05);
-        glass2.incrementTextureScale(0.05);
-    }
-    
-    masker.beginLayer(0);
-    {
-        glass1.draw();
-    }
-    masker.endLayer(0);
-    
-    masker.beginMask(0);
-    {
-        glass2.draw();
-    }
-    masker.endMask(0);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofEnableAlphaBlending();
-        if(refresh) {
-            ofSetColor(ofColor::red);
-            ofRect(0, 0, gif.width, gif.height);
-        }
-        masker.draw();
-        ofDisableAlphaBlending();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>&quot;...a conscious, purposeful, and personal subject confronting an unconscious, purposeless, and impersonal universe...&quot; (<a href=http://www.gaiamind.com/Tarnas.html>Richard Tarnas</a>)</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-18.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

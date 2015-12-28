@@ -5,6 +5,7 @@ $(document).ready(function() {
 		enableViewToggle('.snippet-button', '.code', 'snippet');
 		enableViewToggle('.pseudocode-button', '.code', 'pseudocode');
 		enableViewToggle('.examples-button', '.pattern', 'examples');
+		enableViewToggle('.description-button', '.media-description', 'description');
 	}
 
 	function initHighlightJs() {

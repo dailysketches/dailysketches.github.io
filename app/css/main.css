@@ -212,7 +212,7 @@ img.no-frame {
     padding-bottom: 4em;
 }
 
-.examples, .snippet, .pseudocode, .description {
+.examples, .snippet, .pseudocode, .long {
     display: none;
 }
 
@@ -236,7 +236,7 @@ img.no-frame {
     margin: 1.8em auto 1.7em auto;
 }
 
-ol.description, ul.description {
+ol.description, ul.description, .long.description {
     text-align: left;
 }
 

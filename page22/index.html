@@ -10,7 +10,7 @@
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
     <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
-    <link rel=stylesheet href=/css/main.adb3.css>
+    <link rel=stylesheet href=/css/main.2fba.css>
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
   </head>
@@ -48,6 +48,456 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-05-01</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-01-05-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-01>code</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    shapeSystem.setup();
+    camera.setDistance(60);
+    numShapes = 0;
+    
+    float offset = 10;
+    
+    color.set(255, 255, 255, 80);
+    center.z -= offset;
+    outerSquare.setup(++numShapes, center, 2, 4, 0, -5, 35, color);
+    shapeSystem.add(outerSquare);
+    
+    color.set(255, 255, 255, 80);
+    center.z -= offset;
+    innerSquare.setup(++numShapes, center, 2, 4, 0, -5, 20, color);
+    shapeSystem.add(innerSquare);
+    
+    center.z -= offset;
+    color.set(255, 0, 0, 125);
+    ring1.setup(++numShapes, center, 1, 60, 8, 8, 25, color);
+    shapeSystem.add(ring1);
+    
+    center.z -= offset;
+    color.set(255, 0, 0, 125);
+    ring2.setup(++numShapes, center, 1, 60, 8, 8, 25, color);
+    shapeSystem.add(ring2);
+    
+    center.z -= offset;
+    color.set(255, 0, 0, 60);
+    ring3.setup(++numShapes, center, 0, 60, 8, 8, 25, color);
+    shapeSystem.add(ring3);
+    
+    center.z -= offset;
+    color.set(255, 255, 255, 200);
+    sphere.setup(++numShapes, center, 0, 60, 5, 0, 10, color);
+    shapeSystem.add(sphere);
+}
+
+void ofApp::updateAnim(){
+    outerSquare.rotateZ(ofMap(-ofGetFrameNum(), 1, 125, 1, 180));
+    innerSquare.rotateZ(ofMap( ofGetFrameNum(), 1, 125, 1, 180));
+    ring1.positionZ(sin( ofGetFrameNum() * 2       * 0.05) * 100 - 50);
+    ring2.positionZ(sin((ofGetFrameNum() * 2 + 20) * 0.05) * 100 - 50);
+    ring3.positionZ(sin((ofGetFrameNum() * 2 + 40) * 0.05) * 100 - 50);
+    shapeSystem.update();
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    camera.begin();
+    shapeSystem.draw();
+    camera.end();
+    if(ofGetFrameNum() == 125) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Adapting <a href=https://github.com/jasonmcdermott/ofxForums/tree/master/vertexArrayGradientShapes>code</a> to make transformable alpha-blended geometric shapes</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-01.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-04-30</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-30-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-30>code</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    coordinateSystemCenter = ofPoint(width * 0.5, height * 0.5);
+    outerRadius = width * 0.4;
+    innerRadius = width * 0.2;
+    ofEnableAntiAliasing();
+    ofEnableSmoothing();
+    ofSetLineWidth(1);
+    
+    for(int i = 0; i &lt; 30; i++) {
+        innerSpread.push_back(i * 36 + ofRandom(18));
+        outerSpread.push_back(i * 36 + 18 + ofRandom(18));
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    ofTranslate(coordinateSystemCenter);
+    
+    ofPushMatrix();
+    ofRotateZ(-ofGetFrameNum());
+    drawArc(innerRadius, 120);
+    ofPopMatrix();
+    
+    ofPushMatrix();
+    ofRotateZ(ofGetFrameNum());
+    drawArc(outerRadius, 220);
+    ofPopMatrix();
+    
+    for(int i = 0; i &lt; 10; i++) {
+        ofPushMatrix();
+        ofRotateZ(innerSpread.at(i) + ofGetFrameNum() * 4);
+        ofLine(0, -height*0.2, 0, -height*0.25);
+        ofPopMatrix();
+    }
+    
+    for(int i = 0; i &lt; 20; i++) {
+        ofPushMatrix();
+        ofRotateZ(innerSpread.at(i) - ofGetFrameNum() * 4);
+        ofLine(0, -height*0.25, 0, -height*0.3);
+        ofPopMatrix();
+    }
+    
+    for(int i = 0; i &lt; 30; i++) {
+        ofPushMatrix();
+        ofRotateZ(innerSpread.at(i) - ofGetFrameNum() * 2);
+        ofLine(0, -height*0.3, 0, -height*0.5);
+        ofPopMatrix();
+    }
+    
+    for(int i = 0; i &lt; 20; i++) {
+        ofPushMatrix();
+        ofRotateZ(outerSpread.at(i) - ofGetFrameNum() * 2);
+        ofLine(0, -height*0.45, 0, -height*0.5);
+        ofPopMatrix();
+    }
+    
+    if(ofGetFrameNum() == 360) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>The magic of transforms: translate, rotate, translate. The first translation kicks off your coordinate system.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-30.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-04-29</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-29-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-29>code</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    boundary = 25;
+    increment = 8;
+    for(int i = 0; i &lt;= 20; i++) {
+        line.addVertex(i * width * 0.05, ofRandom(-boundary, boundary));
+    }
+    lines.push_back(line);
+}
+
+void ofApp::updateAnim(){
+    if(ofGetFrameNum() &lt; 39) {
+        for(int i = 0; i &lt;= 20; i++) {
+            line[i].y = drunkWalk(line[i].y);
+        }
+        lines.push_back(line);
+    }
+    
+    if(ofGetFrameNum() &gt;= 40) {
+        if(lines.size() == 1) {
+            renderGif();
+        } else {
+            lines.pop_back();
+        }
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 255, 255);
+    alpha = 255;
+    
+    ofTranslate(0, boundary* 2);
+    
+    ofPushMatrix();
+    for(int i = 0; i &lt; lines.size() &amp;&amp; alpha &gt;= 0; i++) {
+        ofSetColor(1, 131, 185, alpha);
+        ofSetLineWidth(i * 0.8);
+        
+        ofTranslate(0, i);
+        lines.at(lines.size() - 1 - i).draw();
+        alpha -= 16;
+    }
+    ofPopMatrix();
+    
+    ofSetLineWidth(2);
+    ofSetColor(255, 255, 255, 200);
+    lines.at(lines.size() - 1).draw();
+}
+
+float ofApp::drunkWalk(float from) {
+    if(from &gt; boundary - increment) return from - increment;
+    if(from &lt; -boundary + increment) return from + increment;
+    return ofRandom(1) &gt; 0.5 ?
+            from + increment :
+            from - increment;
+}</code>
+    </pre>
+</div>
+<p class=description>A polyline on a drunken walk</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-29.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-04-28</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-28-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-28>code</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::updateAnim(){
+    for(int i = 0; i &lt; 12; i++) {
+        createMover();
+    }
+    
+    if(ofGetFrameNum() == 40) {
+        trails = true;
+    }
+    
+    if(ofGetFrameNum() == 80) {
+        running = false;
+        stopping = true;
+    }
+    
+    if(ofGetFrameNum() == 94) {
+        stopping = false;
+        trails = false;
+    }
+    
+    if(ofGetFrameNum() == 98 || ofGetFrameNum() == 108) {
+        resetting = !resetting;
+    }
+    
+    if(ofGetFrameNum() == 110) {
+        save = true;
+    }
+    
+    for(int i = 0; i &lt; movers.size(); i++) {
+        movers.at(i).applyForce(gravity);
+        movers.at(i).update();
+    }
+}
+
+void ofApp::drawAnim() {
+    if(!trails) {
+        ofSetHexColor(0x100643);
+        ofRect(0, 0, width, height);
+    }
+    
+    if(running) {
+        for(int i = 0; i &lt; movers.size(); i++) {
+            movers.at(i).draw();
+        }
+    }
+    
+    if(stopping) {
+        ofSetColor(ofColor::white);
+        font.drawString("STOP", 70, 120);
+    }
+    
+    if(resetting) {
+        ofSetColor(ofColor::white);
+        font.drawString("RESET", 64, 120);
+    }
+    
+    if(save) {
+        renderGif();
+        movers.clear();
+        save = !save;
+    }
+}
+
+void ofApp::createMover() {
+    minX = width * 0.4;
+    maxX = width * 0.6;
+    x = ofRandom(minX, maxX);
+    
+    minY = height * 0.1;
+    maxY = height * 0.7;
+    y = ofRandom(minY, maxY);
+    
+    color.setHsb(ofMap(y, minY, maxY, 0, 50), 255, 128);
+    initial = ofVec2f(ofMap(x, minX, maxX, -3, 3), 0);
+    
+    PatternMover mover;
+    mover.setup();
+    mover.setColor(color);
+    mover.setSize(3);
+    mover.applyForce(initial);
+    mover.setLocation(x, y);
+    movers.push_back(mover);
+}</code>
+    </pre>
+</div>
+<p class=description>Toying with simple forces</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-28.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-04-27</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-27-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-27>code</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofDisableArbTex();
+    
+    img.loadImage("tissue.png");
+    texture = img.getTextureReference();
+    texture.setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+    
+    offset = ofRandom(1);
+    shift = false;
+    numShifts = 0;
+    
+    //Position the planes to take up the full screen
+    for(int i = 0; i &lt; 2; i++) {
+        planes.push_back(plane);
+        planes.at(i).set(ofGetHeight(), ofGetWidth());
+        planes.at(i).setPosition(ofGetWidth() * 0.5, ofGetHeight() * 0.5, 0);
+        planes.at(i).setResolution(2, 2);
+    }
+}
+
+void ofApp::updateAnim(){
+    if(!shift &amp;&amp; ofRandom(1) &lt; 0.15) {
+        numShifts++;
+        shift = true;
+        offset = getNewOffset();
+    }
+    
+    tx0 = 0 * offset * 0.1;
+    ty0 = offset + ofGetFrameNum() * 0.001;
+    tx1 = tx0 + 1;
+    ty1 = ty0 + 2;
+    
+    //Position the texture on the plane
+    planes.at(0).mapTexCoords(tx0, ty0, tx1, ty1);
+    planes.at(1).mapTexCoords(tx1, ty1, tx0, ty0);
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    
+    if(shift) {
+        if(ofRandom(1) &gt; 0.2) shift = false;
+    } else {
+        texture.bind();
+        for(int i = 0; i &lt; planes.size(); i++) {
+            planes.at(i).draw();
+        }
+        texture.unbind();
+    }
+}
+
+float ofApp::getNewOffset() {
+    do {
+        candidateOffset = ofRandom(1);
+    } while(abs(candidateOffset - offset) &lt; 0.2);
+    
+    return candidateOffset;
+}</code>
+    </pre>
+</div>
+<p class=description>Overlaid media with alpha transparency, glimmering when squished into 400 pixels and slowly translated.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-27.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-04-26</h1>
+	</header>
+	<div class=code>
+    <ul>
+        <li><a href="/sketch-26-04-2015/">permalink</a></li>
+        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-26>code</a></li>
+        <li><a href=# class=snippet-button>show snippet</a></li>
+    </ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::drawGrid() {
+    for(int i = 0; i &lt; width * 0.1 + 10; i++) {
+        for(int j = 0; j &lt; height * 0.1 + 10; j++) {
+            
+            noise.x = noiseOffset.x + i * scaleX;
+            noise.y = noiseOffset.y + j * scaleY;
+            noise.z = noiseOffset.z + sineOfTheTime;
+            noiseValue = ofNoise(noise.x, noise.y, noise.z);
+            
+            //http://natureofcode.com/book/chapter-3-oscillation#35-polar-vs-cartesian-coordinates
+            theta = noiseValue * 2 * PI;
+            x = r * cos(theta);
+            y = r * sin(theta);
+            
+            ofPushMatrix();
+            ofTranslate(i * 10, j * 10);
+            ofEnableBlendMode(OF_BLENDMODE_ADD);
+            if(j % 2 == 0){
+                ofSetColor(180, 231, 248, 150);
+                ofRect(0, 0, x, y);
+            } else {
+                ofSetColor(255, 180, 180, 128);
+                ofLine(0, 0, x, y);
+            }
+            ofDisableBlendMode();
+            ofPopMatrix();
+        }
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Perlin noise coupled with a little <a href=http://natureofcode.com/book/chapter-3-oscillation#35-polar-vs-cartesian-coordinates>polar to cartesian conversion</a>.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-26.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-04-25</h1>
 	</header>
 	<div class=code>
@@ -83,135 +533,6 @@ void ofApp::drawAnim() {
 
 </article>
 
-<article>
-	<header>
-		<h1>Sketch 2015-04-24</h1>
-	</header>
-	<div class=code>
-    <ul>
-        <li><a href="/sketch-24-04-2015/">permalink</a></li>
-        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-24>code</a></li>
-        <li><a href=# class=snippet-button>show snippet</a></li>
-    </ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofSetCircleResolution(100);
-    ofNoFill();
-    ofEnableSmoothing();
-    multiplier = 5;
-    switchDirection = false;
-}
-
-void ofApp::updateAnim(){
-    if(switchDirection) {
-        multiplier += 0.2;
-    } else {
-        multiplier -= 0.2;
-    }
-    
-    if(multiplier &lt;= 0.2 || multiplier &gt;= 10) {
-        switchDirection = !switchDirection;
-        if(!switchDirection) saveNow = true;
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    for(int i = 1; i &lt;= 100; i++) {
-        ofCircle(width * 0.5, height * 0.5, i * multiplier);
-        ofCircle(width * 0.5, height * 0.5, i * (15 - multiplier));
-    }
-    if(!renderMode) {
-        ofDrawBitmapString(ofToString(multiplier), 20, 20);
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Concentric circles, moving against each other. As rendered by the pixel grid of your monitor.</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-24.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-04-23</h1>
-	</header>
-	<div class=code>
-    <ul>
-        <li><a href="/sketch-23-04-2015/">permalink</a></li>
-        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-23>code</a></li>
-        <li><a href=# class=snippet-button>show snippet</a></li>
-    </ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    increment = 10;
-    max = 400;
-    pos = 0;
-}
-
-void ofApp::updateAnim(){
-    pos += increment;
-    if(pos &gt; max * 2) {
-        pos = 0;
-        vertical = !vertical;
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    for(int i = 1; i &lt;= max; i++) {
-        if(vertical) drawVerticalLines(i);
-        else drawHorizontalLines(i);
-    }
-}
-
-void ofApp::drawVerticalLines(int x) {
-    if(x % 2 == 0) {
-        ofLine(x, pos - max, x, pos);
-    } else {
-        ofLine(x, height - pos, x, max * 2 - pos);
-    }
-}
-
-void ofApp::drawHorizontalLines(int y) {
-    if(y % 2 == 0) {
-        ofLine(pos - max, y, pos, y);
-    } else {
-        ofLine(height - pos, y, max * 2 - pos, y);
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Something feels beautiful about working with the simplicity of lines.</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-23.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-04-22</h1>
-	</header>
-	<div class=code>
-	<ul>
-		<li><a href="/sketch-22-04-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-04-22>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-	<pre class=snippet>
-		<code class=cpp>void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    font.drawString("AN EMPTY\nGESTURE", 12, 85);
-    for(int i = 0; i &lt; 30; i++) {
-        ofLine(ofRandom(520), ofRandom(200), ofRandom(520), ofRandom(200));
-    }
-}</code>
-	</pre>
-</div>
-<p class=description>Sometimes you just need to start...</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-04-22.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
 
 <ul id=paging>
 	
@@ -219,6 +540,8 @@ void ofApp::drawHorizontalLines(int y) {
 			<li><a href="/page21/">&lt; Previous page</a></li>
 		
 	
+	
+		<li><a href="/page23/">Next page &gt;</a></li>
 	
 </ul>
     </section>
@@ -228,7 +551,7 @@ void ofApp::drawHorizontalLines(int y) {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
 <![endif]-->
-<script src=/js/script.31e0.js></script>
+<script src=/js/script.67e0.js></script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
   (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

@@ -10,7 +10,7 @@
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
     <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
-    <link rel=stylesheet href=/css/main.adb3.css>
+    <link rel=stylesheet href=/css/main.2fba.css>
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
   </head>
@@ -44,6 +44,152 @@
             </ul>
         </nav>
         
+<article>
+	<header>
+		<h1>Sketch 2016-01-08a</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-a-08-01-2016/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2016-01/tree/master/2016-01-08a>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    _template.setup(10, 60);
+    manager = _template.getAudioUnitManager();
+    
+
+    synth.setup(&quot;Synth 1&quot;, AUDIOUNIT_MASSIVE);
+    manager-&gt;createChain(&amp;chain)
+        .link(&amp;synth)
+        .toMixer();
+
+    timeline = _template.getTimeline();
+    timeline-&gt;setBPM(70);
+    //timeline-&gt;addCurves(&quot;filter cutoff&quot;);
+}
+
+void ofApp::update(){
+    synth.set(TALNoiseMaker_cutoff, timeline-&gt;getValue(&quot;filter cutoff&quot;));
+}
+
+void ofApp::draw(){
+    
+}</code>
+    </pre>
+</div>
+<p class=description>Slow bassline rhythm</p>
+<p>
+	<img src="https://github.com/dailysketches/sketches-2016-01/blob/master/2016-01-08a/bin/data/out/2016-01-08a.png?raw=true" alt="Sketch 2016-01-08a">
+	<audio controls>
+		<source src="https://github.com/dailysketches/sketches-2016-01/blob/master/2016-01-08a/bin/data/out/2016-01-08a.mp3?raw=true" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+</p>
+
+
+</article>
+
+<article>
+	<header>
+		<h1>Nick Briz - Copy This Drive</h1>
+	</header>
+	<p><a href="http://nickbriz.com/copythisdrive/"><img src="/images/2016.01.07.copythisdrive.jpg"></a></p>
+<div class=media-description>
+    <ul>
+		<li><a href="/sketch-a-29-12-2015/">permalink</a></li>
+		<li><a href=# class=description-button>show descripton</a></li>
+	</ul>
+	<section class="long description">
+		<p>Copy this drive, because... copyleft. And <a href="http://www.joshuadavis.com/">Joshua Davis</a>.</p>
+	</section>
+</div>
+
+</article>
+
+<article>
+	<header>
+		<h1>Nick Briz - A New Ecology for the Citizen of a Digital Age</h1>
+	</header>
+	<iframe src=https://player.vimeo.com/video/7617527 allowfullscreen></iframe>
+<div class=media-description>
+    <ul>
+		<li><a href="/sketch-a-29-12-2015/">permalink</a></li>
+		<li><a href=# class=description-button>show descripton</a></li>
+	</ul>
+	<section class="long description">
+		<p>An examination of the individual’s relation to the new ecology of our digital culture, an attempt to reconcile the overwhelming pace of our society’s ascent towards a technological singularity.</p>
+	</section>
+</div>
+
+</article>
+
+<article>
+	<header>
+		<h1>Dear Climate</h1>
+	</header>
+	<p><img src="/images/2016.01.02.dearclimate.jpg"></p>
+<div class=media-description>
+    <ul>
+		<li><a href="/sketch-a-02-01-2016/">permalink</a></li>
+		<li><a href=# class=description-button>show descripton</a></li>
+	</ul>
+	<section class="long description">
+		<p>Dear Climate feels like an attempt to 'normalize' the climate conversation by wrapping it in familiar tropes.</p>
+		<p>From the <a href=http://www.dearclimate.net/#/what>Dear Climate website</a>:</p>
+		<blockquote>
+			<p>"We began Dear Climate by looking for a new way to talk about the weather.  We wanted a different vocabulary from the one we were hearing from the 'survival community': instead of crisis and catastrophe, we wanted the familiar and ordinary; instead of desperation and heroism, playfulness and friendliness. Instead of imagining mass movements or calling for community action, we were interested in finding a more personal relationship to climate change."</p>
+			<p>"To craft new kinds of personal engagement with climate change, we charted three 'movements of mind.'' The first, 'Meet Climate Change,' was about openness and encounter, acquaintance and curiosity.   Observation and conversation were obvious techniques for this, but so were certain 'techniques of consciousness,' like meditation and mindfulness, that seemed to us to be imbued with a spirit of deep friendliness, which led to our second movement: 'Befriend Climate Change.' Once you invite someone or something into your mental home, it’s only a matter of time before you get to know it better. The imagination gets seriously involved now, the conversation deepens, the plot thickens."</p>
+			<p>"Being truly hospitable involves opening yourself to the unknown.  When that happens, the guest can change the host profoundly.  Our third movement, then, was “Become Climate Change.” Taking up the challenge of the new weather means we have to understand our human selves in ways that go beyond biography, even beyond history. We have to understand our species as a geophysical force that is shaping the systems of our planet.  Performing that conceptual feat will require many kinds of imagination, not just the imagination of crisis and catastrophe.  It will mean not just doing something about the weather, but talking about it—and feeling about it—differently."</p>
+		</blockquote>
+	</section>
+</div>
+
+</article>
+
+<article>
+	<header>
+		<h1>Steve Roggenbuck: 'make something beautiful...'</h1>
+	</header>
+	<iframe src=https://www.youtube.com/embed/0bR6uOsDn-Q allowfullscreen></iframe>
+<div class=media-description>
+    <ul>
+		<li><a href="/sketch-a-29-12-2015/">permalink</a></li>
+		<li><a href=# class=description-button>show descripton</a></li>
+	</ul>
+	<section class="long description">
+		<p>When I started watching this video my first impression was that it was annoying and I wasn't going to like it.</p>
+		<p>I kept watching anyway, and three minutes later was surprised to discover it was actually irritatingly inspiring. It's a testament to the power of music in video.</p>
+		<p>You could try parodying it by playing <a href="https://www.youtube.com/watch?v=lwQmDvuORY0">Sigur Ros</a> over Paul Whitehouse's <a href="https://www.youtube.com/watch?v=B12WBTFLK0Q">'Brilliant!'</a> <a href="https://www.youtube.com/watch?v=Wv_662IqKto">sketches</a>.</p>
+		<p>But it wouldn't work. It's more than that. The video is littered with attempts at self-awareness, deprecation and authenticity. I couldn't help but <a href=https://www.youtube.com/embed/Hp_jMCbKTU4>try another one</a>.</p>
+	</section>
+</div>
+
+</article>
+
+<article>
+	<header>
+		<h1>Liz Magic Laser on 'I Feel Your Pain'</h1>
+	</header>
+	<iframe src=https://www.youtube.com/embed/31Vr6F47fGc allowfullscreen></iframe>
+<div class=media-description>
+    <ul>
+		<li><a href="/sketch-a-28-12-2015/">permalink</a></li>
+		<li><a href=# class=description-button>show descripton</a></li>
+	</ul>
+	<section class="long description">
+		<p>IFYP is a "live film" performance which re-enacts scenes from taped political interviews. It examines a "symptom of the current era" in which "all sense of decorum has shifted into an insatiable demand for intimacy".</p>
+		<p>As a result of this shift, techniques originally developed for traditional theater are used routinely in mass-media appearances of politicians.</p>
+		<p>These techniques are designed to "engineer our behavior and emotional responses". Politicians are responding to a demand for an authentic, emotional display and a "rupture" - for example crying, or breaking down. These are designed to provoke empathy from the audience.</p>
+		<p>Journalists form part of the "production". They might be "admiring and doting", or "resentful and scornful, as if they had been a mistreated woman".</p>
+		<p>This last bit is a reference to the film's last scene based on an Anthony Weiner press conference where he is "apologizing for his salacious tweeting." The press questions "sound like the woman in the relationship", asking "what were you thinking?" and so on.</p>
+		<p>Liz: "that search for the authentic display is both what's driving me and what I am critiquing and reacting against."</p>
+	</section>
+</div>
+
+</article>
+
 <article>
 	<header>
 		<h1>Sketch 2015-10-28a</h1>
@@ -104,397 +250,6 @@ void ofApp::draw(){
 
 </article>
 
-<article>
-	<header>
-		<h1>Sketch 2015-10-26a</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-a-26-10-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-10/tree/master/2015-10-26a>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    _template.setup(46 , 120);
-    manager = _template.getAudioUnitManager();
-    synth.setup(&quot;Synth 1&quot;, AUDIOUNIT_MASSIVE);
-    manager-&gt;createChain(&amp;chain)
-          .link(&amp;synth)
-          .toMixer();
-    timeline = _template.getTimeline();
-}
-
-void ofApp::update(){
-
-}
-
-void ofApp::draw(){
-    
-}</code>
-    </pre>
-</div>
-<p class=description>Discovering the performer modulator</p>
-<p>
-	<img src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-26a/bin/data/out/2015-10-26a.png?raw=true" alt="Sketch 2015-10-26a">
-	<audio controls>
-		<source src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-26a/bin/data/out/2015-10-26a.mp3?raw=true" type="audio/mpeg">
-		Your browser does not support the audio element.
-	</audio>
-</p>
-
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-10-25a</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-a-25-10-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-10/tree/master/2015-10-25a>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    _template.setup(10, 60);
-    manager = _template.getAudioUnitManager();
-    synth.setup(&quot;Synth 1&quot;, AUDIOUNIT_MASSIVE);
-    manager-&gt;createChain(&amp;chain)
-          .link(&amp;synth)
-          .toMixer();
-    timeline = _template.getTimeline();
-}
-
-void ofApp::update(){
-
-}
-
-void ofApp::draw(){
-    
-}</code>
-    </pre>
-</div>
-<p class=description>Setting a step sequencer as multiple modulation sources</p>
-<p>
-	<img src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-25a/bin/data/out/2015-10-25a.png?raw=true" alt="Sketch 2015-10-25a">
-	<audio controls>
-		<source src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-25a/bin/data/out/2015-10-25a.mp3?raw=true" type="audio/mpeg">
-		Your browser does not support the audio element.
-	</audio>
-</p>
-
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-10-11a</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-a-11-10-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-10/tree/master/2015-10-11a>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    _template.setup(10, 60);
-    manager = _template.getAudioUnitManager();
-    synth.setup(&quot;Massive 1&quot;, AUDIOUNIT_MASSIVE);
-    manager-&gt;createChain(&amp;chain)
-          .link(&amp;synth)
-          .toMixer();
-    timeline = _template.getTimeline();
-}
-
-void ofApp::update(){
-    //It's all in the MIDI and preset design
-}
-
-void ofApp::draw(){
-    
-}</code>
-    </pre>
-</div>
-<p class=description>Crunchy amplitude envelope loops</p>
-<p>
-	<img src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-11a/bin/data/out/2015-10-11a.png?raw=true" alt="Sketch 2015-10-11a">
-	<audio controls>
-		<source src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-11a/bin/data/out/2015-10-11a.mp3?raw=true" type="audio/mpeg">
-		Your browser does not support the audio element.
-	</audio>
-</p>
-
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-10-09a</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-a-09-10-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-10/tree/master/2015-10-09a>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    _template.setup(10, 90, 2);
-    manager = _template.getAudioUnitManager();
-    mixer = manager-&gt;getMixer();
-
-    synth1.setup(&quot;Massive 1&quot;, AUDIOUNIT_MASSIVE);
-    manager-&gt;createChain(&amp;chain1)
-        .link(&amp;synth1)
-        .toMixer();
-
-    synth2.setup(&quot;Massive 2&quot;, AUDIOUNIT_MASSIVE);
-    manager-&gt;createChain(&amp;chain2)
-        .link(&amp;synth2)
-        .toMixer();
-
-    timeline = _template.getTimeline();
-    timeline-&gt;addCurves(&quot;filter cutoff&quot;);
-    timeline-&gt;addCurves(&quot;fx2 chorus wet&quot;);
-    timeline-&gt;addCurves(&quot;noise synth volume&quot;);
-}
-
-void ofApp::update(){
-    synth1.set(Massive_filter1_cut_prm_1, timeline-&gt;getValue(&quot;filter cutoff&quot;));
-    synth1.set(Massive_master_fx2_dry_wet, timeline-&gt;getValue(&quot;fx2 chorus wet&quot;));
-    synth2.set(Massive_master_volume, timeline-&gt;getValue(&quot;noise synth volume&quot;));
-}
-
-void ofApp::draw(){
-    
-}</code>
-    </pre>
-</div>
-<p class=description>Amplitude and filter envelopes</p>
-<p>
-	<img src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-09a/bin/data/out/2015-10-09a.png?raw=true" alt="Sketch 2015-10-09a">
-	<audio controls>
-		<source src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-09a/bin/data/out/2015-10-09a.mp3?raw=true" type="audio/mpeg">
-		Your browser does not support the audio element.
-	</audio>
-</p>
-
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-09-14</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-14-09-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-09/tree/master/2015-09-14>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(500, 500);
-    gif.setup(50);
-    gif.fadeInOut(2, 3, ofColor::darkGray);
-    gif.enableTextOverlay();
-    numLayers = 5;
-    masker.setup(numLayers + 1);
-    rectSize = 400;
-    rectThickness = 300;
-    speed = 0.02;
-    
-    img.setup(&quot;road.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER);
-    for(int i = 0; i &lt; numLayers; i++) {
-        scale = ofMap(i, 0, numLayers-1, 0.125, 1.0);
-        img.setTextureScale(scale);
-        img.setTextureOffsetY(ofRandom(2));
-        textures.push_back(img);
-    }
-    
-    img.setup(&quot;pcb2.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__RIGHT_TO_CENTER);
-    for(int i = 0; i &lt; numLayers; i++) {
-        scale = ofMap(i, 0, numLayers-1, 1.0, 0.35);
-        img.setTextureScale(scale);
-        img.setTextureOffsetY(ofRandom(2));
-        masks.push_back(img);
-    }
-
-    ofSetWindowShape(1200, 1200);
-    masker.toggleOverlay();
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; numLayers; i++) {
-        masker.beginLayer(i);
-        {
-            textures.at(i).incrementTextureOffsetY(ofMap(i, 0, numLayers-1, -speed, speed));
-            textures.at(i).draw();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            masks.at(i).incrementTextureOffsetY(ofMap(i, 0, numLayers-1, speed * 0.25, -speed * 0.25));
-            masks.at(i).draw();
-        }
-        masker.endMask(i);
-    }
-
-    masker.beginLayer(numLayers);
-    {
-        ofBackground(ofColor::white);
-        masker.drawLayers(0, numLayers-1);
-    }
-    masker.endLayer(numLayers);
-
-    masker.beginMask(numLayers);
-    {
-        ofSetRectMode(OF_RECTMODE_CENTER);
-        ofSetColor(ofColor::white);
-        ofRect(gif.halfWidth, gif.halfHeight, rectSize, rectSize);
-        ofSetRectMode(OF_RECTMODE_CORNER);
-    }
-    masker.endMask(numLayers);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofSetColor(ofColor::red);
-        ofRect(0, 0, gif.width, gif.height);
-        masker.drawLayer(2);
-        
-        ofSetRectMode(OF_RECTMODE_CENTER);
-        ofSetColor(ofColor::white);
-        ofRect(gif.halfWidth, gif.halfHeight, gif.width - rectThickness, gif.height - rectThickness);
-        ofSetRectMode(OF_RECTMODE_CORNER);
-        
-        ofSetRectMode(OF_RECTMODE_CENTER);
-        ofSetColor(ofColor::black);
-        ofRect(gif.halfWidth, gif.halfHeight, rectSize, rectSize);
-        ofSetRectMode(OF_RECTMODE_CORNER);
-        ofSetColor(ofColor::white);
-        masker.drawLayer(numLayers);
-        
-        ofSetRectMode(OF_RECTMODE_CENTER);
-        ofSetColor(ofColor::white);
-        ofRect(gif.halfWidth, gif.halfHeight, rectSize - rectThickness, rectSize - rectThickness);
-        ofSetRectMode(OF_RECTMODE_CORNER);
-    }
-    gif.endCaptureDraw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>That doesn't matter.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-09/blob/master/2015-09-14/bin/data/out/2015-09-14.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-09-13</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-13-09-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-09/tree/master/2015-09-13>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(500, 500);
-    gif.setup(50);
-    gif.fadeInOut(2, 3, ofColor::darkGray);
-    gif.enableTextOverlay();
-    numLayers = 8;
-    masker.setup(numLayers + 1);
-    rectSize = 200;
-    rectThickness = 2;
-    speed = 0.1;
-    
-    img.setup(&quot;road.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER);
-    for(int i = 0; i &lt; numLayers; i++) {
-        scale = ofMap(i, 0, numLayers-1, 0.25, 0.7);
-        img.setTextureScale(scale);
-        img.setTextureOffsetY(ofRandom(2));
-        textures.push_back(img);
-    }
-    
-    img.setup(&quot;pcb2.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__RIGHT_TO_CENTER);
-    for(int i = 0; i &lt; numLayers; i++) {
-        scale = ofMap(i, 0, numLayers-1, 1.4, 0.75);
-        img.setTextureScale(scale);
-        img.setTextureOffsetY(ofRandom(2));
-        masks.push_back(img);
-    }
-
-    ofSetWindowShape(1200, 1200);
-    masker.toggleOverlay();
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; numLayers; i++) {
-        masker.beginLayer(i);
-        {
-            textures.at(i).incrementTextureOffsetY(ofMap(i, 0, numLayers-1, -speed, speed));
-            textures.at(i).draw();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            masks.at(i).incrementTextureOffsetY(ofMap(i, 0, numLayers-1, speed * 0.125, -speed * 0.125));
-            masks.at(i).draw();
-        }
-        masker.endMask(i);
-    }
-
-    masker.beginLayer(numLayers);
-    {
-        ofBackground(ofColor::white);
-        masker.drawLayers(0, numLayers-1);
-    }
-    masker.endLayer(numLayers);
-
-    masker.beginMask(numLayers);
-    {
-        //ofBackground(ofColor::black);
-        ofSetRectMode(OF_RECTMODE_CENTER);
-        ofSetColor(ofColor::white);
-        ofRect(gif.halfWidth, gif.halfHeight, rectSize, rectSize);
-        ofSetRectMode(OF_RECTMODE_CORNER);
-    }
-    masker.endMask(numLayers);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofSetColor(ofColor::red);
-        ofRect(0, 0, gif.width, gif.height);
-        masker.drawLayer(2);
-        ofSetRectMode(OF_RECTMODE_CENTER);
-        ofSetColor(ofColor::black);
-        ofRect(gif.halfWidth, gif.halfHeight, rectSize, rectSize);
-        ofSetRectMode(OF_RECTMODE_CORNER);
-        ofSetColor(ofColor::white);
-        masker.drawLayer(numLayers);
-    }
-    gif.endCaptureDraw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>It arrives with more force.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-09/blob/master/2015-09-13/bin/data/out/2015-09-13.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
 
 <ul id=paging>
 	
@@ -509,7 +264,7 @@ void ofApp::draw(){
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
 <![endif]-->
-<script src=/js/script.31e0.js></script>
+<script src=/js/script.67e0.js></script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
   (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

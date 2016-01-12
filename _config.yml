@@ -10,7 +10,7 @@ author:
   email: andy@jahya.net
 
 # Grunt handles images and assets.
-exclude: ['img', 'css', 'js', 'fonts', 'sketches',
+exclude: ['images', 'css', 'js', 'fonts', 'sketches',
           '**.png', '**.jpg', '**.jpeg', '**.gif', '**.webp', '**.svg', '**.ico']
 
 include: ['.htaccess']

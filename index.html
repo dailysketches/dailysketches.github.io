@@ -46,6 +46,51 @@
         
 <article>
 	<header>
+		<h1>Sketch 2016-01-19a</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-a-19-01-2016/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2016-01/tree/master/2016-01-19a>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    _template.setup(18, 60);
+    manager = _template.getAudioUnitManager();
+    
+
+    synth.setup(&quot;Synth 1&quot;, AUDIOUNIT_MASSIVE);
+    manager-&gt;createChain(&amp;chain)
+        .link(&amp;synth)
+        .toMixer();
+
+    timeline = _template.getTimeline();
+}
+
+void ofApp::update(){
+    synth.set(TALNoiseMaker_cutoff, timeline-&gt;getValue(&quot;filter cutoff&quot;));
+}
+
+void ofApp::draw(){
+    
+}</code>
+    </pre>
+</div>
+<p class=description>Borrowed bassline from <a href="https://www.youtube.com/watch?v=BxWUNpTLjF4">this tutorial</a></p>
+<p>
+	<img src="https://github.com/dailysketches/sketches-2016-01/blob/master/2016-01-19a/bin/data/out/2016-01-19a.png?raw=true" alt="Sketch 2016-01-19a">
+	<audio controls>
+		<source src="https://github.com/dailysketches/sketches-2016-01/blob/master/2016-01-19a/bin/data/out/2016-01-19a.mp3?raw=true" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+</p>
+
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2016-01-08a</h1>
 	</header>
 	<div class=code>
@@ -187,66 +232,6 @@ void ofApp::draw(){
 		<p>Liz: "that search for the authentic display is both what's driving me and what I am critiquing and reacting against."</p>
 	</section>
 </div>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-10-28a</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href="/sketch-a-28-10-2015/">permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-10/tree/master/2015-10-28a>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    _template.setup(10, 60, 2, true);
-    manager = _template.getAudioUnitManager();
-
-    synth1.setup(&quot;Synth 1&quot;, AUDIOUNIT_MASSIVE);
-    manager-&gt;createChain(&amp;chain1)
-           .link(&amp;synth1)
-           .toMixer();
-
-    synth2.setup(&quot;Perc&quot;, AUDIOUNIT_MASSIVE);
-    manager-&gt;createChain(&amp;chain2)
-           .link(&amp;synth2)
-           .toMixer();
-
-    timeline = _template.getTimeline();
-    timeline-&gt;addCurves(&quot;wobble&quot;);
-    timeline-&gt;addCurves(&quot;rate&quot;);
-    timeline-&gt;addCurves(&quot;noise&quot;);
-    timeline-&gt;addCurves(&quot;sub&quot;);
-    timeline-&gt;addCurves(&quot;pitch&quot;);
-    timeline-&gt;addCurves(&quot;mod&quot;);
-}
-
-void ofApp::update(){
-    synth1.set(Massive_macro_2, timeline-&gt;getValue(&quot;wobble&quot;));
-    synth1.set(Massive_macro_3, timeline-&gt;getValue(&quot;rate&quot;));
-    synth1.set(Massive_macro_4, timeline-&gt;getValue(&quot;noise&quot;));
-    synth1.set(Massive_macro_5, timeline-&gt;getValue(&quot;sub&quot;));
-    synth1.set(Massive_macro_6, timeline-&gt;getValue(&quot;pitch&quot;));
-    synth1.set(Massive_macro_7, timeline-&gt;getValue(&quot;mod&quot;));
-}
-
-void ofApp::draw(){
-    
-}</code>
-    </pre>
-</div>
-<p class=description>Horrible dirty wobble noise</p>
-<p>
-	<img src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-28a/bin/data/out/2015-10-28a.png?raw=true" alt="Sketch 2015-10-28a">
-	<audio controls>
-		<source src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-28a/bin/data/out/2015-10-28a.mp3?raw=true" type="audio/mpeg">
-		Your browser does not support the audio element.
-	</audio>
-</p>
-
 
 </article>
 

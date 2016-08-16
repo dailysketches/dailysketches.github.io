@@ -8,6 +8,7 @@ description: Daily Sketches
 author:
   name: Andrew McWilliams
   email: andy@jahya.net
+url: 'https://sketchpad.jahya.net'
 
 # Grunt handles images and assets.
 exclude: ['images', 'css', 'js', 'fonts', 'sketches',

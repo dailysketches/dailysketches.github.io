@@ -2,24 +2,4 @@
 layout: default
 title: Daily Sketches
 ---
-{% for post in paginator.posts %}
-<article>
-	<header>
-		<h1>{{ post.title }}</h1>
-	</header>
-	{{ post.content }}
-</article>
-{% endfor %}
-
-<ul id="paging">
-	{% if paginator.previous_page %}
-		{% if paginator.previous_page == 1 %}
-			<li><a href="/">&lt; Previous page</a></li>
-		{% else %}
-			<li><a href="/page{{ paginator.previous_page }}/">&lt; Previous page</a></li>
-		{% endif %}
-	{% endif %}
-	{% if paginator.next_page %}
-		<li><a href="/page{{ paginator.next_page }}/">Next page &gt;</a></li>
-	{% endif %}
-</ul>
+{% include selected.html %}

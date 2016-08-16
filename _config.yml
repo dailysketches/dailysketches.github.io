@@ -21,7 +21,7 @@ show_drafts: true
 
 permalink: /:title-:day-:month-:year/
 paginate: 7
-paginate_path: 'page:num'
+paginate_path: '/everything/page:num/'
 
 # Markdown library
 markdown: kramdown

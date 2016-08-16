@@ -30,22 +30,22 @@
             {% assign page_elements = page.url | split: '/'  %}
             {% assign page = page_elements[1] %}
 
-            {% if page == 'index.html' %}
-                {% assign page = 'all' %}
+            {% if page == 'index.html' or page == 'selected' %}
+                {% assign page = 'selected' %}
             {% else %}
-                {% unless page == 'selected' or page == 'patterns' %}
+                {% unless page == 'everything' or page == 'patterns' %}
                     {% assign page = 'single' %}
                 {% endunless %}
             {% endif %}
             <ul>
                 <li>
-                    {% if page == 'all' %}All sketches{% else %}<a href="/">All sketches</a>{% endif %}
+                    {% if page == 'selected' %}Selected sketches{% else %}<a href="/">Selected sketches</a>{% endif %}
+                </li>
+                <li>
+                    {% if page == 'everything' %}Everything{% else %}<a href="/everything/">Everything</a>{% endif %}
                 </li>
                 <li>
                     {% if page == 'patterns' %}Patterns{% else %}<a href="/patterns/">Patterns</a>{% endif %}
-                </li>
-                <li>
-                    {% if page == 'selected' %}Selected sketches{% else %}<a href="/selected/">Selected sketches</a>{% endif %}
                 </li>
             </ul>
         </nav>

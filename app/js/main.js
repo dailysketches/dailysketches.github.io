@@ -1,13 +1,4 @@
 $(document).ready(function() {
-	function init() {
-		initHighlightJs();
-		skipModernizr();
-		enableViewToggle('.snippet-button', '.code', '.snippet', 'snippet');
-		enableViewToggle('.pseudocode-button', '.code', '.pseudocode', 'pseudocode');
-		enableViewToggle('.examples-button', '.pattern', '.examples', 'examples');
-		enableViewToggle('.description-button', '.media-description', '.long', 'description');
-	}
-
 	function initHighlightJs() {
 		/* jshint ignore:start */
 		hljs.initHighlightingOnLoad();
@@ -30,6 +21,15 @@ $(document).ready(function() {
 				button.text(visible ? 'hide ' + targetName : 'show ' + targetName);
 			});
 		});
+	}
+
+	function init() {
+		initHighlightJs();
+		skipModernizr();
+		enableViewToggle('.snippet-button', '.code', '.snippet', 'snippet');
+		enableViewToggle('.pseudocode-button', '.code', '.pseudocode', 'pseudocode');
+		enableViewToggle('.examples-button', '.pattern', '.examples', 'examples');
+		enableViewToggle('.description-button', '.media-description', '.long', 'description');
 	}
 
 	init();

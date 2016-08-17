@@ -27,25 +27,25 @@
         </section>
         <nav role="navigation">
             <h1>Navigation</h1>
-            {% assign page_elements = page.url | split: '/'  %}
-            {% assign page = page_elements[1] %}
+            {% assign arr = page.url | split: '/'  %}
+            {% assign section = arr[1] %}
 
-            {% if page == 'index.html' or page == 'selected' %}
-                {% assign page = 'selected' %}
+            {% if page.url == '/' or section == 'selected' %}
+                {% assign section = 'selected' %}
             {% else %}
-                {% unless page == 'everything' or page == 'patterns' %}
-                    {% assign page = 'single' %}
+                {% unless section == 'everything' or section == 'patterns' %}
+                    {% assign section = 'single' %}
                 {% endunless %}
             {% endif %}
             <ul>
                 <li>
-                    {% if page == 'selected' %}Selected sketches{% else %}<a href="/">Selected sketches</a>{% endif %}
+                    {% if section == 'selected' %}Selected sketches{% else %}<a href="/">Selected sketches</a>{% endif %}
                 </li>
                 <li>
-                    {% if page == 'patterns' %}Patterns{% else %}<a href="/patterns/">Patterns</a>{% endif %}
+                    {% if section == 'patterns' %}Patterns{% else %}<a href="/patterns/">Patterns</a>{% endif %}
                 </li>
                 <li>
-                    {% if page == 'everything' %}Everything{% else %}<a href="/everything/">Everything</a>{% endif %}
+                    {% if section == 'everything' %}Everything{% else %}<a href="/everything/">Everything</a>{% endif %}
                 </li>
             </ul>
         </nav>

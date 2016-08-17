@@ -15,6 +15,7 @@ exclude: ['images', 'css', 'js', 'fonts', 'sketches',
           '**.png', '**.jpg', '**.jpeg', '**.gif', '**.webp', '**.svg', '**.ico']
 
 include: ['.htaccess']
+gems: ['jekyll-paginate']
 
 # _config.build.yml sets future and show_drafts to false on `grunt build`
 future: true
@@ -38,8 +39,6 @@ markdown: kramdown
 #     coderay_tab_width: 4
 #     coderay_bold_every: 10
 #     coderay_css: style
-
-pygments: true
 
 defaults:
   -

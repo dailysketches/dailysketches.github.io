@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html class=no-js>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>Sketch Pad | Andrew McWilliams</title>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+    <link rel=canonical href="https://sketchpad.jahya.net/everything/page18/">
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
+    <link rel=stylesheet href=/css/main.7e39.css>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <section class="home posts">
+        <section class=explanation>
+            <h1><a href="/">SketchPad</a></h1>
+            <p class=intro>Some web space to sketch, doodle and make notes. Made using <a href=https://github.com/dailysketches/dailySketches>these tools</a>. See more of my work <a href="https://jahya.net/">here</a>.</p>
+        </section>
+        <nav role=navigation>
+            <h1>Navigation</h1>
+            
+            
+
+            
+                
+            
+            <ul>
+                <li>
+                    <a href="/">Selected sketches</a>
+                </li>
+                <li>
+                    <a href="/patterns/">Patterns</a>
+                </li>
+                <li>
+                    Everything
+                </li>
+            </ul>
+        </nav>
+        
+<article>
+	<header>
+		<h1>Sketch 2015-05-30</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-30-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-30>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>ofxAudioUnitManager manager;
+TALNoiseMakerChain talChain;
+ofxBpm bpm;
+
+void ofApp::setup(){
+    manager.setup();
+    manager.toggleDebugUI();
+    manager.add(&amp;talChain, "tal-one", ofColor::blue);
+
+    playing = false;
+    note = 60;
+    
+    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
+    bpm.start();
+    talChain.getFilter()-&gt;getUnit()-&gt;printParameterList();
+}
+
+void ofApp::play(void){
+    if(playing) {
+        talChain.midi()-&gt;sendNoteOn(1, note);
+    }
+}
+
+void ofApp::togglePlaying() {
+    playing = !playing;
+    if(!playing) {
+        talChain.midi()-&gt;sendNoteOff(1, note);
+    }
+}
+
+void ofApp::update(){
+    manager.update();
+
+    val = ofMap(sin(ofGetFrameNum() * 0.03), -1, 1, 0.4, 0.6);
+    talChain.getSynth()-&gt;set(TALNoiseMaker_lfo2rate, val);
+
+    val = ofMap(sin(ofGetFrameNum() * 0.06), -1, 1, 0.3, 0.8);
+    talChain.getSynth()-&gt;set(TALNoiseMaker_envelopeeditoramount, val);
+
+    val = ofMap(sin(ofGetFrameNum() * 0.45), -1, 1, 6900, 4000);
+    talChain.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
+
+    val = ofMap(sin(ofGetFrameNum() * 0.2), -1, 1, 10, 26);
+    talChain.getFilter()-&gt;set(kLowPassParam_Resonance, val);
+}
+
+void ofApp::draw(){
+    manager.draw();
+}</code>
+    </pre>
+</div>
+<p class=description>First sound sketch. The result of a long journey <a href=https://github.com/microcosm/ofxAudioUnitManager>finishing my own tools</a>.</p>
+<audio controls>
+    <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-30.mp3?raw=true" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-05-29</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-29-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-29>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    maskOpacity = 0;
+    paused = false;
+    maskOpacity = 30;
+}
+
+void ofApp::drawAnim() {
+    ofEnableAlphaBlending();
+    if(ofGetFrameNum() == 0) ofBackground(ofColor::black);
+    ofSetColor(0, 0, 0, maskOpacity);
+    ofRect(0, 0, width, height);
+    
+    ofSetColor(ofColor::red);
+    for(int i = 0; i &lt; 360; i+=10) {
+        for(int j = 0; j &lt; 4; j++) {
+            x = ofRandom(0, width);
+            y = ofMap(sin(ofGetFrameNum() * 0.06), -1, 1, -20, halfWidth);
+            ofLine(x, y, x, y + 50);
+        }
+        rotateScreen(i);
+    }
+    
+    ofDisableAlphaBlending();
+    
+    if(ofGetFrameNum() &gt; 96) {
+        maskOpacity += 40;
+    }
+    
+    if(maskOpacity &gt; 255) {
+        renderGif();
+    }
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight, 0);
+    ofRotate(degrees);
+    ofTranslate(-halfWidth, -halfHeight, 0);
+}</code>
+    </pre>
+</div>
+<p class=description>A little patience.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-29.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-05-28</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-28-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-28>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    maskOpacity = 0;
+}
+
+void ofApp::drawAnim() {
+    ofEnableAlphaBlending();
+    
+    ofSetColor(0, 0, 0, 30);
+    ofRect(0, 0, width, height);
+    
+    ofSetColor(ofColor::red);
+    for(int i = 0; i &lt; 8; i++) {
+        for(int j = 0; j &lt; 10; j++) {
+            x = ofRandom(0, width);
+            y = ofRandom(-40, -20);
+            ofLine(x, y, x, y + halfWidth + 50);
+        }
+        rotateScreen(45);
+    }
+    
+    if(ofGetFrameNum() &gt; 12) {
+        ofSetColor(ofColor(ofColor::white, maskOpacity));
+        ofRect(0, 0, width, height);
+        maskOpacity += 20;
+    }
+    
+    ofDisableAlphaBlending();
+    
+    if(maskOpacity &gt; 255) {
+        renderGif();
+    }
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight, 0);
+    ofRotate(degrees);
+    ofTranslate(-halfWidth, -halfHeight, 0);
+}</code>
+    </pre>
+</div>
+<p class=description>Constraints.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-28.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-05-27</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-27-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-27>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    numPerDimension = 3;
+
+    for(int x = 0; x &lt; numPerDimension; x++) {
+        for(int y = 0; y &lt; numPerDimension; y++) {
+            for(int z = 0; z &lt; numPerDimension; z++) {
+                cube = ofxShapeSystem();
+                cube.setupCube(2, ofRandom(100, 200), ofColor(ofColor::red, 255));
+                cube.setRotation(ofRandom(360), ofRandom(360), ofRandom(360));
+                cube.positionX(ofMap(x, 0, numPerDimension-1, 0, width));
+                cube.positionY(ofMap(y, 0, numPerDimension-1, 0, height));
+                cube.positionZ(ofMap(z, 0, numPerDimension, 250, -250));
+                cubes.push_back(cube);
+            }
+        }
+    }
+}
+
+void ofApp::updateAnim() {
+    for(int i = 0; i &lt; cubes.size(); i++) {
+        cubes.at(i).incrementRotateX(2);
+        cubes.at(i).incrementRotateY(2);
+        cubes.at(i).incrementRotateZ(2);
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+
+    ofEnableAlphaBlending();
+    rotateScreen(ofGetFrameNum() * 2);
+    for(int i = 0; i &lt; cubes.size(); i++) {
+        cubes.at(i).draw();
+    }
+
+    if(ofGetFrameNum() == 180) renderGif();
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight, 0);
+    ofRotateX(degrees);
+    ofTranslate(-halfWidth, -halfHeight, 0);
+}</code>
+    </pre>
+</div>
+<p class=description>Hmm. Cubes.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-27.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-05-26</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-26-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-26>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    
+    for(int i = -halfWidth; i &lt; halfWidth; i += 120) {
+        for(int j = -halfHeight; j &lt; halfHeight; j += 120) {
+            shape.setupHollowSquare(20, 80);
+            shape.setBlur(1);
+            shape.setPosition(i + 5, j + 5);
+            shape.rotateY(ofMap(i, -halfWidth, halfWidth, 0, 90));
+            shape.rotateX(ofMap(j, -halfHeight, halfHeight, 0, 90));
+            shapes.push_back(shape);
+        }
+    }
+    
+    shapeSystem.setup();
+    shapeSystem.setPosition(ofVec3f(halfWidth, halfHeight, 0));
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapeSystem.add(shapes.at(i));
+    }
+}
+
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        i % 2 == 0 ?
+            shapes.at(i).incrementRotateX(12) :
+            shapes.at(i).incrementRotateY(-12);
+    }
+    
+    shapeSystem.incrementRotateX(2);
+    shapeSystem.incrementRotateY(2);
+    shapeSystem.incrementRotateZ(2);
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+
+    ofEnableAlphaBlending();
+    
+    for(int i = -600; i &lt; 600; i+=50) {
+        for(int j = 0; j &lt; shapes.size(); j++) {
+            alpha = ofMap(i, -600, 600, 10, 255);
+            shapes.at(j).positionZ(i);
+            shapes.at(j).setColor(ofColor(ofColor::white, alpha));
+        }
+        shapeSystem.draw();
+    }
+
+    ofDisableAlphaBlending();
+
+    if(ofGetFrameNum() == 180) renderGif();
+}</code>
+    </pre>
+</div>
+<p class=description>Yesterday's squares, evolved (mostly by evolving the <a href=https://github.com/microcosm/ofxShapeSystem>addon</a>)</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-26.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-05-25</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-25-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-25>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    
+    for(int i = 0; i &lt; width; i += 120) {
+        for(int j = 0; j &lt; height; j += 120) {
+            shape.setupHollowSquare(20, 80);
+            shape.setBlur(1);
+            shape.setPosition(ofVec3f(i + 5, j + 5, 0));
+            shape.rotateZ(ofRandom(360));
+            shapes.push_back(shape);
+        }
+    }
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapeSystem.add(shapes.at(i));
+    }
+}
+
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        i % 2 == 0 ?
+            shapes.at(i).incrementRotateZ(12) :
+            shapes.at(i).incrementRotateZ(-12);
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+
+    ofEnableAlphaBlending();
+
+    ofTranslate(-30, -30);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::white, 64));
+    }
+    shapeSystem.draw();
+
+    ofTranslate(10, 10);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::white, 128));
+    }
+    shapeSystem.draw();
+
+    ofTranslate(10, 10);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::white, 192));
+    }
+    shapeSystem.draw();
+
+    ofTranslate(10, 10);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::white, 255));
+    }
+    shapeSystem.draw();
+
+    ofDisableAlphaBlending();
+
+    if(ofGetFrameNum() == 30) renderGif();
+}</code>
+    </pre>
+</div>
+<p class=description>Fast sketches are meaningless.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-25.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-05-24</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-24-05-2015/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-24>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    
+    for(int i = 0; i &lt; width; i += 10) {
+        for(int j = 0; j &lt; height; j += 10) {
+            shape.setupHollowArc(30, 3, 10, 180);
+            shape.setBlur(1);
+            shape.setPosition(ofVec3f(i + 5, j + 5, 0));
+            shape.rotateZ(ofRandom(360));
+            shapes.push_back(shape);
+        }
+    }
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapeSystem.add(shapes.at(i));
+    }
+}
+
+void ofApp::updateAnim(){
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        i % 2 == 0 ?
+            shapes.at(i).incrementRotateZ(12) :
+            shapes.at(i).incrementRotateZ(-12);
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+    
+    ofEnableAlphaBlending();
+    
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor::white);
+    }
+    shapeSystem.draw();
+    
+    rotateScreen(90);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::black, 192));
+    }
+    shapeSystem.draw();
+    
+    rotateScreen(90);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::black, 128));
+    }
+    shapeSystem.draw();
+    
+    rotateScreen(90);
+    for(int i = 0; i &lt; shapes.size(); i++) {
+        shapes.at(i).setColor(ofColor(ofColor::black, 64));
+    }
+    shapeSystem.draw();
+    
+    ofDisableAlphaBlending();
+    
+    if(ofGetFrameNum() == 30) renderGif();
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight, 0);
+    ofRotate(degrees);
+    ofTranslate(-halfWidth, -halfHeight, 0);
+}</code>
+    </pre>
+</div>
+<p class=description>System.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-24.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+
+<ul id=paging>
+	
+		
+			<li><a href="/everything/page17/">&lt; Previous page</a></li>
+		
+	
+	
+		<li><a href="/everything/page19/">Next page &gt;</a></li>
+	
+</ul>
+    </section>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+<script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+<!--[if lt IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
+<![endif]-->
+<script src=/js/script.e1b5.js></script>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+  </body>
+</html>

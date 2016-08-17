@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class=no-js>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>Sketch Pad | Andrew McWilliams</title>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+    <link rel=canonical href="https://sketchpad.jahya.net/everything/">
+    <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/zenburn.min.css>
+    <link rel=stylesheet href=/css/main.7e39.css>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel=stylesheet type=text/css>
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <section class="home posts">
+        <section class=explanation>
+            <h1><a href="/">SketchPad</a></h1>
+            <p class=intro>Some web space to sketch, doodle and make notes. Made using <a href=https://github.com/dailysketches/dailySketches>these tools</a>. See more of my work <a href="https://jahya.net/">here</a>.</p>
+        </section>
+        <nav role=navigation>
+            <h1>Navigation</h1>
+            
+            
+
+            
+                
+            
+            <ul>
+                <li>
+                    <a href="/">Selected sketches</a>
+                </li>
+                <li>
+                    <a href="/patterns/">Patterns</a>
+                </li>
+                <li>
+                    Everything
+                </li>
+            </ul>
+        </nav>
+        
+<article>
+	<header>
+		<h1>Sketch 2016-01-19a</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-a-19-01-2016/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2016-01/tree/master/2016-01-19a>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    _template.setup(18, 60);
+    manager = _template.getAudioUnitManager();
+    
+
+    synth.setup(&quot;Synth 1&quot;, AUDIOUNIT_MASSIVE);
+    manager-&gt;createChain(&amp;chain)
+        .link(&amp;synth)
+        .toMixer();
+
+    timeline = _template.getTimeline();
+}
+
+void ofApp::update(){
+    synth.set(TALNoiseMaker_cutoff, timeline-&gt;getValue(&quot;filter cutoff&quot;));
+}
+
+void ofApp::draw(){
+    
+}</code>
+    </pre>
+</div>
+<p class=description>Borrowed bassline from <a href="https://www.youtube.com/watch?v=BxWUNpTLjF4">this tutorial</a></p>
+<p>
+	<img src="https://github.com/dailysketches/sketches-2016-01/blob/master/2016-01-19a/bin/data/out/2016-01-19a.png?raw=true" alt="Sketch 2016-01-19a">
+	<audio controls>
+		<source src="https://github.com/dailysketches/sketches-2016-01/blob/master/2016-01-19a/bin/data/out/2016-01-19a.mp3?raw=true" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+</p>
+
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2016-01-08a</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href="/sketch-a-08-01-2016/">permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2016-01/tree/master/2016-01-08a>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    _template.setup(10, 60);
+    manager = _template.getAudioUnitManager();
+    
+
+    synth.setup(&quot;Synth 1&quot;, AUDIOUNIT_MASSIVE);
+    manager-&gt;createChain(&amp;chain)
+        .link(&amp;synth)
+        .toMixer();
+
+    timeline = _template.getTimeline();
+    timeline-&gt;setBPM(70);
+    //timeline-&gt;addCurves(&quot;filter cutoff&quot;);
+}
+
+void ofApp::update(){
+    synth.set(TALNoiseMaker_cutoff, timeline-&gt;getValue(&quot;filter cutoff&quot;));
+}
+
+void ofApp::draw(){
+    
+}</code>
+    </pre>
+</div>
+<p class=description>Slow bassline rhythm</p>
+<p>
+	<img src="https://github.com/dailysketches/sketches-2016-01/blob/master/2016-01-08a/bin/data/out/2016-01-08a.png?raw=true" alt="Sketch 2016-01-08a">
+	<audio controls>
+		<source src="https://github.com/dailysketches/sketches-2016-01/blob/master/2016-01-08a/bin/data/out/2016-01-08a.mp3?raw=true" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+</p>
+
+
+</article>
+
+<article>
+	<header>
+		<h1>Nick Briz - Copy This Drive</h1>
+	</header>
+	<p><a href="http://nickbriz.com/copythisdrive/"><img src="/images/2016.01.07.copythisdrive.0d32.jpg"></a></p>
+<div class=media-description>
+    <ul>
+		<li><a href="/sketch-a-29-12-2015/">permalink</a></li>
+		<li><a href=# class=description-button>show descripton</a></li>
+	</ul>
+	<section class="long description">
+		<p>Copy this drive, because... copyleft. And <a href="http://www.joshuadavis.com/">Joshua Davis</a>.</p>
+	</section>
+</div>
+
+</article>
+
+<article>
+	<header>
+		<h1>Nick Briz - A New Ecology for the Citizen of a Digital Age</h1>
+	</header>
+	<iframe src=https://player.vimeo.com/video/7617527 allowfullscreen></iframe>
+<div class=media-description>
+    <ul>
+		<li><a href="/sketch-a-29-12-2015/">permalink</a></li>
+		<li><a href=# class=description-button>show descripton</a></li>
+	</ul>
+	<section class="long description">
+		<p>An examination of the individual’s relation to the new ecology of our digital culture, an attempt to reconcile the overwhelming pace of our society’s ascent towards a technological singularity.</p>
+	</section>
+</div>
+
+</article>
+
+<article>
+	<header>
+		<h1>Dear Climate</h1>
+	</header>
+	<p><img src="/images/2016.01.02.dearclimate.486a.jpg"></p>
+<div class=media-description>
+    <ul>
+		<li><a href="/sketch-a-02-01-2016/">permalink</a></li>
+		<li><a href=# class=description-button>show descripton</a></li>
+	</ul>
+	<section class="long description">
+		<p>Dear Climate feels like an attempt to 'normalize' the climate conversation by wrapping it in familiar tropes.</p>
+		<p>From the <a href=http://www.dearclimate.net/#/what>Dear Climate website</a>:</p>
+		<blockquote>
+			<p>"We began Dear Climate by looking for a new way to talk about the weather.  We wanted a different vocabulary from the one we were hearing from the 'survival community': instead of crisis and catastrophe, we wanted the familiar and ordinary; instead of desperation and heroism, playfulness and friendliness. Instead of imagining mass movements or calling for community action, we were interested in finding a more personal relationship to climate change."</p>
+			<p>"To craft new kinds of personal engagement with climate change, we charted three 'movements of mind.'' The first, 'Meet Climate Change,' was about openness and encounter, acquaintance and curiosity.   Observation and conversation were obvious techniques for this, but so were certain 'techniques of consciousness,' like meditation and mindfulness, that seemed to us to be imbued with a spirit of deep friendliness, which led to our second movement: 'Befriend Climate Change.' Once you invite someone or something into your mental home, it’s only a matter of time before you get to know it better. The imagination gets seriously involved now, the conversation deepens, the plot thickens."</p>
+			<p>"Being truly hospitable involves opening yourself to the unknown.  When that happens, the guest can change the host profoundly.  Our third movement, then, was “Become Climate Change.” Taking up the challenge of the new weather means we have to understand our human selves in ways that go beyond biography, even beyond history. We have to understand our species as a geophysical force that is shaping the systems of our planet.  Performing that conceptual feat will require many kinds of imagination, not just the imagination of crisis and catastrophe.  It will mean not just doing something about the weather, but talking about it—and feeling about it—differently."</p>
+		</blockquote>
+	</section>
+</div>
+
+</article>
+
+<article>
+	<header>
+		<h1>Steve Roggenbuck: 'make something beautiful...'</h1>
+	</header>
+	<iframe src=https://www.youtube.com/embed/0bR6uOsDn-Q allowfullscreen></iframe>
+<div class=media-description>
+    <ul>
+		<li><a href="/sketch-a-29-12-2015/">permalink</a></li>
+		<li><a href=# class=description-button>show descripton</a></li>
+	</ul>
+	<section class="long description">
+		<p>When I started watching this video my first impression was that it was annoying and I wasn't going to like it.</p>
+		<p>I kept watching anyway, and three minutes later was surprised to discover it was actually irritatingly inspiring. It's a testament to the power of music in video.</p>
+		<p>You could try parodying it by playing <a href="https://www.youtube.com/watch?v=lwQmDvuORY0">Sigur Ros</a> over Paul Whitehouse's <a href="https://www.youtube.com/watch?v=B12WBTFLK0Q">'Brilliant!'</a> <a href="https://www.youtube.com/watch?v=Wv_662IqKto">sketches</a>.</p>
+		<p>But it wouldn't work. It's more than that. The video is littered with attempts at self-awareness, deprecation and authenticity. I couldn't help but <a href=https://www.youtube.com/embed/Hp_jMCbKTU4>try another one</a>.</p>
+	</section>
+</div>
+
+</article>
+
+<article>
+	<header>
+		<h1>Liz Magic Laser on 'I Feel Your Pain'</h1>
+	</header>
+	<iframe src=https://www.youtube.com/embed/31Vr6F47fGc allowfullscreen></iframe>
+<div class=media-description>
+    <ul>
+		<li><a href="/sketch-a-28-12-2015/">permalink</a></li>
+		<li><a href=# class=description-button>show descripton</a></li>
+	</ul>
+	<section class="long description">
+		<p>IFYP is a "live film" performance which re-enacts scenes from taped political interviews. It examines a "symptom of the current era" in which "all sense of decorum has shifted into an insatiable demand for intimacy".</p>
+		<p>As a result of this shift, techniques originally developed for traditional theater are used routinely in mass-media appearances of politicians.</p>
+		<p>These techniques are designed to "engineer our behavior and emotional responses". Politicians are responding to a demand for an authentic, emotional display and a "rupture" - for example crying, or breaking down. These are designed to provoke empathy from the audience.</p>
+		<p>Journalists form part of the "production". They might be "admiring and doting", or "resentful and scornful, as if they had been a mistreated woman".</p>
+		<p>This last bit is a reference to the film's last scene based on an Anthony Weiner press conference where he is "apologizing for his salacious tweeting." The press questions "sound like the woman in the relationship", asking "what were you thinking?" and so on.</p>
+		<p>Liz: "that search for the authentic display is both what's driving me and what I am critiquing and reacting against."</p>
+	</section>
+</div>
+
+</article>
+
+
+<ul id=paging>
+	
+	
+		<li><a href="/everything/page2/">Next page &gt;</a></li>
+	
+</ul>
+    </section>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js></script>
+<script src=//code.jquery.com/jquery-2.1.3.min.js></script>
+<!--[if lt IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
+<![endif]-->
+<script src=/js/script.e1b5.js></script>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+  </body>
+</html>

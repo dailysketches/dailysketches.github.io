@@ -5,7 +5,7 @@
   "description": "Yeoman workflow for dailysketches.github.io",
   "dependencies": {},
   "devDependencies": {
-    "grunt": "*",
+    "grunt-cli": "*",
     "grunt-autoprefixer": "*",
     "grunt-browser-sync": "*",
     "grunt-build-control": "*",

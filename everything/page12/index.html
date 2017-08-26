@@ -44,6 +44,64 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-07-12</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-12-07-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-07-12>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    increment = 0.02;
+    ofSetWindowShape(500, 500);
+    gif.setupPaused(ofGetTimestampString("out/%Y-%m-%d"), 105, 140);
+    gif.fadeInOut(17, 4, ofColor::red, 1);
+    masker.setup(1);
+    transp1.setup("road-transp.png");
+    transp1.setTexturePositionY(0.5);
+    transp2.setup("road-transp.png");
+    transp2.setTexturePositionY(0.5);
+}
+
+void ofApp::update(){
+    masker.beginLayer(0);
+    {
+        transp1.incrementTextureScale(-increment);
+        transp1.draw();
+    }
+    masker.endLayer(0);
+
+    masker.beginMask(0);
+    {
+        transp2.incrementTextureScale(-increment*0.5);
+        ofBackground(ofColor::white);
+        ofSetColor(ofColor::white);
+        transp2.draw();
+    }
+    masker.endMask(0);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofBackground(ofColor::red);
+        masker.draw();
+    }
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>Transparencies masking transparencies (against a red background)</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-12.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-07-11</h1>
 	</header>
 	<div class=code>
@@ -359,74 +417,6 @@ void ofApp::switchFired(ofxTLSwitchEventArgs &amp;args) {
     <img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-06.png?raw=true" alt="Sketch 2015-07-06">
     <audio controls>
         <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-06.mp3?raw=true" type=audio/mpeg>
-        Your browser does not support the audio element.
-    </audio>
-</p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-07-05</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-05-07-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-07-05>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 900);
-    bpm = 60;
-    playing = false;
-
-    utils.setup();
-    manager.setup();
-    manager.toggleDebugUI();
-    setupAudioUnits();
-    setupTimeline();
-}
-
-void ofApp::setupAudioUnits() {
-    manager.add(&amp;chain1, "tal-one", ofColor::blue);
-    chain1.link(&amp;noiseMaker1).toMixer();
-    manager.loadPresets(&amp;chain1);
-}
-
-void ofApp::setupTimeline() {
-    timeline.setup();
-    timeline.setLoopType(OF_LOOP_NORMAL);
-    timeline.setShowBPMGrid(true);
-    timeline.enableSnapToBPM(true);
-    timeline.setBPM(bpm);
-    timeline.setDurationInSeconds(30);
-    timeline.setOffset(ofVec2f(10, 480));
-    timeline.setWidth(ofGetWidth() - 400);
-    timeline.addCurves("lfo rate");
-    timeline.addCurves("delay wet");
-    timeline.addSwitches("midi events");
-    ofAddListener(timeline.events().switched, this, &amp;ofApp::switchFired);
-}
-
-void ofApp::update(){
-    noiseMaker1.set(TALNoiseMaker_lfo2rate, timeline.getValue("lfo rate"));
-    noiseMaker1.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
-}
-
-void ofApp::switchFired(ofxTLSwitchEventArgs &amp;args) {
-    string command = args.switchName + (args.on ? " ON" : " OFF");
-    cout &lt;&lt; endl &lt;&lt; ofGetTimestampString() &lt;&lt; endl;
-    cout &lt;&lt; "switch fired: " &lt;&lt; command &lt;&lt; endl;
-    utils.executeMidiCommand(command, chain1.midi());
-}</code>
-    </pre>
-</div>
-<p class=description>Dubstep wobble with echo</p>
-<p>
-    <img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-05.png?raw=true" alt="Sketch 2015-07-05">
-    <audio controls>
-        <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-05.mp3?raw=true" type=audio/mpeg>
         Your browser does not support the audio element.
     </audio>
 </p>

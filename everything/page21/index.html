@@ -44,6 +44,62 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-05-10</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-10-05-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-10>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::updateAnim(){
+    masker.beginBackground();
+    ofTranslate(12, 12);
+    ofSetColor(ofColor::red);
+    for(int i = 0; i &lt; width; i += 50) {
+        for(int j = 0; j &lt; height; j += 50) {
+            ofRect(i, j, 25, 25);
+        }
+    }
+    masker.endBackground();
+    
+    masker.beginMask();
+    ofClear(0, 0, 0, 255);
+    ofSetColor(ofColor::white);
+    diameter = ofMap(sin(ofGetFrameNum() * 0.1), -1, 1, 1, 200);
+    position = ofMap(sin(ofGetFrameNum() * 0.2), -1, 1, -height, height + 10);
+    ofCircle(halfWidth, position, diameter);
+    masker.endMask();
+    
+    masker.beginForeground();
+    ofTranslate(12, 12);
+    ofSetColor(ofColor::blue);
+    for(int i = 0; i &lt; width; i += 25) {
+        for(int j = 0; j &lt; height; j += 25) {
+            ofRect(i, j, 12, 12);
+        }
+    }
+    masker.endForeground();
+}
+
+void ofApp::drawAnim() {
+    
+    masker.draw();
+    
+    if(ofGetFrameNum() == 62) {
+        renderGif();
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Yes, now it's an <a href=https://github.com/microcosm/ofxLayerMask>addon</a></p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-10.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-05-09</h1>
 	</header>
 	<div class=code>
@@ -587,83 +643,6 @@ void ofApp::drawAnim() {
 </div>
 <p class=description>Things roll in. Things roll out.</p>
 <p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-04.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-05-03</h1>
-	</header>
-	<div class=code>
-    <ul>
-        <li><a href=/sketch-03-05-2015/ >permalink</a></li>
-        <li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-03>code</a></li>
-        <li><a href=# class=snippet-button>show snippet</a></li>
-    </ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofEnableSmoothing();
-    ofEnableAntiAliasing();
-    
-    shapeSystem.setup();
-    camera.setDistance(120);
-    
-    for(int i = 0; i &lt; 24; i++) {
-        GradientShape ring;
-        rings.push_back(ring);
-    }
-    
-    for(int i = 0; i &lt; rings.size(); i++) {
-        if(i % 3 == 0) color.set(255, 0, 0, 80);
-        if(i % 3 == 1) color.set(0, 255, 0, 80);
-        if(i % 3 == 2) color.set(0, 0, 255, 80);
-        
-        rings.at(i).setupHollowRing(60, 3, i * 3); //Resolution, thickness, diameter
-        rings.at(i).setColor(color);
-        rings.at(i).setBlur(3);
-        shapeSystem.add(rings.at(i));
-    }
-}
-
-void ofApp::updateAnim(){
-    float current = sin(ofGetFrameNum() * 0.16);
-    endpoint = ofMap(current, -1, 1, 1257, 1263);
-    rotation = ofMap(current, -1, 1, 0, 360);
-    
-    for(int i = 0; i &lt; rings.size(); i++) {
-        if(i % 6 == 0) rings.at(i).rotateX(rotation);
-        if(i % 6 == 1) rings.at(i).rotateY(rotation);
-        if(i % 6 == 2) rings.at(i).rotateZ(rotation);
-        if(i % 6 == 3) rings.at(i).rotateX(-rotation);
-        if(i % 6 == 4) rings.at(i).rotateY(-rotation);
-        if(i % 6 == 5) rings.at(i).rotateZ(-rotation);
-        
-        rings.at(i).setArcEndpoints(0, endpoint);
-    }
-    shapeSystem.update();
-    
-    if(ofGetFrameNum() == 0) {
-        firstEndpoint = endpoint;
-        lastEndpoint = endpoint;
-    }
-}
-
-void ofApp::drawAnim() {
-    ofBackground(0, 0, 0);
-    camera.begin();
-    shapeSystem.draw();
-    camera.end();
-    
-    if(endpoint &gt; firstEndpoint &amp;&amp; lastEndpoint &lt; firstEndpoint) {
-        renderGif();
-    }
-    
-    lastEndpoint = endpoint;
-}</code>
-    </pre>
-</div>
-<p class=description>Like yesterday, but now going way past 2&pi; radians (closing the ring shapes hundreds of times, which increases the alpha and generates 'star' artifacts based on segment repetition patterns over time)</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-03.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

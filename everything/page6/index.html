@@ -44,6 +44,129 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-08-23</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-23-08-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-23>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setupPaused(40, 80);
+
+    numLayers = 2;
+    masker.setup(numLayers, ISOLATE_LAYERS);
+    masker.toggleOverlay();
+    
+    img1.setup(&quot;pcb-bw.png&quot;);
+    img2.setup(&quot;rust-tall2.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__RIGHT_TO_CENTER);
+    
+    horizontalMasks.setup(200, gif.height);
+    
+    ofSetWindowShape(1200, 1200);
+}
+
+void ofApp::update(){
+    masker.beginLayer(0);
+    {
+        ofBackground(ofColor::black);
+        horizontalMasks.draw();
+    }
+    masker.endLayer(0);
+    
+    masker.beginMask(0);
+    {
+        ofBackground(ofColor::black);
+        img1.incrementTextureOffsetY(-0.2);
+        img1.draw();
+    }
+    masker.endMask(0);
+
+    masker.beginLayer(1);
+    {
+        ofBackground(ofColor::black);
+        masker.drawLayer(0);
+    }
+    masker.endLayer(1);
+    
+    masker.beginMask(1);
+    {
+        ofBackground(ofColor::black);
+        img2.incrementTextureOffsetY(0.02);
+        img2.setTextureScale(ofMap(sin(ofGetFrameNum() * 0.125), -1, 1, 0.5, 1.5));
+        img2.draw();
+    }
+    masker.endMask(1);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    {
+        ofEnableAlphaBlending();
+        ofBackground(ofColor::red);
+        int i = 0;
+        while(i &lt; 1000) {
+            i += ofRandom(90, 360);
+            gif.rotateAroundCenter(i);
+            masker.draw();
+        }
+    }
+    gif.endCaptureDraw();
+    masker.drawOverlay();
+}
+
+void MaskArray::setup(int _number, float _size) {
+    number = _number;
+    size = _size;
+    unitSize = size / number;
+    
+    for(int i = 0; i &lt; size; i++) {
+        alphas.push_back(ofRandom(255));
+        speeds.push_back(ceil(ofRandom(6)) * 30);
+        directions.push_back(ofRandom(1) &gt; 0.5 ? 1 : -1);
+    }
+}
+
+void MaskArray::draw() {
+    for(int i = 0; i &lt; number; i++) {
+        alphas.at(i) += speeds.at(i) * directions.at(i);
+        bounce(i);
+        ofSetColor(ofColor(ofColor::white, alphas.at(i)));
+        ofRect(0, unitSize * i, size, unitSize);
+    }
+}
+
+void MaskArray::bounce(int i) {
+    if(alphas.at(i) &lt; 0) {
+        alphas.at(i) = 0;
+        directions.at(i) = 1;
+    }
+
+    if(alphas.at(i) &gt; 255) {
+        alphas.at(i) = 255;
+        directions.at(i) = -1;
+    }
+}
+
+void MaskArray::debug() {
+    for(int i = 0; i &lt; number; i++) {
+        cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; alphas.at(i) &lt;&lt; endl;
+    }
+    
+    cout &lt;&lt; &quot;=======&quot; &lt;&lt; endl &lt;&lt; endl &lt;&lt; endl;
+}</code>
+    </pre>
+</div>
+<p class=description>Vaz Differenz</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-23/bin/data/out/2015-08-23.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-08-22</h1>
 	</header>
 	<div class=code>
@@ -678,80 +801,6 @@ void ofApp::draw(){
 </div>
 <p class=description>Two perspectives.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-17/bin/data/out/2015-08-17.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-08-16</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-16-08-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-16>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    numLayers = 50;
-    ofSetWindowShape(500, 500);
-    gif.setup(100);
-    masker.setup(numLayers, ISOLATE_LAYERS);
-    masker.toggleOverlay();
-    ofEnableSmoothing();
-    ofSetWindowShape(1000, 1200);
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; numLayers; i++) {
-        masker.beginMask(i);
-        {
-            color = ofRandom(1) &gt; 0.5 ? ofColor::white : ofColor::black;
-            ofBackground(color);
-        }
-        masker.endMask(i);
-        
-        masker.beginLayer(i);
-        {
-            ofBackground(ofColor(ofColor::white, 0));
-            size = ofMap(i, 0, numLayers, gif.doubleWidth, 330);
-            if(i % 2 == 0) {
-                ofSetColor(ofColor(ofColor::red, 100));
-                size *= 0.8;
-            } else {
-                ofSetColor(ofColor::black);
-            }
-            gif.rotateAroundCenter(ofRandom(360));
-            ofSetRectMode(OF_RECTMODE_CENTER);
-            ofRect(gif.halfWidth, gif.halfHeight, size, size);
-            ofSetRectMode(OF_RECTMODE_CORNER);
-            
-        }
-        masker.endLayer(i);
-    }
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofSetColor(ofColor(ofColor::white, 100));
-        ofRect(0, 0, gif.width, gif.height);
-        masker.draw();
-
-        ofSetRectMode(OF_RECTMODE_CENTER);
-        ofSetColor(ofColor(ofColor::black, 210));
-        ofRect(gif.halfWidth, gif.halfHeight, 360, 360);
-        ofSetColor(ofColor::white);
-        ofRect(gif.halfWidth, gif.halfHeight, 20, 20);
-        ofSetRectMode(OF_RECTMODE_CORNER);
-    }
-    gif.endCaptureDraw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Negative space.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-16/bin/data/out/2015-08-16.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

@@ -44,6 +44,107 @@
         
 <article>
 	<header>
+		<h1>Sketch 2015-09-06</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-06-09-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-09/tree/master/2015-09-06>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(500, 500);
+    gif.setup(54);
+    masker.setup(2);
+    img1.setup(&quot;foil1.png&quot;);
+    img2.setup(&quot;glass3.png&quot;);
+    img3.setup(&quot;foil1.png&quot;);
+    img4.setup(&quot;glass1-inverted.png&quot;);
+    img5.setup(&quot;glass1-inverted.png&quot;);
+
+    masker.toggleOverlay();
+    ofSetWindowShape(1200, 1200);
+}
+
+void ofApp::update(){
+    if(ofGetFrameNum() % 18 == 0) {
+        img2.setTextureOffset(ofRandom(2), ofRandom(2));
+        img2.setTextureScale(3);
+    }
+    if(ofGetFrameNum() % 6 == 0) {
+        img1.setTexturePosition(ofRandom(2), ofRandom(2));
+        img1.setTextureScale(2);
+        img3.setTexturePosition(ofRandom(2), ofRandom(2));
+        img3.setTextureScale(2);
+        img4.setTexturePosition(ofRandom(2), ofRandom(2));
+        img4.setTextureScale(ofRandom(1.0, 6.0));
+        img5.setTexturePosition(ofRandom(2), ofRandom(2));
+        img5.setTextureScale(ofRandom(1.0, 6.0));
+    }
+    
+    masker.beginLayer(0);
+    {
+        img1.incrementTextureOffsetX(0.01);
+        img1.incrementTextureScale(0.05);
+        ofSetColor(ofColor(106, 68, 71));
+        img1.draw();
+    }
+    masker.endLayer(0);
+    
+    masker.beginMask(0);
+    {
+        img4.incrementTextureOffsetY(0.04);
+        img4.incrementTextureScale(0.84);
+        ofBackground(ofColor::white);
+        ofSetColor(ofColor(ofColor::white, 200));
+        img4.draw();
+    }
+    masker.endMask(0);
+
+    masker.beginLayer(1);
+    {
+        img3.incrementTextureOffsetX(-0.01);
+        img3.incrementTextureScale(-0.033);
+        ofSetColor(ofColor(106, 68, 71));
+        img3.draw();
+    }
+    masker.endLayer(1);
+    
+    masker.beginMask(1);
+    {
+        img5.incrementTextureOffsetY(-0.01);
+        img5.incrementTextureScale(0.25);
+        ofBackground(ofColor::white);
+        ofSetColor(ofColor(ofColor::white, 240));
+        img5.draw();
+    }
+    masker.endMask(1);
+}
+
+void ofApp::draw(){
+    gif.begin();
+    ofPushStyle();
+    {
+        img2.incrementTextureScale(-0.1);
+        img2.draw();
+        ofSetColor(ofColor::white);
+        masker.draw();
+    }
+    ofPopStyle();
+    gif.endAndCaptureFrame();
+    gif.draw();
+    masker.drawOverlay();
+}</code>
+    </pre>
+</div>
+<p class=description>Blockage.</p>
+<p><img src="https://github.com/dailysketches/sketches-2015-09/blob/master/2015-09-06/bin/data/out/2015-09-06.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-09-05</h1>
 	</header>
 	<div class=code>
@@ -889,79 +990,6 @@ void Pattern2::draw() {
 </div>
 <p class=description>The murky underneath.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-31/bin/data/out/2015-08-31.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-08-30</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-30-08-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-08/tree/master/2015-08-30>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(500, 500);
-    gif.setupPaused(10, 50);
-
-    masker.setup(1, ISOLATE_LAYERS);
-    masker.toggleOverlay();
-
-    img2.setup(&quot;glass3.png&quot;, 0.2);
-    img1.setup(&quot;pcb-bw.png&quot;, 2.0);
-
-    ofSetWindowShape(1200, 1200);
-}
-
-void ofApp::update(){
-    masker.beginLayer();
-    {
-        img1.draw();
-    }
-    masker.endLayer();
-    
-    masker.beginMask();
-    {
-        img1.draw();
-    }
-    masker.endMask();
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofEnableAlphaBlending();
-        img2.incrementTextureScale(0.006);
-
-        masker.draw();
-        if(ofRandom(1) &gt; 0.75) {
-            ofSetColor(ofColor::white, 255);
-            gif.rotateAroundCenter(90 * floor(ofRandom(4)));
-
-            for(int i = 0; i &lt; ofRandom(2, 10); i++) {
-                masker.draw();
-            }
-        } else if(ofRandom(1) &gt; 0.75) {
-            img1.setTexturePosition(ofRandom(2), ofRandom(2));
-            img1.setTextureScale(ofRandom(0.2, 2));
-            img2.setTextureScale(ofRandom(1, 3));
-            gif.rotateAroundCenter(90 * floor(ofRandom(4)));
-            ofSetColor(ofColor::white, ofRandom(10, 20));
-            img1.draw();
-        }
-        ofSetColor(ofColor::white, ceil(ofRandom(6)) * 6);
-        img2.draw();
-    }
-    gif.endCaptureDraw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>Mask yourself.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-08/blob/master/2015-08-30/bin/data/out/2015-08-30.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

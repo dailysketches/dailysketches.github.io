@@ -44,6 +44,28 @@
         
 <article>
 	<header>
+		<h1>Liz Magic Laser on 'I Feel Your Pain'</h1>
+	</header>
+	<iframe src=https://www.youtube.com/embed/31Vr6F47fGc allowfullscreen></iframe>
+<div class=media-description>
+    <ul>
+		<li><a href=/sketch-a-28-12-2015/ >permalink</a></li>
+		<li><a href=# class=description-button>show descripton</a></li>
+	</ul>
+	<section class="long description">
+		<p>IFYP is a "live film" performance which re-enacts scenes from taped political interviews. It examines a "symptom of the current era" in which "all sense of decorum has shifted into an insatiable demand for intimacy".</p>
+		<p>As a result of this shift, techniques originally developed for traditional theater are used routinely in mass-media appearances of politicians.</p>
+		<p>These techniques are designed to "engineer our behavior and emotional responses". Politicians are responding to a demand for an authentic, emotional display and a "rupture" - for example crying, or breaking down. These are designed to provoke empathy from the audience.</p>
+		<p>Journalists form part of the "production". They might be "admiring and doting", or "resentful and scornful, as if they had been a mistreated woman".</p>
+		<p>This last bit is a reference to the film's last scene based on an Anthony Weiner press conference where he is "apologizing for his salacious tweeting." The press questions "sound like the woman in the relationship", asking "what were you thinking?" and so on.</p>
+		<p>Liz: "that search for the authentic display is both what's driving me and what I am critiquing and reacting against."</p>
+	</section>
+</div>
+
+</article>
+
+<article>
+	<header>
 		<h1>Sketch 2015-10-28a</h1>
 	</header>
 	<div class=code>
@@ -390,106 +412,6 @@ void ofApp::draw(){
 </div>
 <p class=description>That doesn't matter.</p>
 <p><img src="https://github.com/dailysketches/sketches-2015-09/blob/master/2015-09-14/bin/data/out/2015-09-14.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-09-13</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-13-09-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-09/tree/master/2015-09-13>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(500, 500);
-    gif.setup(50);
-    gif.fadeInOut(2, 3, ofColor::darkGray);
-    gif.enableTextOverlay();
-    numLayers = 8;
-    masker.setup(numLayers + 1);
-    rectSize = 200;
-    rectThickness = 2;
-    speed = 0.1;
-    
-    img.setup(&quot;road.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__LEFT_TO_CENTER);
-    for(int i = 0; i &lt; numLayers; i++) {
-        scale = ofMap(i, 0, numLayers-1, 0.25, 0.7);
-        img.setTextureScale(scale);
-        img.setTextureOffsetY(ofRandom(2));
-        textures.push_back(img);
-    }
-    
-    img.setup(&quot;pcb2.png&quot;, 1.0, TEXTURE_OFFSET__MIDDLE__RIGHT_TO_CENTER);
-    for(int i = 0; i &lt; numLayers; i++) {
-        scale = ofMap(i, 0, numLayers-1, 1.4, 0.75);
-        img.setTextureScale(scale);
-        img.setTextureOffsetY(ofRandom(2));
-        masks.push_back(img);
-    }
-
-    ofSetWindowShape(1200, 1200);
-    masker.toggleOverlay();
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; numLayers; i++) {
-        masker.beginLayer(i);
-        {
-            textures.at(i).incrementTextureOffsetY(ofMap(i, 0, numLayers-1, -speed, speed));
-            textures.at(i).draw();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            masks.at(i).incrementTextureOffsetY(ofMap(i, 0, numLayers-1, speed * 0.125, -speed * 0.125));
-            masks.at(i).draw();
-        }
-        masker.endMask(i);
-    }
-
-    masker.beginLayer(numLayers);
-    {
-        ofBackground(ofColor::white);
-        masker.drawLayers(0, numLayers-1);
-    }
-    masker.endLayer(numLayers);
-
-    masker.beginMask(numLayers);
-    {
-        //ofBackground(ofColor::black);
-        ofSetRectMode(OF_RECTMODE_CENTER);
-        ofSetColor(ofColor::white);
-        ofRect(gif.halfWidth, gif.halfHeight, rectSize, rectSize);
-        ofSetRectMode(OF_RECTMODE_CORNER);
-    }
-    masker.endMask(numLayers);
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofSetColor(ofColor::red);
-        ofRect(0, 0, gif.width, gif.height);
-        masker.drawLayer(2);
-        ofSetRectMode(OF_RECTMODE_CENTER);
-        ofSetColor(ofColor::black);
-        ofRect(gif.halfWidth, gif.halfHeight, rectSize, rectSize);
-        ofSetRectMode(OF_RECTMODE_CORNER);
-        ofSetColor(ofColor::white);
-        masker.drawLayer(numLayers);
-    }
-    gif.endCaptureDraw();
-    masker.drawOverlay();
-}</code>
-    </pre>
-</div>
-<p class=description>It arrives with more force.</p>
-<p><img src="https://github.com/dailysketches/sketches-2015-09/blob/master/2015-09-13/bin/data/out/2015-09-13.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

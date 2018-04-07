@@ -233,78 +233,187 @@ void ofApp::draw(){
 
 <article>
 	<header>
-		<h1>Nick Briz - Copy This Drive</h1>
+		<h1>Sketch 2015-10-28a</h1>
 	</header>
-	<p><a href=http://nickbriz.com/copythisdrive/ ><img src=/images/2016.01.07.copythisdrive.f75f.jpg></a></p>
-<div class=media-description>
+	<div class=code>
     <ul>
-		<li><a href=/sketch-a-29-12-2015/ >permalink</a></li>
-		<li><a href=# class=description-button>show descripton</a></li>
+		<li><a href=/sketch-a-28-10-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-10/tree/master/2015-10-28a>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
-	<section class="long description">
-		<p>Copy this drive, because... copyleft. And <a href=http://www.joshuadavis.com/ >Joshua Davis</a>.</p>
-	</section>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    _template.setup(10, 60, 2, true);
+    manager = _template.getAudioUnitManager();
+
+    synth1.setup(&quot;Synth 1&quot;, AUDIOUNIT_MASSIVE);
+    manager-&gt;createChain(&amp;chain1)
+           .link(&amp;synth1)
+           .toMixer();
+
+    synth2.setup(&quot;Perc&quot;, AUDIOUNIT_MASSIVE);
+    manager-&gt;createChain(&amp;chain2)
+           .link(&amp;synth2)
+           .toMixer();
+
+    timeline = _template.getTimeline();
+    timeline-&gt;addCurves(&quot;wobble&quot;);
+    timeline-&gt;addCurves(&quot;rate&quot;);
+    timeline-&gt;addCurves(&quot;noise&quot;);
+    timeline-&gt;addCurves(&quot;sub&quot;);
+    timeline-&gt;addCurves(&quot;pitch&quot;);
+    timeline-&gt;addCurves(&quot;mod&quot;);
+}
+
+void ofApp::update(){
+    synth1.set(Massive_macro_2, timeline-&gt;getValue(&quot;wobble&quot;));
+    synth1.set(Massive_macro_3, timeline-&gt;getValue(&quot;rate&quot;));
+    synth1.set(Massive_macro_4, timeline-&gt;getValue(&quot;noise&quot;));
+    synth1.set(Massive_macro_5, timeline-&gt;getValue(&quot;sub&quot;));
+    synth1.set(Massive_macro_6, timeline-&gt;getValue(&quot;pitch&quot;));
+    synth1.set(Massive_macro_7, timeline-&gt;getValue(&quot;mod&quot;));
+}
+
+void ofApp::draw(){
+    
+}</code>
+    </pre>
 </div>
+<p class=description>Horrible dirty wobble noise</p>
+<p>
+	<img src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-28a/bin/data/out/2015-10-28a.png?raw=true" alt="Sketch 2015-10-28a">
+	<audio controls>
+		<source src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-28a/bin/data/out/2015-10-28a.mp3?raw=true" type=audio/mpeg>
+		Your browser does not support the audio element.
+	</audio>
+</p>
+
 
 </article>
 
 <article>
 	<header>
-		<h1>Nick Briz - A New Ecology for the Citizen of a Digital Age</h1>
+		<h1>Sketch 2015-10-26a</h1>
 	</header>
-	<iframe src=https://player.vimeo.com/video/7617527 allowfullscreen></iframe>
-<div class=media-description>
+	<div class=code>
     <ul>
-		<li><a href=/sketch-a-29-12-2015/ >permalink</a></li>
-		<li><a href=# class=description-button>show descripton</a></li>
+		<li><a href=/sketch-a-26-10-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-10/tree/master/2015-10-26a>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
-	<section class="long description">
-		<p>An examination of the individual’s relation to the new ecology of our digital culture, an attempt to reconcile the overwhelming pace of our society’s ascent towards a technological singularity.</p>
-	</section>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    _template.setup(46 , 120);
+    manager = _template.getAudioUnitManager();
+    synth.setup(&quot;Synth 1&quot;, AUDIOUNIT_MASSIVE);
+    manager-&gt;createChain(&amp;chain)
+          .link(&amp;synth)
+          .toMixer();
+    timeline = _template.getTimeline();
+}
+
+void ofApp::update(){
+
+}
+
+void ofApp::draw(){
+    
+}</code>
+    </pre>
 </div>
+<p class=description>Discovering the performer modulator</p>
+<p>
+	<img src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-26a/bin/data/out/2015-10-26a.png?raw=true" alt="Sketch 2015-10-26a">
+	<audio controls>
+		<source src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-26a/bin/data/out/2015-10-26a.mp3?raw=true" type=audio/mpeg>
+		Your browser does not support the audio element.
+	</audio>
+</p>
+
 
 </article>
 
 <article>
 	<header>
-		<h1>Dear Climate</h1>
+		<h1>Sketch 2015-10-25a</h1>
 	</header>
-	<p><img src=/images/2016.01.02.dearclimate.3238.jpg></p>
-<div class=media-description>
+	<div class=code>
     <ul>
-		<li><a href=/sketch-a-02-01-2016/ >permalink</a></li>
-		<li><a href=# class=description-button>show descripton</a></li>
+		<li><a href=/sketch-a-25-10-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-10/tree/master/2015-10-25a>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
-	<section class="long description">
-		<p>Dear Climate feels like an attempt to 'normalize' the climate conversation by wrapping it in familiar tropes.</p>
-		<p>From the <a href=http://www.dearclimate.net/#/what>Dear Climate website</a>:</p>
-		<blockquote>
-			<p>"We began Dear Climate by looking for a new way to talk about the weather.  We wanted a different vocabulary from the one we were hearing from the 'survival community': instead of crisis and catastrophe, we wanted the familiar and ordinary; instead of desperation and heroism, playfulness and friendliness. Instead of imagining mass movements or calling for community action, we were interested in finding a more personal relationship to climate change."</p>
-			<p>"To craft new kinds of personal engagement with climate change, we charted three 'movements of mind.'' The first, 'Meet Climate Change,' was about openness and encounter, acquaintance and curiosity.   Observation and conversation were obvious techniques for this, but so were certain 'techniques of consciousness,' like meditation and mindfulness, that seemed to us to be imbued with a spirit of deep friendliness, which led to our second movement: 'Befriend Climate Change.' Once you invite someone or something into your mental home, it’s only a matter of time before you get to know it better. The imagination gets seriously involved now, the conversation deepens, the plot thickens."</p>
-			<p>"Being truly hospitable involves opening yourself to the unknown.  When that happens, the guest can change the host profoundly.  Our third movement, then, was “Become Climate Change.” Taking up the challenge of the new weather means we have to understand our human selves in ways that go beyond biography, even beyond history. We have to understand our species as a geophysical force that is shaping the systems of our planet.  Performing that conceptual feat will require many kinds of imagination, not just the imagination of crisis and catastrophe.  It will mean not just doing something about the weather, but talking about it—and feeling about it—differently."</p>
-		</blockquote>
-	</section>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    _template.setup(10, 60);
+    manager = _template.getAudioUnitManager();
+    synth.setup(&quot;Synth 1&quot;, AUDIOUNIT_MASSIVE);
+    manager-&gt;createChain(&amp;chain)
+          .link(&amp;synth)
+          .toMixer();
+    timeline = _template.getTimeline();
+}
+
+void ofApp::update(){
+
+}
+
+void ofApp::draw(){
+    
+}</code>
+    </pre>
 </div>
+<p class=description>Setting a step sequencer as multiple modulation sources</p>
+<p>
+	<img src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-25a/bin/data/out/2015-10-25a.png?raw=true" alt="Sketch 2015-10-25a">
+	<audio controls>
+		<source src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-25a/bin/data/out/2015-10-25a.mp3?raw=true" type=audio/mpeg>
+		Your browser does not support the audio element.
+	</audio>
+</p>
+
 
 </article>
 
 <article>
 	<header>
-		<h1>Steve Roggenbuck: 'make something beautiful...'</h1>
+		<h1>Sketch 2015-10-11a</h1>
 	</header>
-	<iframe src=https://www.youtube.com/embed/0bR6uOsDn-Q allowfullscreen></iframe>
-<div class=media-description>
+	<div class=code>
     <ul>
-		<li><a href=/sketch-a-29-12-2015/ >permalink</a></li>
-		<li><a href=# class=description-button>show descripton</a></li>
+		<li><a href=/sketch-a-11-10-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-10/tree/master/2015-10-11a>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
 	</ul>
-	<section class="long description">
-		<p>When I started watching this video my first impression was that it was annoying and I wasn't going to like it.</p>
-		<p>I kept watching anyway, and three minutes later was surprised to discover it was actually irritatingly inspiring. It's a testament to the power of music in video.</p>
-		<p>You could try parodying it by playing <a href="https://www.youtube.com/watch?v=lwQmDvuORY0">Sigur Ros</a> over Paul Whitehouse's <a href="https://www.youtube.com/watch?v=B12WBTFLK0Q">'Brilliant!'</a> <a href="https://www.youtube.com/watch?v=Wv_662IqKto">sketches</a>.</p>
-		<p>But it wouldn't work. It's more than that. The video is littered with attempts at self-awareness, deprecation and authenticity. I couldn't help but <a href=https://www.youtube.com/embed/Hp_jMCbKTU4>try another one</a>.</p>
-	</section>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    _template.setup(10, 60);
+    manager = _template.getAudioUnitManager();
+    synth.setup(&quot;Massive 1&quot;, AUDIOUNIT_MASSIVE);
+    manager-&gt;createChain(&amp;chain)
+          .link(&amp;synth)
+          .toMixer();
+    timeline = _template.getTimeline();
+}
+
+void ofApp::update(){
+    //It's all in the MIDI and preset design
+}
+
+void ofApp::draw(){
+    
+}</code>
+    </pre>
 </div>
+<p class=description>Crunchy amplitude envelope loops</p>
+<p>
+	<img src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-11a/bin/data/out/2015-10-11a.png?raw=true" alt="Sketch 2015-10-11a">
+	<audio controls>
+		<source src="https://github.com/dailysketches/sketches-2015-10/blob/master/2015-10-11a/bin/data/out/2015-10-11a.mp3?raw=true" type=audio/mpeg>
+		Your browser does not support the audio element.
+	</audio>
+</p>
+
 
 </article>
 

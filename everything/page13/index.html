@@ -44,394 +44,6 @@
         
 <article>
 	<header>
-		<h1>Sketch 2015-07-05</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-05-07-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-07-05>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 900);
-    bpm = 60;
-    playing = false;
-
-    utils.setup();
-    manager.setup();
-    manager.toggleDebugUI();
-    setupAudioUnits();
-    setupTimeline();
-}
-
-void ofApp::setupAudioUnits() {
-    manager.add(&amp;chain1, "tal-one", ofColor::blue);
-    chain1.link(&amp;noiseMaker1).toMixer();
-    manager.loadPresets(&amp;chain1);
-}
-
-void ofApp::setupTimeline() {
-    timeline.setup();
-    timeline.setLoopType(OF_LOOP_NORMAL);
-    timeline.setShowBPMGrid(true);
-    timeline.enableSnapToBPM(true);
-    timeline.setBPM(bpm);
-    timeline.setDurationInSeconds(30);
-    timeline.setOffset(ofVec2f(10, 480));
-    timeline.setWidth(ofGetWidth() - 400);
-    timeline.addCurves("lfo rate");
-    timeline.addCurves("delay wet");
-    timeline.addSwitches("midi events");
-    ofAddListener(timeline.events().switched, this, &amp;ofApp::switchFired);
-}
-
-void ofApp::update(){
-    noiseMaker1.set(TALNoiseMaker_lfo2rate, timeline.getValue("lfo rate"));
-    noiseMaker1.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
-}
-
-void ofApp::switchFired(ofxTLSwitchEventArgs &amp;args) {
-    string command = args.switchName + (args.on ? " ON" : " OFF");
-    cout &lt;&lt; endl &lt;&lt; ofGetTimestampString() &lt;&lt; endl;
-    cout &lt;&lt; "switch fired: " &lt;&lt; command &lt;&lt; endl;
-    utils.executeMidiCommand(command, chain1.midi());
-}</code>
-    </pre>
-</div>
-<p class=description>Dubstep wobble with echo</p>
-<p>
-    <img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-05.png?raw=true" alt="Sketch 2015-07-05">
-    <audio controls>
-        <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-05.mp3?raw=true" type=audio/mpeg>
-        Your browser does not support the audio element.
-    </audio>
-</p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-07-04</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-04-07-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-07-04>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 900);
-    utils.setup();
-    manager.setup();
-    manager.toggleDebugUI();
-    setupAudioUnits();
-    setupTimeline();
-
-    playing = false;
-}
-
-void ofApp::setupAudioUnits() {
-    manager.add(&amp;chain1, "tal-one", ofColor::blue);
-    manager.add(&amp;chain2, "tal-two", ofColor::red);
-    chain1.link(&amp;noiseMaker1).toMixer();
-    chain2.link(&amp;noiseMaker2).toMixer();
-    manager.loadPresets(&amp;chain1);
-    manager.loadPresets(&amp;chain2);
-}
-
-void ofApp::setupTimeline() {
-    timeline.setup();
-    timeline.setLoopType(OF_LOOP_NORMAL);
-    timeline.setDurationInSeconds(30);
-    timeline.setOffset(ofVec2f(10, 480));
-    timeline.setWidth(ofGetWidth() - 400);
-    timeline.addCurves("portamento");
-    timeline.addCurves("delay wet");
-    timeline.addFlags("midi events");
-    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
-}
-
-void ofApp::update(){
-    noiseMaker1.set(TALNoiseMaker_portamento, timeline.getValue("portamento"));
-    noiseMaker1.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
-    noiseMaker2.set(TALNoiseMaker_portamento, timeline.getValue("portamento"));
-    noiseMaker2.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
-}
-
-void ofApp::bang(ofxTLBangEventArgs &amp;args) {
-    cout &lt;&lt; "bang fired: " &lt;&lt; args.flag &lt;&lt; endl;
-    utils.executeMidiCommand(args.flag, chain1.midi());
-    utils.executeMidiCommand(args.flag, chain2.midi());
-}</code>
-    </pre>
-</div>
-<p class=description>Portamento, a warm tone and two identical synths</p>
-<p>
-    <img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-04.png?raw=true" alt="Sketch 2015-07-04">
-    <audio controls>
-        <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-04.mp3?raw=true" type=audio/mpeg>
-        Your browser does not support the audio element.
-    </audio>
-</p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-07-03</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-03-07-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-07-03>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 800);
-    manager.setup();
-    manager.toggleDebugUI();
-    setupAudioUnits();
-    setupTimeline();
-
-    playing = false;
-    note = 60;
-}
-
-void ofApp::setupAudioUnits() {
-    manager.add(&amp;chain, "tal-one", ofColor::blue);
-    chain.link(&amp;noiseMaker).toMixer();
-    manager.loadPresets(&amp;chain);
-}
-
-void ofApp::setupTimeline() {
-    timeline.setup();
-    timeline.setLoopType(OF_LOOP_NORMAL);
-    timeline.setDurationInSeconds(30);
-    timeline.setOffset(ofVec2f(10, 480));
-    timeline.setWidth(ofGetWidth() - 400);
-    timeline.addFlags("midi events");
-    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
-}
-
-void ofApp::update(){
-    
-}
-
-void ofApp::bang(ofxTLBangEventArgs &amp;args) {
-    if(args.flag == "") {
-        chain.midi()-&gt;sendNoteOn(1, note);
-    } else {
-        interpretMidiFlag(args.flag);
-    }
-}
-
-void ofApp::interpretMidiFlag(string flag) {
-    vector&lt;string&gt; args = ofSplitString(flag, " ");
-    int note = ofToInt(args.at(0));
-    bool onCommand = args.at(1) == "ON";
-    if(onCommand) {
-        chain.midi()-&gt;sendNoteOn(1, note);
-    } else {
-        chain.midi()-&gt;sendNoteOff(1, note);
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Time for MIDI event interpretation in the timeline</p>
-<p>
-    <img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-03.png?raw=true" alt="Sketch 2015-07-03">
-    <audio controls>
-        <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-03.mp3?raw=true" type=audio/mpeg>
-        Your browser does not support the audio element.
-    </audio>
-</p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-07-02</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-02-07-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-07-02>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(1000, 800);
-    manager.setup();
-    manager.toggleDebugUI();
-    setupAudioUnits();
-    setupTimeline();
-
-    playing = false;
-    note = 60;
-}
-
-void ofApp::setupAudioUnits() {
-    manager.add(&amp;chain, "tal-one", ofColor::blue);
-    chain.link(&amp;noiseMaker).toMixer();
-    manager.loadPresets(&amp;chain);
-}
-
-void ofApp::setupTimeline() {
-    timeline.setup();
-    timeline.setLoopType(OF_LOOP_NORMAL);
-    timeline.setDurationInSeconds(30);
-    timeline.setOffset(ofVec2f(10, 480));
-    timeline.setWidth(ofGetWidth() - 400);
-    timeline.addCurves("LFO 1 rate", ofRange(0, 1));
-    timeline.addCurves("filter cutoff", ofRange(0, 1));
-    timeline.addBangs("midi events");
-    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
-}
-
-void ofApp::update(){
-    noiseMaker.set(TALNoiseMaker_lfo1rate, timeline.getValue("LFO 1 rate"));
-    noiseMaker.set(TALNoiseMaker_cutoff, timeline.getValue("filter cutoff"));
-}
-
-void ofApp::bang(ofxTLBangEventArgs &amp;args) {
-    if(args.flag == "") {
-        chain.midi()-&gt;sendNoteOn(1, note);
-    } else {
-        chain.midi()-&gt;sendNoteOn(1, ofToInt(args.flag));
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>We are screwing with the LFO and the filter cutoff.</p>
-<p>
-    <img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-02.png?raw=true" alt="Sketch 2015-07-02">
-    <audio controls>
-        <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-02.mp3?raw=true" type=audio/mpeg>
-        Your browser does not support the audio element.
-    </audio>
-</p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-07-01</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-01-07-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-07-01>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    ofSetWindowShape(500, 500);
-    gif.setup(ofGetTimestampString("%Y-%m-%d"), 60);
-    
-    ofEnableSmoothing();
-    shapeSystem.setup();
-    masker.setup(8);
-
-    for(int i = 0; i &lt; 8; i++) {
-        textures.push_back(texture);
-        textures.at(i).setup("road" + ofToString(i % 4 + 1) + ".png", (i+1) * 0.3);
-    }
-    
-    shapeSize = 100;
-    thickness = 100;
-    halfShapeSize = shapeSize * 0.5;
-    
-    for(int i = 0; i &lt; gif.width; i += shapeSize) {
-        for(int j = 0; j &lt; gif.height; j += shapeSize) {
-            shape.setupHollowArc(30, thickness, shapeSize, 180);
-            shape.setColor(ofColor::fromHsb(ofRandom(255), ofRandom(100, 255), ofRandom(100, 255)));
-            shape.setBlur(30);
-            shape.setPosition(ofVec3f(i + halfShapeSize, j + halfShapeSize, 0));
-            shape.rotateZ(ofRandom(360));
-            shapes.push_back(shape);
-        }
-    }
-    
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        shapeSystem.add(shapes.at(i));
-    }
-}
-
-void ofApp::update(){
-    for(int i = 0; i &lt; shapes.size(); i++) {
-        i % 2 == 0 ?
-        shapes.at(i).incrementRotateZ(6) :
-        shapes.at(i).incrementRotateZ(-6);
-    }
-    
-    for(int i = 0; i &lt; masker.numLayers(); i++) {
-        textures.at(i % textures.size()).incrementTextureOffsetY(-0.03333333333);
-        masker.beginLayer(i);
-        {
-            ofBackground(ofColor::black);
-            ofEnableAlphaBlending();
-            rotateScreen(90 * i);
-            shapeSystem.draw();
-            ofDisableAlphaBlending();
-        }
-        masker.endLayer(i);
-        
-        masker.beginMask(i);
-        {
-            ofEnableAlphaBlending();
-            if(ofGetFrameNum() == 0) {
-                ofBackground(ofColor::black);
-            } else {
-                ofSetColor(ofColor::black, 64);
-                ofRect(0, 0, gif.width, gif.height);
-            }
-
-            ofSetColor(ofColor::white, 196);
-            textures.at(i % textures.size()).draw();
-            if(ofRandom(1) &gt; 0.96) {
-                for(int j = 0; j &lt; 4; j++) {
-                    ofSetColor(j % 2 == 0 ? ofColor(ofColor::white, ofRandom(64, 196)) : ofColor::black);
-                    ofTriangle(ofRandom(-gif.width, 0), ofRandom(-gif.height, 0),
-                               ofRandom(0, gif.width), ofRandom(0, gif.height),
-                               ofRandom(gif.width, gif.doubleWidth), ofRandom(gif.height, gif.doubleHeight));
-                    rotateScreen(90);
-                }
-            }
-            ofDisableAlphaBlending();
-        }
-        masker.endMask(i);
-    }
-}
-
-void ofApp::draw(){
-    gif.begin();
-    {
-        ofBackground(ofColor::black);
-        masker.draw();
-    }
-    gif.endAndCaptureFrame();
-    gif.draw();
-    
-    masker.drawOverlay();
-}
-
-void ofApp::rotateScreen(float degrees) {
-    ofTranslate(gif.halfWidth, gif.halfHeight, 0);
-    ofRotate(degrees);
-    ofTranslate(-gif.halfWidth, -gif.halfHeight, 0);
-}</code>
-    </pre>
-</div>
-<p class=description>"You no longer require an internal model ... you simply need the ability to visually perceive ... and the experience to move" (<a href=http://psychsciencenotes.blogspot.com/2011/11/embodied-cognition-is-not-what-you.html>source</a>)</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-07-01.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
 		<h1>Sketch 2015-06-30</h1>
 	</header>
 	<div class=code>
@@ -638,6 +250,481 @@ void ofApp::rotateScreen(float degrees) {
 </div>
 <p class=description>We'll live as one family</p>
 <p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-29.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-06-28</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-28-06-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-28>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 1000);
+    manager.setup();
+    manager.toggleDebugUI();
+    setupAudioUnits();
+    setupTimeline();
+
+    playing = false;
+    note = 60;
+}
+
+void ofApp::setupAudioUnits() {
+    manager.add(&amp;chain, "tal-one", ofColor::blue);
+    chain.link(&amp;noiseMaker).toMixer();
+    manager.loadPresets(&amp;chain);
+}
+
+void ofApp::setupTimeline() {
+    timeline.setup();
+    timeline.setLoopType(OF_LOOP_NORMAL);
+    timeline.setDurationInSeconds(30);
+    timeline.setOffset(ofVec2f(10, 450));
+    timeline.setWidth(ofGetWidth() - 400);
+    timeline.addCurves("master osc 1 (pulse)", ofRange(0, 1));
+    timeline.addCurves("master osc 2 (triangle)", ofRange(0, 1));
+    timeline.addCurves("envelope amount (x8)", ofRange(0, 1));
+    timeline.addCurves("lfo 2 rate", ofRange(0, 1));
+    timeline.addBangs("midi events");
+    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
+}
+
+void ofApp::update(){
+    noiseMaker.set(TALNoiseMaker_osc1volume, timeline.getValue("master osc 1 (pulse)"));
+    noiseMaker.set(TALNoiseMaker_osc2volume, timeline.getValue("master osc 2 (triangle)"));
+    noiseMaker.set(TALNoiseMaker_envelopeeditoramount, timeline.getValue("envelope amount (x8)"));
+    noiseMaker.set(TALNoiseMaker_lfo2rate, timeline.getValue("lfo 2 rate"));
+}
+
+void ofApp::bang(ofxTLBangEventArgs &amp;args) {
+    if(args.flag == "") {
+        chain.midi()-&gt;sendNoteOn(1, note);
+    } else {
+        chain.midi()-&gt;sendNoteOn(1, ofToInt(args.flag));
+    }
+}
+
+void ofApp::draw(){
+    manager.draw();
+    timeline.draw();
+}</code>
+    </pre>
+</div>
+<p class=description>Mixing oscillators, filter envelopes and LFO rates</p>
+<p>
+    <img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-28.png?raw=true" alt="Sketch 2015-06-28">
+    <audio controls>
+        <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-28.mp3?raw=true" type=audio/mpeg>
+        Your browser does not support the audio element.
+    </audio>
+</p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-06-27</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-27-06-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-27>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 1000);
+    manager.setup();
+    manager.toggleDebugUI();
+    setupAudioUnits();
+    setupTimeline();
+
+    playing = false;
+    note = 60;
+}
+
+void ofApp::setupAudioUnits() {
+    manager.add(&amp;chain, "tal-one", ofColor::blue);
+    chain.link(&amp;noiseMaker).toMixer();
+    manager.loadPresets(&amp;chain);
+}
+
+void ofApp::setupTimeline() {
+    timeline.setup();
+    timeline.setLoopType(OF_LOOP_NORMAL);
+    timeline.setDurationInSeconds(30);
+    timeline.setOffset(ofVec2f(10, 450));
+    timeline.setWidth(ofGetWidth() - 400);
+    timeline.addCurves("osc crush bits", ofRange(0, 1));
+    timeline.addCurves("delay wet", ofRange(0, 1));
+    timeline.addCurves("delay time", ofRange(0, 1));
+    timeline.addBangs("midi events");
+    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
+}
+
+void ofApp::update(){
+    noiseMaker.set(TALNoiseMaker_oscbitcrusher, timeline.getValue("osc crush bits"));
+    noiseMaker.set(TALNoiseMaker_delaywet, timeline.getValue("delay wet"));
+    noiseMaker.set(TALNoiseMaker_delaytime, timeline.getValue("delay time"));
+}
+
+void ofApp::bang(ofxTLBangEventArgs &amp;args) {
+    if(args.flag == "") {
+        chain.midi()-&gt;sendNoteOn(1, note);
+    } else {
+        chain.midi()-&gt;sendNoteOn(1, ofToInt(args.flag));
+    }
+}
+
+void ofApp::draw(){
+    manager.draw();
+    timeline.draw();
+}</code>
+    </pre>
+</div>
+<p class=description>Playing with delay and the bit crusher</p>
+<p>
+    <img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-27.png?raw=true" alt="Sketch 2015-06-27">
+    <audio controls>
+        <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-27.mp3?raw=true" type=audio/mpeg>
+        Your browser does not support the audio element.
+    </audio>
+</p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-06-26</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-26-06-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-26>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    ofSetWindowShape(1000, 1000);
+    manager.setup();
+    manager.toggleDebugUI();
+    setupAudioUnits();
+    setupTimeline();
+
+    playing = false;
+    note = 60;
+}
+
+void ofApp::setupAudioUnits() {
+    manager.add(&amp;chain, "tal-one", ofColor::blue);
+    chain.link(&amp;noiseMaker).toMixer();
+    manager.loadPresets(&amp;chain);
+}
+
+void ofApp::setupTimeline() {
+    timeline.setup();
+    timeline.setLoopType(OF_LOOP_NONE);
+    timeline.setDurationInSeconds(10);
+    timeline.setOffset(ofVec2f(10, 450));
+    timeline.setWidth(ofGetWidth() - 400);
+    timeline.addBangs("midi");
+    timeline.addCurves("lfo rate", ofRange(0.03, 0.2));
+    timeline.addCurves("filter cutoff", ofRange(0, 1));
+    ofAddListener(timeline.events().bangFired, this, &amp;ofApp::bang);
+}
+
+void ofApp::update(){
+    noiseMaker.set(TALNoiseMaker_lfo2rate, timeline.getValue("lfo rate"));
+    noiseMaker.set(TALNoiseMaker_cutoff, timeline.getValue("filter cutoff"));
+}
+
+void ofApp::bang(ofxTLBangEventArgs &amp;args) {
+    if(args.flag == "") {
+        chain.midi()-&gt;sendNoteOn(1, note);
+    } else {
+        chain.midi()-&gt;sendNoteOn(1, ofToInt(args.flag));
+    }
+}</code>
+    </pre>
+</div>
+<p class=description>Modulating filter cutoff and LFO rate</p>
+<p>
+    <img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-26.png?raw=true" alt="Sketch 2015-06-26">
+    <audio controls>
+        <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-26.mp3?raw=true" type=audio/mpeg>
+        Your browser does not support the audio element.
+    </audio>
+</p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-06-25</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-25-06-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-25>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    masker.setup(2);
+    image1.setup("texture1.png");
+    image2.setup("foil.png", 0.5);
+    degrees = rotation = 0;
+    paused = true;
+}
+
+void ofApp::updateAnim(){
+    if(ofGetFrameNum() % 5 == 0) {
+        degrees += 90;
+        image1.setTextureOffset(ofRandom(2), ofRandom(2));
+        image1.setTextureScale(ofRandom(1, 2));
+        scaleIncrement = ofRandom(1) &gt; 0.5 ? 0.3 : -0.3;
+        translateIncrement.x = ofRandom(1) &gt; 0.5 ? 0.5 : -0.5;
+        translateIncrement.y = ofRandom(1) &gt; 0.5 ? 0.05 : -0.05;
+        pointIncrement1.x = ofRandom(1) &gt; 0.5 ? 16 : -8;
+        pointIncrement1.y = ofRandom(1) &gt; 0.5 ? 8 : -16;
+        pointIncrement2.x = ofRandom(1) &gt; 0.5 ? 16 : -8;
+        pointIncrement2.y = ofRandom(1) &gt; 0.5 ? 8 : -16;
+        pointIncrement3.x = ofRandom(1) &gt; 0.5 ? 16 : -8;
+        pointIncrement3.y = ofRandom(1) &gt; 0.5 ? 8 : -16;
+        randomTriangle(triangle1);
+        randomTriangle(triangle2);
+        randomTriangle(triangle3);
+    }
+    
+    image1.incrementTextureScale(scaleIncrement);
+    image1.incrementTextureOffset(translateIncrement);
+    image2.incrementTextureOffsetY(0.02);
+    for(int i = 0; i &lt; 3; i++) {
+        triangle1.at(i) += pointIncrement1;
+        triangle2.at(i) += pointIncrement2;
+        triangle3.at(i) += pointIncrement3;
+    }
+    
+    masker.beginLayer(0);
+    {
+        drawGradientBackground();
+    }
+    masker.endLayer(0);
+    
+    masker.beginMask(0);
+    {
+        ofPushStyle();
+        {
+            ofBackground(ofColor::white);
+            ofSetColor(ofColor::black);
+            drawTriangle(triangle1);
+            drawTriangle(triangle2);
+            drawTriangle(triangle3);
+        }
+        ofPopStyle();
+    }
+    masker.endMask(0);
+    
+    masker.beginLayer(1);
+    {
+        rotation += 4;
+        rotateScreen(rotation);
+        ofSetColor(ofColor::red, ofGetFrameNum() == 0 ? 255 : 110);
+        image1.draw();
+    }
+    masker.endLayer(1);
+    
+    masker.beginMask(1);
+    {
+        ofBackground(ofColor::black);
+        masker.drawLayer(0);
+    }
+    masker.endMask(1);
+}
+
+void ofApp::drawAnim() {
+    if(ofGetFrameNum() == 0) {
+        ofBackground(ofColor::black);
+    }
+    ofSetColor(ofColor::red, ofGetFrameNum() == 0 ? 255 : 128);
+    image2.draw();
+
+    ofSetColor(ofColor::black, 128);
+    ofRect(0, 0, width, height);
+
+    ofPushMatrix();
+    {
+        masker.draw();
+    }
+    ofPopMatrix();
+    masker.drawOverlay();
+    
+    if(ofGetFrameNum() == 100) {
+        paused = false;
+    }
+    
+    if(ofGetFrameNum() == 200) {
+        renderGif();
+    }
+}
+
+void ofApp::drawTriangle(vector&lt;ofPoint&gt; &amp;triangle) {
+    ofBeginShape();
+    for(int i = 0; i &lt; 3; i++) {
+        ofVertex(triangle.at(i).x, triangle.at(i).y);
+    }
+    ofEndShape();
+}
+
+void ofApp::drawGradientBackground() {
+    rotateScreen(degrees);
+    ofBackground(ofColor::black);
+    ofBackgroundGradient(ofColor::white, ofColor::black, OF_GRADIENT_LINEAR);
+}
+
+void ofApp::randomTriangle(vector&lt;ofPoint&gt; &amp;triangle) {
+    triangle.clear();
+    for(int i = 0; i &lt; 3; i++) {
+        triangle.push_back(ofPoint(ofRandom(-width, doubleWidth), ofRandom(-height, doubleHeight)));
+    }
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight);
+    ofRotateZ(degrees);
+    ofTranslate(-halfWidth, -halfHeight);
+}</code>
+    </pre>
+</div>
+<p class=description>Revelations</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-25.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-06-24</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-24-06-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-24>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    paused = true;
+    numLayers = 6;
+    topLayer1 = numLayers - 2;
+    topLayer2 = numLayers - 1;
+    spacing = 100;
+    offset = offset2 = 0;
+    increment = 20;
+    masker.setup(numLayers);
+    
+    image.setup("surface.png", width, height, 1, TEXTURE_OFFSET_BOTTOM_LEFT);
+    image.incrementTextureOffsetY(0.5);
+}
+
+void ofApp::updateAnim(){
+    incrementOffset();
+    
+    for(int i = 0; i &lt; numLayers - 2; i++) {
+        masker.beginLayer(i);
+        {
+            ofBackground(ofColor(ofColor::black, 0));
+            hue = ofMap(i, 0, numLayers, 20, 140);
+            ofSetColor(ofColor::fromHsb(hue, 255, 255, 240));
+            thickness = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 10, 50);
+            ofTranslate(0, i * 10);
+            drawLines(offset, spacing, thickness);
+        }
+        masker.endLayer(i);
+        
+        masker.beginMask(i);
+        {
+            ofBackground(ofColor::black);
+            ofSetColor(ofColor::white);
+            thickness = ofMap(sin(ofGetFrameNum() * 0.1), -1, 1, 10, 70);
+            ofTranslate(0, i * 10);
+            drawLines(offset2, spacing, thickness);
+        }
+        masker.endMask(i);
+    }
+    
+    masker.beginLayer(topLayer1);
+    image.draw();
+    masker.endLayer(topLayer1);
+    
+    masker.beginLayer(topLayer2);
+    rotateScreen(90);
+    image.draw();
+    masker.endLayer(topLayer2);
+}
+
+void ofApp::drawAnim() {
+    ofPushMatrix();
+    {
+        ofSetColor(ofColor::black, 20);
+        ofRect(0, 0, width, height);
+        masker.drawLayers(0, 4);
+        ofScale(0.5, 0.5);
+        rotateScreen(90);
+        
+        masker.drawLayer(2);
+        
+        masker.draw();
+        ofScale(0.5, 0.5);
+        rotateScreen(90);
+        
+        masker.drawLayer(1);
+    }
+    ofPopMatrix();
+    masker.drawLayer(5);
+    masker.drawOverlay();
+    
+    if(ofGetFrameNum() == 92) {
+        paused = false;
+    }
+    
+    if(ofGetFrameNum() == 162) {
+        renderGif();
+    }
+}
+
+void ofApp::incrementOffset() {
+    offset+=increment;
+    if(offset &gt;= spacing) {
+        offset = 0;
+    }
+    
+    offset2-=increment;
+    if(offset2 &lt;= -spacing) {
+        offset2 = 0;
+    }
+}
+
+void ofApp::drawLines(float _offset, float _spacing, float _thickness) {
+    for(int y = -height; y &lt; doubleHeight; y += _spacing) {
+        ofRect(-width, y + _offset, tripleWidth, _thickness);
+    }
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight);
+    ofRotateZ(degrees);
+    ofTranslate(-halfWidth, -halfHeight);
+}</code>
+    </pre>
+</div>
+<p class=description>It's a glitch.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-24.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 

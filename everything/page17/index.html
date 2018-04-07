@@ -44,399 +44,6 @@
         
 <article>
 	<header>
-		<h1>Sketch 2015-06-07</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-07-06-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-07>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    size = 60;
-    margin = width - size;
-    halfMargin = margin * 0.5;
-}
-
-void ofApp::drawAnim() {
-    ofBackground(ofColor::white);
-    
-    ofSetColor(ofColor::black, 10);
-    for(int i = 0; i &lt; 1400; i++) {
-        x = width * 0.5 - size * 0.5 + (ofRandom(margin) - halfMargin);
-        y = floor(ofRandom(height/size)) * size;
-        ofRect(x, y, size, size);
-    }
-    
-    ofSetColor(ofColor::white, 64);
-    for(int i = 0; i &lt; height/size; i++) {
-        ofRect(halfMargin, i * size + size * 0.5, width - margin, 4);
-    }
-    
-    ofSetColor(ofColor::white, 64);
-    for(int i = -height; i &lt; height; i++) {
-        ofRect(halfMargin, (i * size * 0.5) + ofGetFrameNum(), width - margin, 4);
-        ofRect(halfMargin, (i * size * 0.5) - ofGetFrameNum(), width - margin, 4);
-    }
-    
-    if(ofGetFrameNum() == 30) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Running out of time.</p>
-<p><img class=no-frame src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-07.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-06-06</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-06-06-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-06>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    ofDisableArbTex();
-    setupImage("surface.png", &amp;img, &amp;tex);
-
-    plane.setResolution(2, 2);
-    
-    offset.set(1, 0.04);
-}
-
-void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
-    img-&gt;loadImage(file);
-    *tex = img-&gt;getTextureReference();
-    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
-}
-
-void ofApp::drawLayer(ofTexture *tex) {
-    tx0 = offset.x;
-    ty0 = offset.y;
-    tx1 = tx0 - 0.66666668;
-    ty1 = ty0 - 1;
-    plane.setPosition(halfWidth, halfHeight, 0);
-    plane.set(width, height);
-    plane.mapTexCoords(tx0, ty0, tx1, ty1);
-    plane.mapTexCoords(tx1, ty1, tx0, ty0);
-    tex-&gt;bind();
-    plane.draw();
-    tex-&gt;unbind();
-}
-
-void ofApp::drawLayer2(ofTexture *tex) {
-    tx0 = offset.x - (0.66666668 * 0.5);
-    ty0 = offset.y -0.5;
-    tx1 = tx0 - (0.66666668 * 0.5);
-    ty1 = ty0 - 0.5;
-    plane.setPosition(halfWidth*0.5, halfHeight*0.5, 0);
-    plane.set(halfWidth, halfHeight);
-    plane.mapTexCoords(tx0, ty0, tx1, ty1);
-    plane.mapTexCoords(tx1, ty1, tx0, ty0);
-    tex-&gt;bind();
-    plane.draw();
-    tex-&gt;unbind();
-}
-
-void ofApp::rotateScreen(float degrees, int amount) {
-    ofTranslate(amount, amount, 0);
-    ofRotate(degrees);
-    ofTranslate(-amount, -amount, 0);
-}
-
-void ofApp::updateAnim(){
-    offset.x += 0.02;
-}
-
-void ofApp::drawAnim() {
-    ofBackground(ofColor::black);
-    ofSetColor(ofColor::wheat);
-    
-    
-    offset.y = 0.02;
-    drawLayer(&amp;tex);
-    rotateScreen(90, halfWidth);
-    drawLayer(&amp;tex);
-    rotateScreen(90, halfHeight);
-    drawLayer(&amp;tex);
-    rotateScreen(90, halfWidth);
-    drawLayer(&amp;tex);
-    rotateScreen(90, halfHeight);
-    drawLayer2(&amp;tex); //cover up
-
-    if(ofGetFrameNum() == 100) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Folded like the top of a cardbaord box</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-06.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-06-05</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-05-06-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-05>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setupAnim() {
-    masker.setup(width, height);
-    layerId = masker.newLayer();
-    
-    ofDisableArbTex();
-    offset.x = ofRandom(30);
-    offset.y = ofRandom(30);
-    movingLeft = true;
-    setupImage("surface.png", &amp;img, &amp;tex);
-
-    plane.set(width, height);
-    plane.setPosition(halfWidth, halfHeight, 0);
-    plane.setResolution(2, 2);
-}
-
-void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
-    img-&gt;loadImage(file);
-    *tex = img-&gt;getTextureReference();
-    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
-}
-
-void ofApp::drawLayer(ofTexture *tex) {
-    plane.mapTexCoords(tx0, ty0, tx1, ty1);
-    plane.mapTexCoords(tx1, ty1, tx0, ty0);
-    tex-&gt;bind();
-    plane.draw();
-    tex-&gt;unbind();
-}
-
-void ofApp::updateAnim(){
-    masker.beginLayer(layerId);
-    ofBackground(ofColor::black);
-    ofSetColor(ofColor::red);
-    tx0 = offset.x + (movingLeft ? ofGetFrameNum() : -ofGetFrameNum()) * 0.0005;
-    ty0 = offset.y;
-    tx1 = tx0 - 0.16666667;
-    ty1 = ty0 - 1;
-    drawLayer(&amp;tex);
-    masker.endLayer(layerId);
-    
-    masker.beginMask(layerId);
-    ofBackground(ofColor::black);
-    for(int i = 0; i &lt; 8; i++) {
-        ofSetColor(ofColor::white, ofRandom(32));
-        ofRotateZ(ofRandom(360));
-        ofRect(-width*2, ofRandom(height), width*4, ofRandom(halfHeight, height));
-    }
-    masker.endMask(layerId);
-
-    if(ofRandom(1) &gt; 0.5) {
-        offset.x = ofRandom(30);
-        offset.y = ofRandom(30);
-        movingLeft = !movingLeft;
-    }
-}
-
-void ofApp::drawAnim() {
-    if(ofGetFrameNum() == 0) ofBackground(ofColor::black);
-    ofSetColor(ofColor::white, 40);
-    drawLayer(&amp;tex);
-    masker.draw();
-    if(ofGetFrameNum() == 72) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>It's dark and murky</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-05.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-06-04</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-04-06-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-04>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>
-//Pattern based on http://www.openprocessing.org/sketch/157035
-
-ofxLayerMask masker;
-int layerId;
-
-float tx0, ty0, tx1, ty1;
-float offset;
-ofImage img;
-ofTexture tex;
-ofPlanePrimitive plane;
-
-float x, y, radians;
-
-void ofApp::setupAnim() {
-    masker.setup(width, height);
-    layerId = masker.newLayer();
-    
-    ofDisableArbTex();
-    offset = ofRandom(3);
-    setupImage("face.png", &amp;img, &amp;tex);
-
-    plane.set(width, height);
-    plane.setPosition(halfWidth, halfHeight, 0);
-    plane.setResolution(2, 2);
-}
-
-void ofApp::setupImage(string file, ofImage *img, ofTexture *tex) {
-    img-&gt;loadImage(file);
-    *tex = img-&gt;getTextureReference();
-    tex-&gt;setTextureWrap(GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
-}
-
-void ofApp::drawLayer(ofTexture *tex) {
-    plane.mapTexCoords(tx0, ty0, tx1, ty1);
-    plane.mapTexCoords(tx1, ty1, tx0, ty0);
-    tex-&gt;bind();
-    plane.draw();
-    tex-&gt;unbind();
-}
-
-void ofApp::updateAnim(){
-    masker.beginLayer(layerId);
-    ofBackground(ofColor::black);
-    ofSetColor(ofColor::white);
-    tx0 = 1;
-    ty0 = ofGetFrameNum() * 0.0012 + offset;
-    tx1 = tx0 - 1;
-    ty1 = ty0 - 0.2;
-    drawLayer(&amp;tex);
-    masker.endLayer(layerId);
-    
-    masker.beginMask(layerId);
-    ofBackground(ofColor::black);
-    if(ofGetFrameNum() == 0 || ofRandom(1) &gt; 0.6) {
-        ofTriangle(ofRandom(-width, width*2), ofRandom(-height, height*2),
-                   ofRandom(-width, width*2), ofRandom(-height, height*2),
-                   ofRandom(-width, width*2), ofRandom(-height, height*2));
-    } else if(ofRandom(1) &gt; 0.3) {
-        offset = ofRandom(3);
-    }
-    masker.endMask(layerId);
-}
-
-void ofApp::drawAnim() {
-    if(ofGetFrameNum() == 0) ofBackground(ofColor::black);
-    ofSetColor(ofColor::white, 40);
-    drawLayer(&amp;tex);
-
-    ofSetColor(ofColor::white, 15);
-    ofTranslate(halfWidth, halfHeight);
-    for (int i = 0; i &lt; 360; i+=6) {
-        for (int q = 0; q &lt; 360; q+=360) {
-            radians = ofDegToRad(q + i + ofGetFrameNum() * 5);
-            
-            x = ofMap(sin(radians) * i, -600, -10, i, 0);
-            y = ofMap(cos(radians) * i, -600, -10, 0, i);
-            ofCircle(x, y, 2);
-            ofCircle(y, x, 2);
-            ofCircle(-x, -y, 2);
-            ofCircle(-y, -x, 2);
-            
-            x = ofMap(sin(radians) * i, -600, -10, -i, 0);
-            ofCircle(x, y, 2);
-            ofCircle(y, x, 2);
-            ofCircle(-x, -y, 2);
-            ofCircle(-y, -x, 2);
-        }
-    }
-    ofTranslate(-halfWidth, -halfHeight);
-    masker.draw();
-    if(ofGetFrameNum() == 72) {
-        renderGif();
-    }
-}</code>
-    </pre>
-</div>
-<p class=description>Frustration can be bitter sweet</p>
-<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-04.gif?raw=true" alt="Daily sketch"></p>
-
-</article>
-
-<article>
-	<header>
-		<h1>Sketch 2015-06-03</h1>
-	</header>
-	<div class=code>
-    <ul>
-		<li><a href=/sketch-03-06-2015/ >permalink</a></li>
-		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-06-03>code</a></li>
-		<li><a href=# class=snippet-button>show snippet</a></li>
-	</ul>
-    <pre class=snippet>
-        <code class=cpp>void ofApp::setup(){
-    playing = true;
-    note = 60;
-
-    manager.setup();
-    manager.toggleDebugUI();
-    manager.add(&amp;chain1, "tal-1", ofColor::blue);
-    manager.add(&amp;chain2, "tal-2", ofColor::red);
-
-    bpm.setBpm(160);
-    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
-    bpm.start();
-}
-
-void ofApp::play(void){
-    if(playing) {
-        chain1.midi()-&gt;sendNoteOn(1, note);
-        chain2.midi()-&gt;sendNoteOn(1, note);
-    }
-}
-
-void ofApp::togglePlaying() {
-    playing = !playing;
-    if(!playing) {
-        chain1.midi()-&gt;sendNoteOff(1, note);
-        chain2.midi()-&gt;sendNoteOff(1, note);
-    }
-}
-
-void ofApp::update(){
-    manager.update();
-    
-    val = ofMap(sin(ofGetFrameNum() * 0.04), -1, 1, 30, 59);
-    chain1.getReverb()-&gt;set(kReverbParam_DryWetMix, val);
-}</code>
-    </pre>
-</div>
-<p class=description>Crisp vs noisy</p>
-<audio controls>
-	<source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-03.mp3?raw=true" type=audio/mpeg>
-	Your browser does not support the audio element.
-</audio>
-
-
-</article>
-
-<article>
-	<header>
 		<h1>Sketch 2015-06-02</h1>
 	</header>
 	<div class=code>
@@ -560,6 +167,338 @@ void ofApp::update(){
     <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-06-01.mp3?raw=true" type=audio/mpeg>
     Your browser does not support the audio element.
 </audio>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-05-31</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-31-05-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-31>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setup(){
+    manager.setup();
+    manager.toggleDebugUI();
+    manager.add(&amp;chain1, "tal-one", ofColor::blue);
+    manager.add(&amp;chain2, "tal-two", ofColor::blue);
+
+    playing = false;
+    note = 60;
+    
+    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
+    bpm.start();
+    chain1.midi()-&gt;sendNoteOn(1, note);
+    chain2.midi()-&gt;sendNoteOn(1, note);
+}
+
+void ofApp::play(void){
+    if(playing) {
+        if(currentChain == 1) {
+            chain1.getSynth()-&gt;set(TALNoiseMaker_volume, -10);
+            chain2.getSynth()-&gt;set(TALNoiseMaker_volume, 0);
+            currentChain = 2;
+        } else {
+            chain1.getSynth()-&gt;set(TALNoiseMaker_volume, 0);
+            chain2.getSynth()-&gt;set(TALNoiseMaker_volume, -10);
+            currentChain = 1;
+        }
+    }
+}
+
+void ofApp::togglePlaying() {
+    playing = !playing;
+    if(!playing) {
+        chain1.midi()-&gt;sendNoteOff(1, note);
+    }
+}
+
+void ofApp::update(){
+    manager.update();
+    
+    //Animate everythung based on sin()
+    val = ofMap(sin(ofGetFrameNum() * 0.03), -1, 1, 0.4, 0.6);
+    chain1.getSynth()-&gt;set(TALNoiseMaker_lfo2rate, val);
+    
+    val = ofMap(sin(ofGetFrameNum() * 0.06), -1, 1, 0.3, 0.8);
+    chain1.getSynth()-&gt;set(TALNoiseMaker_envelopeeditoramount, val);
+    
+    val = ofMap(sin(ofGetFrameNum() * 0.45), -1, 1, 6900, 4000);
+    chain1.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
+    
+    val = ofMap(sin(ofGetFrameNum() * 0.2), -1, 1, 10, 26);
+    chain1.getFilter()-&gt;set(kLowPassParam_Resonance, val);
+    
+    //Exactly the same, but with cos()
+    val = ofMap(cos(ofGetFrameNum() * 0.03), -1, 1, 0.4, 0.6);
+    chain2.getSynth()-&gt;set(TALNoiseMaker_lfo2rate, val);
+    
+    val = ofMap(cos(ofGetFrameNum() * 0.06), -1, 1, 0.3, 0.8);
+    chain2.getSynth()-&gt;set(TALNoiseMaker_envelopeeditoramount, val);
+    
+    val = ofMap(cos(ofGetFrameNum() * 0.45), -1, 1, 6900, 4000);
+    chain2.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
+    
+    val = ofMap(cos(ofGetFrameNum() * 0.2), -1, 1, 10, 26);
+    chain2.getFilter()-&gt;set(kLowPassParam_Resonance, val);
+}</code>
+    </pre>
+</div>
+<p class=description>A simple adjustment, oscillating between two synths</p>
+<audio controls>
+    <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-31.mp3?raw=true" type=audio/mpeg>
+    Your browser does not support the audio element.
+</audio>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-05-30</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-30-05-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-30>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>ofxAudioUnitManager manager;
+TALNoiseMakerChain talChain;
+ofxBpm bpm;
+
+void ofApp::setup(){
+    manager.setup();
+    manager.toggleDebugUI();
+    manager.add(&amp;talChain, "tal-one", ofColor::blue);
+
+    playing = false;
+    note = 60;
+    
+    ofAddListener(bpm.beatEvent, this, &amp;ofApp::play);
+    bpm.start();
+    talChain.getFilter()-&gt;getUnit()-&gt;printParameterList();
+}
+
+void ofApp::play(void){
+    if(playing) {
+        talChain.midi()-&gt;sendNoteOn(1, note);
+    }
+}
+
+void ofApp::togglePlaying() {
+    playing = !playing;
+    if(!playing) {
+        talChain.midi()-&gt;sendNoteOff(1, note);
+    }
+}
+
+void ofApp::update(){
+    manager.update();
+
+    val = ofMap(sin(ofGetFrameNum() * 0.03), -1, 1, 0.4, 0.6);
+    talChain.getSynth()-&gt;set(TALNoiseMaker_lfo2rate, val);
+
+    val = ofMap(sin(ofGetFrameNum() * 0.06), -1, 1, 0.3, 0.8);
+    talChain.getSynth()-&gt;set(TALNoiseMaker_envelopeeditoramount, val);
+
+    val = ofMap(sin(ofGetFrameNum() * 0.45), -1, 1, 6900, 4000);
+    talChain.getFilter()-&gt;set(kLowPassParam_CutoffFrequency, val);
+
+    val = ofMap(sin(ofGetFrameNum() * 0.2), -1, 1, 10, 26);
+    talChain.getFilter()-&gt;set(kLowPassParam_Resonance, val);
+}
+
+void ofApp::draw(){
+    manager.draw();
+}</code>
+    </pre>
+</div>
+<p class=description>First sound sketch. The result of a long journey <a href=https://github.com/microcosm/ofxAudioUnitManager>finishing my own tools</a>.</p>
+<audio controls>
+    <source src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-30.mp3?raw=true" type=audio/mpeg>
+    Your browser does not support the audio element.
+</audio>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-05-29</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-29-05-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-29>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    maskOpacity = 0;
+    paused = false;
+    maskOpacity = 30;
+}
+
+void ofApp::drawAnim() {
+    ofEnableAlphaBlending();
+    if(ofGetFrameNum() == 0) ofBackground(ofColor::black);
+    ofSetColor(0, 0, 0, maskOpacity);
+    ofRect(0, 0, width, height);
+    
+    ofSetColor(ofColor::red);
+    for(int i = 0; i &lt; 360; i+=10) {
+        for(int j = 0; j &lt; 4; j++) {
+            x = ofRandom(0, width);
+            y = ofMap(sin(ofGetFrameNum() * 0.06), -1, 1, -20, halfWidth);
+            ofLine(x, y, x, y + 50);
+        }
+        rotateScreen(i);
+    }
+    
+    ofDisableAlphaBlending();
+    
+    if(ofGetFrameNum() &gt; 96) {
+        maskOpacity += 40;
+    }
+    
+    if(maskOpacity &gt; 255) {
+        renderGif();
+    }
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight, 0);
+    ofRotate(degrees);
+    ofTranslate(-halfWidth, -halfHeight, 0);
+}</code>
+    </pre>
+</div>
+<p class=description>A little patience.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-29.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-05-28</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-28-05-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-28>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    maskOpacity = 0;
+}
+
+void ofApp::drawAnim() {
+    ofEnableAlphaBlending();
+    
+    ofSetColor(0, 0, 0, 30);
+    ofRect(0, 0, width, height);
+    
+    ofSetColor(ofColor::red);
+    for(int i = 0; i &lt; 8; i++) {
+        for(int j = 0; j &lt; 10; j++) {
+            x = ofRandom(0, width);
+            y = ofRandom(-40, -20);
+            ofLine(x, y, x, y + halfWidth + 50);
+        }
+        rotateScreen(45);
+    }
+    
+    if(ofGetFrameNum() &gt; 12) {
+        ofSetColor(ofColor(ofColor::white, maskOpacity));
+        ofRect(0, 0, width, height);
+        maskOpacity += 20;
+    }
+    
+    ofDisableAlphaBlending();
+    
+    if(maskOpacity &gt; 255) {
+        renderGif();
+    }
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight, 0);
+    ofRotate(degrees);
+    ofTranslate(-halfWidth, -halfHeight, 0);
+}</code>
+    </pre>
+</div>
+<p class=description>Constraints.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-28.gif?raw=true" alt="Daily sketch"></p>
+
+</article>
+
+<article>
+	<header>
+		<h1>Sketch 2015-05-27</h1>
+	</header>
+	<div class=code>
+    <ul>
+		<li><a href=/sketch-27-05-2015/ >permalink</a></li>
+		<li><a href=https://github.com/dailysketches/sketches-2015-07pre/tree/master/2015-05-27>code</a></li>
+		<li><a href=# class=snippet-button>show snippet</a></li>
+	</ul>
+    <pre class=snippet>
+        <code class=cpp>void ofApp::setupAnim() {
+    ofEnableSmoothing();
+    numPerDimension = 3;
+
+    for(int x = 0; x &lt; numPerDimension; x++) {
+        for(int y = 0; y &lt; numPerDimension; y++) {
+            for(int z = 0; z &lt; numPerDimension; z++) {
+                cube = ofxShapeSystem();
+                cube.setupCube(2, ofRandom(100, 200), ofColor(ofColor::red, 255));
+                cube.setRotation(ofRandom(360), ofRandom(360), ofRandom(360));
+                cube.positionX(ofMap(x, 0, numPerDimension-1, 0, width));
+                cube.positionY(ofMap(y, 0, numPerDimension-1, 0, height));
+                cube.positionZ(ofMap(z, 0, numPerDimension, 250, -250));
+                cubes.push_back(cube);
+            }
+        }
+    }
+}
+
+void ofApp::updateAnim() {
+    for(int i = 0; i &lt; cubes.size(); i++) {
+        cubes.at(i).incrementRotateX(2);
+        cubes.at(i).incrementRotateY(2);
+        cubes.at(i).incrementRotateZ(2);
+    }
+}
+
+void ofApp::drawAnim() {
+    ofBackground(0, 0, 0);
+
+    ofEnableAlphaBlending();
+    rotateScreen(ofGetFrameNum() * 2);
+    for(int i = 0; i &lt; cubes.size(); i++) {
+        cubes.at(i).draw();
+    }
+
+    if(ofGetFrameNum() == 180) renderGif();
+}
+
+void ofApp::rotateScreen(float degrees) {
+    ofTranslate(halfWidth, halfHeight, 0);
+    ofRotateX(degrees);
+    ofTranslate(-halfWidth, -halfHeight, 0);
+}</code>
+    </pre>
+</div>
+<p class=description>Hmm. Cubes.</p>
+<p><img src="https://github.com/dailysketches/assets-2015-07pre/blob/master/openFrameworks/2015-05-27.gif?raw=true" alt="Daily sketch"></p>
 
 </article>
 
